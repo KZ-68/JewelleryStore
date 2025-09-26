@@ -11,11 +11,11 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_HOST: mysql
-      DB_PORT: 3307
-      DB_DATABASE: root
-      DB_USERNAME: root
-      DB_PASSWORD: 
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       APP_ENV: local
       APP_DEBUG: "true"
       APP_URL: http://localhost:8000
@@ -29,9 +29,9 @@ services:
     container_name: laravel_db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3307"
     volumes:

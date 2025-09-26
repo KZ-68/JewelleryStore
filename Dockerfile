@@ -44,6 +44,10 @@ RUN php artisan breeze:install \
 
 RUN php artisan octane:install --server=frankenphp --no-interaction
 
+# Test package
+RUN composer require laravel/pint --dev \
+    composer require phpstan/phpstan --dev
+
 RUN npm install && npm run build
 
 RUN chown -R www-data:www-data /var/www

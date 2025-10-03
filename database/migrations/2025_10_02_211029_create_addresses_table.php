@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('details_1', 255);
             $table->string('details_2', 255);
             $table->string('postal_code', 10);
-            $table->date('deleted_at');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

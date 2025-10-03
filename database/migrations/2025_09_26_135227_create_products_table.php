@@ -22,8 +22,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->float('retailPrice', 2);
             $table->boolean('active');
-            $table->date('deleted_at');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

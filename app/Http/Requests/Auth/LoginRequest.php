@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -37,12 +38,13 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateCredentials(): User
+    public function validateCredentials(): User|Customer|null
     {
         $this->ensureIsNotRateLimited();
 
-        /** @var User|null $user */
+        /** @var User|Customer|null $user */
         $user = Auth::getProvider()->retrieveByCredentials($this->only('email', 'password'));
+
 
         if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
             RateLimiter::hit($this->throttleKey());
@@ -50,10 +52,11 @@ class LoginRequest extends FormRequest
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
+
         }
 
         RateLimiter::clear($this->throttleKey());
-
+            
         return $user;
     }
 

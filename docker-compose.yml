@@ -1,46 +1,44 @@
 version: '3.8'
-
 services:
-  app:
-    build: .
-    container_name: laravel_app
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/var/www
-    depends_on:
-      - mysql
-    environment:
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      APP_ENV: local
-      APP_DEBUG: "true"
-      APP_URL: http://localhost:8000
-      SANCTUM_STATEFUL_DOMAINS: localhost
-      SESSION_DOMAIN: localhost
-    networks:
-      - laravel
-
-  mysql:
-    image: mysql:8.0
-    container_name: laravel_db
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3307"
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - laravel
-
+    app:
+        build: .
+        container_name: laravel_app
+        ports:
+            - '8000:8000'
+        volumes:
+            - '.:/var/www'
+        depends_on:
+            - mysql
+        environment:
+            DB_HOST: '${DB_HOST}'
+            DB_PORT: '${DB_PORT}'
+            DB_DATABASE: '${DB_DATABASE}'
+            DB_USERNAME: '${DB_USERNAME}'
+            DB_PASSWORD: '${DB_PASSWORD}'
+            APP_ENV: local
+            APP_DEBUG: 'true'
+            APP_URL: 'http://localhost:8000'
+            SANCTUM_STATEFUL_DOMAINS: localhost
+            SESSION_DOMAIN: localhost
+        networks:
+            - laravel
+    mysql:
+        image: 'mysql:8.0'
+        container_name: laravel_db
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+        ports:
+            - '3306:3307'
+        volumes:
+            - 'dbdata:/var/lib/mysql'
+        networks:
+            - laravel
 networks:
-  laravel:
-
+    laravel: null
 volumes:
-  dbdata:
+    dbdata: null
+    sail-mysql:
+        driver: local

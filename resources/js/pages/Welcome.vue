@@ -2,6 +2,7 @@
 import { login, register } from '@/routes';
 import { showDashboard }  from '@/routes/dashboard/index'
 import { Head, Link } from '@inertiajs/vue3';
+import LogoutButton from '@/components/jewelery_store/button/LogoutButton.vue'
 </script>
 
 <template>
@@ -23,6 +24,7 @@ import { Head, Link } from '@inertiajs/vue3';
                 >
                     Dashboard
                 </Link>
+                <LogoutButton v-if="$page.props.auth.user">Logout</LogoutButton>
                 <template v-else>
                     <Link
                         :href="login()"

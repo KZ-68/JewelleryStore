@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { login, register } from '@/routes';
-import { showDashboard }  from '@/routes/dashboard/index'
+import { show }  from '@/routes/bo/index'
 import { Head, Link } from '@inertiajs/vue3';
-import LogoutButton from '@/components/jewelery_store/button/LogoutButton.vue'
+import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
 </script>
 
 <template>
@@ -18,12 +18,13 @@ import LogoutButton from '@/components/jewelery_store/button/LogoutButton.vue'
         >
             <nav class="flex items-center justify-end gap-4">
                 <Link
-                    v-if="$page.props.auth.user"
-                    :href="showDashboard()"
+                    
+                    :href="show()"
                     class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                 >
                     Dashboard
                 </Link>
+                <p>{{ $page.props.auth.user }}</p>
                 <LogoutButton v-if="$page.props.auth.user">Logout</LogoutButton>
                 <template v-else>
                     <Link

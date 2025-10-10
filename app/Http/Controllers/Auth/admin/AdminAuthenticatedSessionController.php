@@ -21,7 +21,7 @@ class AdminAuthenticatedSessionController extends Controller
     public function create(Request $request): Response
     {
         return Inertia::render('auth/admin/AdminLogin', [
-            'canResetPassword' => Route::has('password.request'),
+            'canResetPassword' => Route::has('admin-password.request'),
             'status' => $request->session()->get('status'),
         ]);
     }
@@ -47,7 +47,7 @@ class AdminAuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if ($user instanceof User) {
-            return redirect()->route('showDashboard');
+            return redirect()->route('bo.show');
         }
 
         return redirect()->route('home');

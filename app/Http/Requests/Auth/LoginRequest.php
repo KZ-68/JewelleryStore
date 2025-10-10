@@ -38,13 +38,19 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validateCredentials(): User|Customer|null
+    public function validateCredentials(string $guard = 'web'): User|Customer|null
     {
         $this->ensureIsNotRateLimited();
 
-        /** @var User|Customer|null $user */
-        $user = Auth::getProvider()->retrieveByCredentials($this->only('email', 'password'));
+        if($guard === 'web') {
+            /** @var Customer|null $user */
+            $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
+        }
 
+        if($guard === 'admin') {
+            /** @var User|null $user */
+            $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
+        }
 
         if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
             RateLimiter::hit($this->throttleKey());

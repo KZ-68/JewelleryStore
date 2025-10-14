@@ -16,7 +16,7 @@ use App\Http\Controllers\Auth\Admin\AdminAuthenticatedSessionController;
 use App\Http\Controllers\Auth\Admin\AdminEmailVerificationPromptController;
 use App\Http\Controllers\Auth\Admin\AdminEmailVerificationNotificationController;
 
-Route::middleware('guest:web')->group(function () {
+Route::middleware(['guest:web'])->group(function () {
     Route::get('register', [RegisteredCustomerController::class, 'create'])
         ->name('register');
 
@@ -42,7 +42,7 @@ Route::middleware('guest:web')->group(function () {
         ->name('password.store');
 });
 
-Route::middleware('guest:admin')->group(function () {
+Route::middleware(['guest:admin'])->group(function () {
     Route::get('admin/register', [AdminRegisteredUserController::class, 'create'])
         ->name('admin-register');
 
@@ -99,5 +99,3 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::post('/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
         ->name('admin-logout');
 });
-
-require __DIR__.'/admin.php';

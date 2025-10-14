@@ -31,7 +31,7 @@ class AdminAuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $user = $request->validateCredentials();
+        $user = $request->validateCredentials('admin');
 
         if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
             $request->session()->put([
@@ -47,7 +47,7 @@ class AdminAuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if ($user instanceof User) {
-            return redirect()->route('bo.show');
+            return redirect()->route('showBO');
         }
 
         return redirect()->route('home');

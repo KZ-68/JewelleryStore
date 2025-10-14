@@ -42,10 +42,12 @@ class AdminRegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('admin');
+
         event(new Registered($user));
 
         Auth::login($user);
 
-        return to_route('bo.show');
+        return to_route('showBO');
     }
 }

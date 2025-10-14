@@ -1,0 +1,159 @@
+name: build
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+env:
+  PHP_VERSION: '8.4'
+  NODE_VERSION: '20'
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: laravel
+          MYSQL_USER: root
+          MYSQL_PASSWORD:
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+          
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: |
+          composer validate --strict
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm install
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Generate app key
+        run: php artisan key:generate
+      
+      - name: Directory permissions
+        run: |
+          sudo chown -R $USER:$USER storage bootstrap/cache
+          chmod -R 775 storage bootstrap/cache
+
+      - name: Create .env.test
+        run: |
+          cp .env.test .env.test.local
+          echo "DATABASE_URL=${{secrets.DATABASE_URL_TEST}} | 
+
+      - name: Install chromium and chromiumdriver
+        run: | 
+          sudo apt-get update 
+          apt-get install -y chromium chromium-driver fonts-liberation ca-certificates
+
+      - name: Prepare test database
+        run: |
+          php artisan config:clear
+          php artisan migrate --env=testing --force
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run PHP Linting (Pint)
+        run: ./vendor/bin/pint --test
+
+      - name: Run PHP CS Fixer (dry-run)
+        run: |
+          if [ -f ".php-cs-fixer.php" ]; then
+            vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
+          fi
+        continue-on-error: true
+
+      - name: Run PHPStan
+        run: |
+          if [ -f "phpstan.neon" ] || [ -f "phpstan.neon.dist" ]; then
+            vendor/bin/phpstan analyse
+          fi
+        continue-on-error: true
+
+      - name: Run PHPUnit Tests
+        run: php artisan test
+
+      - name: Start Laravel server in background
+        run: |
+          php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &
+          sleep 10
+          - name: Run Lighthouse Audit
+      
+      - name: Run Lighthouse Audit
+        run: |
+          lighthouse http://127.0.0.1:8000 \
+            --only-categories=performance \
+            --output=json \
+            --output-path=./lighthouse-report.json \
+            --chrome-flags="--no-sandbox"
+
+      - name: Upload Lighthouse Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-report
+          path: ./lighthouse-report.json
+
+      - name: Run PHPUnit coverage test
+        run: |
+          vendor/bin/phpunit --coverage-clover coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+
+      # - name: create pull request
+      #   run: gh pr create -B test -H dev --title 'Merge dev into test' --body 'Created by Github action'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Commit Changes
+      #   uses: stefanzweifel/git-auto-commit-action@v5
+      #   with:
+      #     commit_message: fix code style
+      #     commit_options: '--no-verify'

@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BackOfficeController extends Controller
 {
     /**
      * Show the BackOffice page.
      */
-    public function show(Request $request): Response
+    public function showBO(Request $request): Response
     {
-       
         return Inertia::render('admin/BackOffice', [
             
         ]);

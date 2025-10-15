@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { login, register } from '@/routes';
-import { show }  from '@/routes/bo/index'
+import { showBO }  from '@/routes/admin/back-office'
 import { Head, Link } from '@inertiajs/vue3';
 import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
 </script>
@@ -22,13 +22,14 @@ import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
             <nav class="flex items-center justify-end gap-4 px-4">
                 <Link
                     
-                    :href="show()"
+                    :href="showBO()"
                     class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                 >
                     Dashboard
                 </Link>
-                <p>{{ $page.props.auth.user }}</p>
+                
                 <LogoutButton v-if="$page.props.auth.user">Logout</LogoutButton>
+                <LogoutButton v-else-if="$page.props.auth.customer">Logout</LogoutButton>
                 <template v-else>
                     <Link
                         :href="login()"

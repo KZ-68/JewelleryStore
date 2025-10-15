@@ -49,10 +49,10 @@ Route::middleware(['guest:admin'])->group(function () {
     Route::post('admin/register', [AdminRegisteredUserController::class, 'store'])
         ->name('admin-register.store');
 
-    Route::get('admin/login', [AdminAuthenticatedSessionController::class, 'create'])
+    Route::get('admin/login', [AuthenticatedSessionController::class, 'create'])
         ->name('admin-login');
 
-    Route::post('admin/login', [AdminAuthenticatedSessionController::class, 'store'])
+    Route::post('admin/login', [AuthenticatedSessionController::class, 'store'])
         ->name('admin-login.store');
 
     Route::get('admin/forgot-password', [AdminPasswordResetLinkController::class, 'create'])
@@ -68,7 +68,7 @@ Route::middleware(['guest:admin'])->group(function () {
         ->name('admin-password.store');
 });
 
-Route::middleware('auth:web')->group(function () {
+Route::middleware(['role:basic','auth:web'])->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -96,6 +96,6 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
         ->middleware('throttle:6,1')
         ->name('admin-verification.send');
 
-    Route::post('/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('admin-logout');
 });

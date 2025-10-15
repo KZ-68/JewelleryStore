@@ -11,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { show } from '@/routes/bo/index';
+import { showBO } from '@/routes/admin/back-office';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
@@ -19,8 +19,8 @@ import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: show(),
+        title: 'Back Office',
+        href: showBO(),
         icon: LayoutGrid,
     },
 ];
@@ -45,7 +45,7 @@ const footerNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="show()">
+                        <Link :href="showBO()">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

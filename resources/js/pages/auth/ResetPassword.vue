@@ -25,7 +25,7 @@ const inputEmail = ref(props.email);
         <Head title="Reset password" />
 
         <Form
-            v-bind="NewPasswordController.store.form()"
+            v-bind="NewPasswordController.store['/reset-password'].form()"
             :transform="(data) => ({ ...data, token, email })"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"

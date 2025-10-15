@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdminAuthenticatedSessionController from '@/actions/App/Http/Controllers/Auth/Admin/AdminAuthenticatedSessionController';
+import AuthenticatedSessionController from '@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController';
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -20,10 +20,10 @@ defineProps<{
 
 <template>
     <AuthBase
-        title="Log in to your account"
+        title="Log in to your admin account"
         description="Enter your email and password below to log in"
     >
-        <Head title="Log in" />
+        <Head title="Admin Log in" />
 
         <div
             v-if="status"
@@ -33,7 +33,7 @@ defineProps<{
         </div>
 
         <Form
-            v-bind="AdminAuthenticatedSessionController.store.form()"
+            v-bind="AuthenticatedSessionController.store['/admin/login'].form()"
             :reset-on-success="['password']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

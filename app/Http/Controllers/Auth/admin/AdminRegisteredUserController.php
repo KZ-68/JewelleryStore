@@ -48,6 +48,6 @@ class AdminRegisteredUserController extends Controller
 
         Auth::guard('admin')->login($user);
 
-        return to_route('back-office.showBO');
+        return to_route('admin.back-office.showBO');
     }
 }

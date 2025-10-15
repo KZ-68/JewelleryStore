@@ -35,6 +35,15 @@ class AuthenticatedSessionController extends Controller
         if (Auth::guard('web')->attempt($credentials)) {
             $user = $request->validateCredentials('web');
 
+            if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
+                $request->session()->put([
+                    'login.id' => $user->getKey(),
+                    'login.remember' => $request->boolean('remember'),
+                ]);
+
+                return to_route('two-factor.login');
+            }
+
             Auth::login($user, $request->boolean('remember'));
 
             $request->session()->regenerate();
@@ -59,7 +68,7 @@ class AuthenticatedSessionController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->intended(route('showBO', absolute: false));
+            return redirect()->intended(route('admin.back-office.showBO', absolute: false));
         }
        
         return redirect()->intended(route('home', absolute: false));

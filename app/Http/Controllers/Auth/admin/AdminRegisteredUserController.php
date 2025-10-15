@@ -46,8 +46,8 @@ class AdminRegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::guard('admin')->login($user);
 
-        return to_route('showBO');
+        return to_route('back-office.showBO');
     }
 }

@@ -45,25 +45,32 @@ class LoginRequest extends FormRequest
         if($guard === 'web') {
             /** @var Customer|null $user */
             $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
+
+            if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'email' => trans('auth.failed'),
+                ]);
+            }
         }
 
         if($guard === 'admin') {
             /** @var User|null $user */
             $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
-        }
 
-        if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
-            RateLimiter::hit($this->throttleKey());
+            if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+                RateLimiter::hit($this->throttleKey());
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-
+                throw ValidationException::withMessages([
+                    'email' => trans('auth.failed'),
+                ]);
+            }
         }
 
         RateLimiter::clear($this->throttleKey());
-            
-        return $user;
+                
+        return $user;        
     }
 
     /**

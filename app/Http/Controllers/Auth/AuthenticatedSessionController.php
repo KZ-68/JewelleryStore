@@ -30,21 +30,38 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $user = $request->validateCredentials('web');
+        $credentials = $request->only('email', 'password');
 
-        if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
-            $request->session()->put([
-                'login.id' => $user->getKey(),
-                'login.remember' => $request->boolean('remember'),
-            ]);
+        if (Auth::guard('web')->attempt($credentials)) {
+            $user = $request->validateCredentials('web');
 
-            return to_route('two-factor.login');
+            Auth::login($user, $request->boolean('remember'));
+
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('home', absolute: false));
         }
 
-        Auth::login($user, $request->boolean('remember'));
+        
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $user = $request->validateCredentials('admin');
 
-        $request->session()->regenerate();
+            if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
+                $request->session()->put([
+                    'login.id' => $user->getKey(),
+                    'login.remember' => $request->boolean('remember'),
+                ]);
 
+                return to_route('two-factor.login');
+            }
+
+            Auth::login($user, $request->boolean('remember'));
+
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('showBO', absolute: false));
+        }
+       
         return redirect()->intended(route('home', absolute: false));
     }
 
@@ -53,8 +70,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
-
+        Auth::guard('admin')->check() ? Auth::guard('admin')->logout() : Auth::guard('web')->logout();
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

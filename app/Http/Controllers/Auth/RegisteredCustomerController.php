@@ -42,9 +42,11 @@ class RegisteredCustomerController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $customer->assignRole('basic');
+
         event(new Registered($customer));
 
-        Auth::login($customer);
+        Auth::guard('web')->login($customer);
 
         return to_route('home');
     }

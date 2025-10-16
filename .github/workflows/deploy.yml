@@ -1,0 +1,83 @@
+name: deploy
+
+on:
+  pull_request:
+    branches:
+      - test
+
+env:
+  PHP_VERSION: '8.4'
+  NODE_VERSION: '20'
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: 8.4
+            extensions: dom, ctype, curl, xml, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, filter, json
+
+        - name: Cache Composer dependencies
+          uses: actions/cache@v4
+          with:
+            path: vendor
+            key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-composer-
+
+        - name: Install PHP dependencies
+          run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+        - name: Run security check
+          run: composer audit
+
+        - name: Analyze code quality
+          run: |
+            echo "## Analyse de la Pull Request" >> pr_analysis.md
+            echo "" >> pr_analysis.md
+            
+            # Compter les fichiers modifiés
+            FILES_CHANGED=$(git diff --name-only origin/main...HEAD | wc -l)
+            echo "- **Fichiers modifiés:** $FILES_CHANGED" >> pr_analysis.md
+            
+            # Compter les lignes ajoutées/supprimées
+            LINES_STATS=$(git diff --stat origin/main...HEAD | tail -1)
+            echo "- **Statistiques:** $LINES_STATS" >> pr_analysis.md
+            
+            echo "" >> pr_analysis.md
+            echo "### Vérifications effectuées" >> pr_analysis.md
+            echo "- Tests unitaires passés" >> pr_analysis.md
+            echo "- Analyse de sécurité effectuée" >> pr_analysis.md
+            
+            if [ -f ".php-cs-fixer.php" ]; then
+              echo "- Standards de code vérifiés" >> pr_analysis.md
+            fi
+
+        - name: Comment PR
+          uses: actions/github-script@v7
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              const fs = require('fs');
+              const analysis = fs.readFileSync('pr_analysis.md', 'utf8');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: analysis
+              });

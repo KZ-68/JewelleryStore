@@ -7,7 +7,7 @@ on:
 
 env:
   PHP_VERSION: '8.4'
-  NODE_VERSION: '20'
+  NODE_VERSION: '22.20.0'
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 
@@ -56,6 +56,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.0'
+
       - name: Install Dependencies
         run: |
           composer validate --strict
@@ -87,11 +92,6 @@ jobs:
         run: |
           php artisan config:clear
           php artisan migrate --env=testing --force
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Run PHP Linting (Pint)
         run: ./vendor/bin/pint --test

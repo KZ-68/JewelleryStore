@@ -31,10 +31,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
-
         if (Auth::guard('web')->attempt($credentials)) {
             $user = $request->validateCredentials('web');
-
             if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
                 $request->session()->put([
                     'login.id' => $user->getKey(),
@@ -50,10 +48,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('home', absolute: false));
         }
 
-        
         if (Auth::guard('admin')->attempt($credentials)) {
             $user = $request->validateCredentials('admin');
-
             if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
                 $request->session()->put([
                     'login.id' => $user->getKey(),
@@ -68,7 +64,7 @@ class AuthenticatedSessionController extends Controller
 
             return redirect()->intended(route('admin.back-office.showBO', absolute: false));
         }
-       
+
         return redirect()->intended(route('home', absolute: false));
     }
 

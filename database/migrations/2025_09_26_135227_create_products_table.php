@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     use SoftDeletes;
-    
+
     /**
      * Run the migrations.
      */

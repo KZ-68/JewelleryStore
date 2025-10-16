@@ -108,13 +108,13 @@ jobs:
       - name: Run PHP Linting (Pint)
         run: |
           mkdir -p artifacts
-          vendor/bin/pint --test --format=json > artifacts/pint-results.json || true
+          vendor/bin/pint --test --format=json > artifacts/pint-results.txt
 
       - name: Upload Pint results as artifact
         uses: actions/upload-artifact@v4
         with:
           name: pint-results
-          path: artifacts/pint-results.json
+          path: artifacts/pint-results.txt
 
       - name: Run PHPUnit Tests
         run: php artisan test

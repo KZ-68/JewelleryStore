@@ -98,7 +98,7 @@ jobs:
       - name: Install chromium and chromiumdriver
         run: | 
           sudo apt-get update 
-          apt-get install -y chromium chromium-driver fonts-liberation ca-certificates
+          sudo apt-get install -y chromium chromium-driver fonts-liberation ca-certificates
 
       - name: Prepare test database
         run: |

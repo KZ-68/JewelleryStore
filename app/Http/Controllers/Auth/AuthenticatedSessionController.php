@@ -45,7 +45,6 @@ class AuthenticatedSessionController extends Controller
             }
 
             Auth::login($user, $request->boolean('remember'));
-
             $request->session()->regenerate();
 
             return redirect()->intended(route('home', absolute: false));
@@ -65,7 +64,6 @@ class AuthenticatedSessionController extends Controller
             }
 
             Auth::login($user, $request->boolean('remember'));
-
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.back-office.showBO', absolute: false));
@@ -80,7 +78,6 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('admin')->check() ? Auth::guard('admin')->logout() : Auth::guard('web')->logout();
-        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

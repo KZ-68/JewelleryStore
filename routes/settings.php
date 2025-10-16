@@ -1,9 +1,9 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Settings\ProfileController;
+use Inertia\Inertia;
 use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 
 Route::middleware(['role:basic', 'auth:web'])->group(function () {

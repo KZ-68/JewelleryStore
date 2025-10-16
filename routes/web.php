@@ -1,10 +1,10 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use App\Http\Controllers\Admin\BackOfficeController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
-use App\Http\Controllers\Admin\BackOfficeController;
 
 Route::get('/', function () {
     return Inertia::render('Home');
@@ -24,5 +24,5 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');
 });
 
-require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+require __DIR__.'/settings.php';

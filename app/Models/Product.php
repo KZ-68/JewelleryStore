@@ -18,7 +18,7 @@ class Product extends Model
         'ean13',
         'quantity',
         'retailPrice',
-        'active'
+        'active',
     ];
 
     /**

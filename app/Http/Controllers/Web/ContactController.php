@@ -20,9 +20,7 @@ class ContactController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-
         $validator = Validator::make($request->all(), [
-             
             'email' => ['required','email', 'required','string','lowercase','max:255',],
             'subject' => ['required','string', 'max:174'],
             'message' => ['required','textarea','string', 'min:3', 'max:500'],
@@ -40,5 +38,4 @@ class ContactController extends Controller
 
         return redirect('/contact');
     }
-
 }

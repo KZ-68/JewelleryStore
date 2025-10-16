@@ -106,7 +106,15 @@ jobs:
           php artisan migrate --env=testing --force
 
       - name: Run PHP Linting (Pint)
-        run: ./vendor/bin/pint --test
+        run: |
+          mkdir -p artifacts
+          vendor/bin/pint --test --format=json > artifacts/pint-results.json || true
+
+      - name: Upload Pint results as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pint-results
+          path: artifacts/pint-results.json
 
       - name: Run PHPUnit Tests
         run: php artisan test

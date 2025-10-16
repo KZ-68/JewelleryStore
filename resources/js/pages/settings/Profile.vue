@@ -29,7 +29,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 
 const page = usePage();
-const user = page.props.auth.user;
+const user = page.props.auth.customer;
 </script>
 
 <template>

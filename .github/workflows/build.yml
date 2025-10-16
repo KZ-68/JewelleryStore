@@ -59,6 +59,9 @@ jobs:
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm install
 
+      - name: Copy env file
+        run: cp .env.local .env
+
       - name: Dump autoload
         run: composer dump-autoload
 

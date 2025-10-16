@@ -84,7 +84,7 @@ Route::middleware(['role:basic','auth:web'])->group(function () {
         ->name('logout');
 });
 
-Route::prefix('admin')->middleware('auth:admin')->group(function () {
+Route::prefix('admin')->middleware(['role:admin','auth:admin'])->group(function () {
      Route::get('/verify-email', AdminEmailVerificationPromptController::class)
         ->name('admin-verification.notice');
 

@@ -10,6 +10,11 @@ env:
   NODE_VERSION: '22.20.0'
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  APP_NAME: Laravel
+  APP_ENV: local
+  APP_KEY:
+  APP_DEBUG: true
+  APP_URL: http://localhost:8000
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -60,7 +65,17 @@ jobs:
           npm install
 
       - name: Copy env file
-        run: cp .env.local .env
+        run: |
+          touch .env
+          echo MYSQL_ROOT_PASSWORD="$MYSQL_ROOT_PASSWORD" >> .env
+          echo MYSQL_DATABASE="$MYSQL_DATABASE" >> .env
+          echo MYSQL_USER="$MYSQL_USER" >> .env
+          echo MYSQL_PASSWORD="$MYSQL_PASSWORD" >> .env
+          echo APP_NAME="$APP_NAME" >> .env
+          echo APP_ENV="$APP_ENV" >> .env
+          echo APP_KEY="$APP_KEY" >> .env
+          echo APP_DEBUG="$APP_DEBUG" >> .env
+          echo APP_URL="$APP_URL" >> .env
 
       - name: Dump autoload
         run: composer dump-autoload
@@ -92,13 +107,6 @@ jobs:
 
       - name: Run PHP Linting (Pint)
         run: ./vendor/bin/pint --test
-
-      - name: Run PHPStan
-        run: |
-          if [ -f "phpstan.neon" ] || [ -f "phpstan.neon.dist" ]; then
-            vendor/bin/phpstan analyse
-          fi
-        continue-on-error: true
 
       - name: Run PHPUnit Tests
         run: php artisan test

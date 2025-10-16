@@ -66,6 +66,9 @@ jobs:
           composer validate --strict
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm install
+
+      - name: Debug routes
+        run: php artisan route:list || true
       
       - name: Generate app key
         run: php artisan key:generate

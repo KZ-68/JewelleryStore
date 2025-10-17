@@ -95,7 +95,7 @@ jobs:
       - name: Run PHP Linting (Pint)
         run: |
           mkdir -p artifacts
-          vendor/bin/pint --test --format=json > artifacts/pint-results.txt
+          vendor/bin/pint --test > artifacts/pint-results.txt
         continue-on-error: true
 
       - name: Upload Pint results as artifact

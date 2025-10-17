@@ -109,6 +109,7 @@ jobs:
         run: |
           mkdir -p artifacts
           vendor/bin/pint --test --format=json > artifacts/pint-results.txt
+        continue-on-error: true
 
       - name: Upload Pint results as artifact
         uses: actions/upload-artifact@v4

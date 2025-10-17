@@ -10,6 +10,7 @@ env:
   NODE_VERSION: '22.20.0'
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  ENV_DEV_SECRETS: ${{ secrets.ENV_DEV_SECRETS }}
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -67,7 +68,7 @@ jobs:
       - name: Copy env file
         run: |
           touch .env
-          echo "${{secrets.ENV_DEV_SECRETS}}" >> .env
+          echo "$ENV_DEV_SECRETS" >> .env
 
       - name: Dump autoload
         run: composer dump-autoload

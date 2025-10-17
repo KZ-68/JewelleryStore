@@ -61,7 +61,6 @@ jobs:
       
       - name: Afficher le contenu du fichier .env
         run: |
-          cat .env
           cat .env.dev
         continue-on-error: true
 

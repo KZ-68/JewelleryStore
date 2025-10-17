@@ -78,7 +78,10 @@ jobs:
           find app/Http/Controllers
       
       - name: Generate app key
-        run: php artisan key:generate
+        run: |
+          php artisan key:generate
+          php artisan config:clear
+          php artisan config:cache
 
       - name: Build assets
         run: npm run build
@@ -95,7 +98,6 @@ jobs:
 
       - name: Prepare test database
         run: |
-          php artisan config:clear
           php artisan migrate --force
 
       - name: Run PHP Linting (Pint)

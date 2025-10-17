@@ -68,7 +68,7 @@ jobs:
       - name: Copy env file
         run: |
           touch .env
-          echo "$ENV_DEV_SECRETS" >> .env
+          echo "${ENV_DEV_SECRETS}" >> .env
 
       - name: Dump autoload
         run: composer dump-autoload

@@ -15,7 +15,7 @@ class AdminPasswordConfirmationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->get(route('password.confirm'));
+        $response = $this->actingAs($user)->get(route('admin-password.confirm'));
 
         $response->assertStatus(200);
 
@@ -26,7 +26,7 @@ class AdminPasswordConfirmationTest extends TestCase
 
     public function test_password_confirmation_requires_authentication()
     {
-        $response = $this->get(route('password.confirm'));
+        $response = $this->get(route('admin-password.confirm'));
 
         $response->assertRedirect(route('login'));
     }

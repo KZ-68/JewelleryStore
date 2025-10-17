@@ -14,7 +14,7 @@ class AdminPasswordResetTest extends TestCase
 
     public function test_reset_password_link_screen_can_be_rendered()
     {
-        $response = $this->get(route('password.request'));
+        $response = $this->get(route('admin-password.request'));
 
         $response->assertStatus(200);
     }
@@ -25,7 +25,7 @@ class AdminPasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->post(route('password.email'), ['email' => $user->email]);
+        $this->post(route('admin-password.email'), ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class);
     }
@@ -36,10 +36,10 @@ class AdminPasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->post(route('password.email'), ['email' => $user->email]);
+        $this->post(route('admin-password.email'), ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-            $response = $this->get(route('password.reset', $notification->token));
+            $response = $this->get(route('admin-password.reset', $notification->token));
 
             $response->assertStatus(200);
 
@@ -53,10 +53,10 @@ class AdminPasswordResetTest extends TestCase
 
         $user = User::factory()->create();
 
-        $this->post(route('password.email'), ['email' => $user->email]);
+        $this->post(route('admin-password.email'), ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-            $response = $this->post(route('password.store'), [
+            $response = $this->post(route('admin-password.store'), [
                 'token' => $notification->token,
                 'email' => $user->email,
                 'password' => 'password',
@@ -75,7 +75,7 @@ class AdminPasswordResetTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post(route('password.store'), [
+        $response = $this->post(route('admin-password.store'), [
             'token' => 'invalid-token',
             'email' => $user->email,
             'password' => 'newpassword123',

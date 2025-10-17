@@ -12,7 +12,7 @@ class BackOfficeTest extends TestCase
 
     public function test_guests_are_redirected_to_the_login_page()
     {
-        $response = $this->get(route('bo.show'));
+        $response = $this->get(route('admin.back-office.showBO'));
         $response->assertRedirect(route('admin-login'));
     }
 
@@ -21,7 +21,7 @@ class BackOfficeTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get(route('bo.show'));
+        $response = $this->get(route('admin.back-office.showBO'));
         $response->assertStatus(200);
     }
 }

@@ -21,6 +21,19 @@ permissions:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    environment: dev
+    env:
+      APP_NAME: Laravel
+      APP_ENV: dev
+      APP_KEY:
+      APP_DEBUG: true
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: mysql
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_DATABASE: ${{ secrets.DB_DATABASE }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: 
 
     services:
       mysql:
@@ -58,16 +71,6 @@ jobs:
           composer validate --strict
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm install
-
-      - name: Copy env file
-        run: |
-          touch .env
-          echo ${{ secrets.ENV_DEV_SECRETS }} >> .env
-
-      - name: Afficher le contenu du fichier .env
-        run: |
-          cat .env
-        continue-on-error: true
 
       - name: Dump autoload
         run: composer dump-autoload

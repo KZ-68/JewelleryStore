@@ -41,12 +41,11 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: ${{ secrets.LARAVEL_MYSQL_DATABASE_1 }}
-          MYSQL_USER: ${{ secrets.LARAVEL_MYSQL_USER_1 }}
           MYSQL_PASSWORD:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="${{ secrets.LARAVEL_MYSQL_DATABASE_1 }} ping"
+          --health-cmd="mysqladmin ping"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3

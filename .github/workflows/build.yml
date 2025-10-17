@@ -10,7 +10,7 @@ env:
   NODE_VERSION: '22.20.0'
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
-  
+
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -90,7 +90,7 @@ jobs:
       - name: Prepare test database
         run: |
           php artisan config:clear
-          php artisan migrate --env=testing --force
+          php artisan migrate --force
 
       - name: Run PHP Linting (Pint)
         run: |
@@ -143,6 +143,8 @@ jobs:
     needs: [build-and-test]
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Setup Git
         run: |
           git config --global user.email " ${{ secrets.GIT_EMAIL }}"

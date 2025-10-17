@@ -1,4 +1,4 @@
-name: deploy
+name: security
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 env:
   PHP_VERSION: '8.4'
-  NODE_VERSION: '20'
+  NODE_VERSION: '22.20.0'
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 
@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  check:
     runs-on: ubuntu-latest
     
     steps:

@@ -58,6 +58,12 @@ jobs:
           composer validate --strict
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm install
+      
+      - name: Afficher le contenu du fichier .env
+        run: |
+          cat .env
+          cat .env.dev
+        continue-on-error: true
 
       - name: Copy env file
         run: |

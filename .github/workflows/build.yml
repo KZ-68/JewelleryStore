@@ -76,12 +76,6 @@ jobs:
       - name: List files for debugging
         run: |
           find app/Http/Controllers
-      
-      - name: Generate app key
-        run: |
-          php artisan key:generate
-          php artisan config:clear
-          php artisan config:cache
 
       - name: Build assets
         run: npm run build

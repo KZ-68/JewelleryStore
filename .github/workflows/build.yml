@@ -104,14 +104,14 @@ jobs:
           name: pint-results
           path: artifacts/pint-results.txt
 
-      - name: Run PHPUnit Tests
-        run: php artisan test
-        continue-on-error: false
-
       - name: Start Laravel server in background
         run: |
           php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &
           sleep 10
+
+      - name: Run PHPUnit Tests
+        run: php artisan test
+        continue-on-error: false
       
       - name: Run Lighthouse Audit
         run: |

@@ -44,8 +44,7 @@ class LoginRequest extends FormRequest
         if($guard === 'web') {
             /** @var Customer|null $user */
             $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
-
-            if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+            if (! $user || !Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([
@@ -57,7 +56,7 @@ class LoginRequest extends FormRequest
         if($guard === 'admin') {
             /** @var User|null $user */
             $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
-            if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+            if (! $user || !Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([

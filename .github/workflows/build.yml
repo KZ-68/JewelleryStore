@@ -28,7 +28,7 @@ jobs:
       APP_KEY:
       APP_DEBUG: true
       APP_URL: http://localhost:8000
-      
+
     services:
       mysql:
         image: mysql:8
@@ -151,7 +151,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Git
+      - name: Setup Git Info
         run: |
           git config --global user.email " ${{ secrets.GIT_EMAIL }}"
           git config --global user.name "${{ secrets.GIT_NAME }}"

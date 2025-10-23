@@ -20,7 +20,31 @@ class BackOfficeController extends Controller
 
     public function showManufacturers(Request $request): Response
     {
-        $manufacturers = Manufacturer::all();
-        return Inertia::render('admin/Manufacturers', ['manufacturers' => $manufacturers]);
+
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'country', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $manufacturers = Manufacturer::orderBy($sortBy, $order)
+            ->paginate(10)
+            ->withQueryString();
+
+        return Inertia::render(
+            'admin/Manufacturers', 
+            [
+                'manufacturers' => $manufacturers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
     }
 }

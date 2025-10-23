@@ -32,9 +32,7 @@ class BackOfficeController extends Controller
             $order = 'asc';
         }
 
-        $manufacturers = Manufacturer::orderBy($sortBy, $order)
-            ->paginate(10)
-            ->withQueryString();
+        $manufacturers = Manufacturer::orderBy($sortBy, $order)->get();
 
         return Inertia::render(
             'admin/Manufacturers', 

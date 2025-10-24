@@ -93,14 +93,16 @@ jobs:
         run: | 
           sudo apt-get update 
           sudo apt-get install -y chromium chromium-driver fonts-liberation ca-certificates
-      - name: Clean cache and config for migration force
+      - name: Clean config for migration force
         run: |
-          php artisan cache:clear
           php artisan config:clear
       - name: Prepare test database
         run: |
           php artisan schema:dump --prune
           php artisan migrate --force
+      - name: Clean cache for migration force
+        run: |
+          php artisan cache:clear
       - name: Run PHP Linting (Pint)
         run: |
           mkdir -p artifacts/${{ matrix.node }}/

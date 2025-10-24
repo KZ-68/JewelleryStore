@@ -73,6 +73,10 @@ jobs:
           composer validate --strict
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm ci  
+      - name: Install Xvbf for chrome/selenium
+        run: |
+          sudo apt-get -y install xorg xvfb gtk2-engines-pixbuf
+          sudo apt-get -y install dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi xfonts-cyrillic xfonts-scalable
       - name: Copy variables into env
         run: |
           touch .env

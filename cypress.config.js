@@ -5,7 +5,7 @@ module.exports = defineConfig({
     retries: 2,
     defaultCommandTimeout: 5000,
     watchForFileChanges: false,
-    downloadsFolder: 'tests/cypress/downloads'
+    downloadsFolder: 'tests/cypress/downloads',
     videosFolder: 'tests/cypress/videos',
     screenshotsFolder: 'tests/cypress/screenshots',
     fixturesFolder: 'tests/cypress/fixture',

@@ -31,5 +31,5 @@ frankenphp
 frankenphp-worker.php
 
 /cypress
-/tests/cypress/downloads
-/tests/cypress/screenshots
+/tests/cypress/downloads/*
+/tests/cypress/screenshots/*

@@ -102,9 +102,6 @@ jobs:
       - name: Clean cache for migration force
         run: |
           php artisan cache:clear
-          php artisan route:clear
-          php artisan view:clear
-          php artisan optimize:clear
       - name: Run PHP Linting (Pint)
         run: |
           mkdir -p artifacts/${{ matrix.node }}/

@@ -13,11 +13,6 @@ class TwoFactorChallengeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function __construct()
-    {
-        Role::create(['guard_name' => 'web', 'name' => 'basic']);
-    }
-
     public function test_two_factor_challenge_redirects_to_login_when_not_authenticated(): void
     {
         if (! Features::canManageTwoFactorAuthentication()) {
@@ -40,6 +35,7 @@ class TwoFactorChallengeTest extends TestCase
             'confirmPassword' => true,
         ]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
         $user->assignRole('basic');
         $user->forceFill([

@@ -10,11 +10,6 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function __construct()
-    {
-        Role::create(['guard_name' => 'web', 'name' => 'basic']);
-    }
-
     public function test_registration_screen_can_be_rendered()
     {
         $response = $this->get(route('register'));

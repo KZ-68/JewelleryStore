@@ -12,13 +12,9 @@ class PasswordUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function __construct()
-    {
-        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
-    }
-
     public function test_password_update_page_is_displayed()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
         $user->assignRole('admin');
         $response = $this
@@ -30,6 +26,7 @@ class PasswordUpdateTest extends TestCase
 
     public function test_password_can_be_updated()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
         $user->assignRole('admin');
         $response = $this

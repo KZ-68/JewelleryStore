@@ -13,11 +13,6 @@ class TwoFactorAuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function __construct()
-    {
-        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
-    }
-
     public function test_two_factor_settings_page_can_be_rendered()
     {
         if (! Features::canManageTwoFactorAuthentication()) {
@@ -29,6 +24,7 @@ class TwoFactorAuthenticationTest extends TestCase
             'confirmPassword' => true,
         ]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
         $user->assignRole('admin');
         $this->actingAs($user)
@@ -46,6 +42,7 @@ class TwoFactorAuthenticationTest extends TestCase
             $this->markTestSkipped('Two-factor authentication is not enabled.');
         }
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
         $user->assignRole('admin');
         Features::twoFactorAuthentication([
@@ -65,6 +62,7 @@ class TwoFactorAuthenticationTest extends TestCase
             $this->markTestSkipped('Two-factor authentication is not enabled.');
         }
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
         $user->assignRole('admin');
         Features::twoFactorAuthentication([
@@ -88,6 +86,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         config(['fortify.features' => []]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
         $user->assignRole('admin');
         $this->actingAs($user)

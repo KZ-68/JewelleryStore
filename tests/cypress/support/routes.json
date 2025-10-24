@@ -1,0 +1,665 @@
+{
+  "debugbar.openhandler": {
+    "name": "debugbar.openhandler",
+    "domain": null,
+    "action": "Barryvdh\\Debugbar\\Controllers\\OpenHandlerController@handle",
+    "uri": "_debugbar/open",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "debugbar.clockwork": {
+    "name": "debugbar.clockwork",
+    "domain": null,
+    "action": "Barryvdh\\Debugbar\\Controllers\\OpenHandlerController@clockwork",
+    "uri": "_debugbar/clockwork/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "debugbar.assets.css": {
+    "name": "debugbar.assets.css",
+    "domain": null,
+    "action": "Barryvdh\\Debugbar\\Controllers\\AssetController@css",
+    "uri": "_debugbar/assets/stylesheets",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "debugbar.assets.js": {
+    "name": "debugbar.assets.js",
+    "domain": null,
+    "action": "Barryvdh\\Debugbar\\Controllers\\AssetController@js",
+    "uri": "_debugbar/assets/javascript",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "debugbar.cache.delete": {
+    "name": "debugbar.cache.delete",
+    "domain": null,
+    "action": "Barryvdh\\Debugbar\\Controllers\\CacheController@delete",
+    "uri": "_debugbar/cache/{key}/{tags?}",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "debugbar.queries.explain": {
+    "name": "debugbar.queries.explain",
+    "domain": null,
+    "action": "Barryvdh\\Debugbar\\Controllers\\QueriesController@explain",
+    "uri": "_debugbar/queries/explain",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.factory": {
+    "name": "cypress.factory",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@factory",
+    "uri": "__cypress__/factory",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.login": {
+    "name": "cypress.login",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@login",
+    "uri": "__cypress__/login",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.logout": {
+    "name": "cypress.logout",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@logout",
+    "uri": "__cypress__/logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.artisan": {
+    "name": "cypress.artisan",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@artisan",
+    "uri": "__cypress__/artisan",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.run-php": {
+    "name": "cypress.run-php",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@runPhp",
+    "uri": "__cypress__/run-php",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.csrf-token": {
+    "name": "cypress.csrf-token",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@csrfToken",
+    "uri": "__cypress__/csrf_token",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cypress.routes": {
+    "name": "cypress.routes",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@routes",
+    "uri": "__cypress__/routes",
+    "method": [
+      "POST"
+    ]
+  },
+  "cypress.current-user": {
+    "name": "cypress.current-user",
+    "domain": null,
+    "action": "Laracasts\\Cypress\\Controllers\\CypressController@currentUser",
+    "uri": "__cypress__/current-user",
+    "method": [
+      "POST"
+    ]
+  },
+  "cashier.payment": {
+    "name": "cashier.payment",
+    "domain": null,
+    "action": "Laravel\\Cashier\\Http\\Controllers\\PaymentController@show",
+    "uri": "stripe/payment/{id}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cashier.webhook": {
+    "name": "cashier.webhook",
+    "domain": null,
+    "action": "Laravel\\Cashier\\Http\\Controllers\\WebhookController@handleWebhook",
+    "uri": "stripe/webhook",
+    "method": [
+      "POST"
+    ]
+  },
+  "login": {
+    "name": "login",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@create",
+    "uri": "login",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "login.store": {
+    "name": "login.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
+    "uri": "login",
+    "method": [
+      "POST"
+    ]
+  },
+  "logout": {
+    "name": "logout",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+    "uri": "logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "password.confirm": {
+    "name": "password.confirm",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\ConfirmablePasswordController@show",
+    "uri": "user/confirm-password",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.confirmation": {
+    "name": "password.confirmation",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\ConfirmedPasswordStatusController@show",
+    "uri": "user/confirmed-password-status",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.confirm.store": {
+    "name": "password.confirm.store",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\ConfirmablePasswordController@store",
+    "uri": "user/confirm-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "two-factor.login": {
+    "name": "two-factor.login",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\TwoFactorAuthenticatedSessionController@create",
+    "uri": "two-factor-challenge",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "two-factor.login.store": {
+    "name": "two-factor.login.store",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\TwoFactorAuthenticatedSessionController@store",
+    "uri": "two-factor-challenge",
+    "method": [
+      "POST"
+    ]
+  },
+  "two-factor.enable": {
+    "name": "two-factor.enable",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\TwoFactorAuthenticationController@store",
+    "uri": "user/two-factor-authentication",
+    "method": [
+      "POST"
+    ]
+  },
+  "two-factor.confirm": {
+    "name": "two-factor.confirm",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\ConfirmedTwoFactorAuthenticationController@store",
+    "uri": "user/confirmed-two-factor-authentication",
+    "method": [
+      "POST"
+    ]
+  },
+  "two-factor.disable": {
+    "name": "two-factor.disable",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\TwoFactorAuthenticationController@destroy",
+    "uri": "user/two-factor-authentication",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "two-factor.qr-code": {
+    "name": "two-factor.qr-code",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\TwoFactorQrCodeController@show",
+    "uri": "user/two-factor-qr-code",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "two-factor.secret-key": {
+    "name": "two-factor.secret-key",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\TwoFactorSecretKeyController@show",
+    "uri": "user/two-factor-secret-key",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "two-factor.recovery-codes": {
+    "name": "two-factor.recovery-codes",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\RecoveryCodeController@index",
+    "uri": "user/two-factor-recovery-codes",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "two-factor.regenerate-recovery-codes": {
+    "name": "two-factor.regenerate-recovery-codes",
+    "domain": null,
+    "action": "Laravel\\Fortify\\Http\\Controllers\\RecoveryCodeController@store",
+    "uri": "user/two-factor-recovery-codes",
+    "method": [
+      "POST"
+    ]
+  },
+  "sanctum.csrf-cookie": {
+    "name": "sanctum.csrf-cookie",
+    "domain": null,
+    "action": "Laravel\\Sanctum\\Http\\Controllers\\CsrfCookieController@show",
+    "uri": "sanctum/csrf-cookie",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "": {
+    "name": null,
+    "domain": null,
+    "action": "\\Illuminate\\Routing\\RedirectController",
+    "uri": "settings",
+    "method": [
+      "GET",
+      "HEAD",
+      "POST",
+      "PUT",
+      "PATCH",
+      "DELETE",
+      "OPTIONS"
+    ]
+  },
+  "home": {
+    "name": "home",
+    "domain": null,
+    "action": "Closure",
+    "uri": "/",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "cart.show": {
+    "name": "cart.show",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Web\\CartController@show",
+    "uri": "cart",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "contact.create": {
+    "name": "contact.create",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Web\\ContactController@create",
+    "uri": "contact",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "contact.store": {
+    "name": "contact.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Web\\ContactController@store",
+    "uri": "contact",
+    "method": [
+      "POST"
+    ]
+  },
+  "privacy": {
+    "name": "privacy",
+    "domain": null,
+    "action": "Closure",
+    "uri": "privacy",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin.back-office.showBO": {
+    "name": "admin.back-office.showBO",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Admin\\BackOfficeController@showBO",
+    "uri": "admin/back-office",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin.back-office.showManufacturers": {
+    "name": "admin.back-office.showManufacturers",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Admin\\BackOfficeController@showManufacturers",
+    "uri": "admin/back-office/manufacturers",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.reset": {
+    "name": "password.reset",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@create",
+    "uri": "reset-password/{token}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.store": {
+    "name": "password.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@store",
+    "uri": "reset-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "password.request": {
+    "name": "password.request",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@create",
+    "uri": "forgot-password",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.email": {
+    "name": "password.email",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@store",
+    "uri": "forgot-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "register": {
+    "name": "register",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\RegisteredCustomerController@create",
+    "uri": "register",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "register.store": {
+    "name": "register.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\RegisteredCustomerController@store",
+    "uri": "register",
+    "method": [
+      "POST"
+    ]
+  },
+  "admin-register": {
+    "name": "admin-register",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminRegisteredUserController@create",
+    "uri": "admin/register",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin-register.store": {
+    "name": "admin-register.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminRegisteredUserController@store",
+    "uri": "admin/register",
+    "method": [
+      "POST"
+    ]
+  },
+  "admin-login": {
+    "name": "admin-login",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@create",
+    "uri": "admin/login",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin-login.store": {
+    "name": "admin-login.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
+    "uri": "admin/login",
+    "method": [
+      "POST"
+    ]
+  },
+  "admin-password.request": {
+    "name": "admin-password.request",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminPasswordResetLinkController@create",
+    "uri": "admin/forgot-password",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin-password.email": {
+    "name": "admin-password.email",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminPasswordResetLinkController@store",
+    "uri": "admin/forgot-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "admin-password.reset": {
+    "name": "admin-password.reset",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminNewPasswordController@create",
+    "uri": "admin/reset-password/{token}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin-password.store": {
+    "name": "admin-password.store",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminNewPasswordController@store",
+    "uri": "admin/reset-password",
+    "method": [
+      "POST"
+    ]
+  },
+  "verification.notice": {
+    "name": "verification.notice",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\EmailVerificationPromptController",
+    "uri": "verify-email",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "verification.verify": {
+    "name": "verification.verify",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\VerifyEmailController",
+    "uri": "verify-email/{id}/{hash}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "verification.send": {
+    "name": "verification.send",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController@store",
+    "uri": "email/verification-notification",
+    "method": [
+      "POST"
+    ]
+  },
+  "admin-verification.notice": {
+    "name": "admin-verification.notice",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminEmailVerificationPromptController",
+    "uri": "admin/verify-email",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin-verification.verify": {
+    "name": "admin-verification.verify",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminVerifyEmailController",
+    "uri": "admin/verify-email/{id}/{hash}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "admin-verification.send": {
+    "name": "admin-verification.send",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\Admin\\AdminEmailVerificationNotificationController@store",
+    "uri": "admin/email/verification-notification",
+    "method": [
+      "POST"
+    ]
+  },
+  "admin-logout": {
+    "name": "admin-logout",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+    "uri": "admin/logout",
+    "method": [
+      "POST"
+    ]
+  },
+  "profile.edit": {
+    "name": "profile.edit",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Settings\\ProfileController@edit",
+    "uri": "settings/profile",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "profile.update": {
+    "name": "profile.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Settings\\ProfileController@update",
+    "uri": "settings/profile",
+    "method": [
+      "PATCH"
+    ]
+  },
+  "profile.destroy": {
+    "name": "profile.destroy",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Settings\\ProfileController@destroy",
+    "uri": "settings/profile",
+    "method": [
+      "DELETE"
+    ]
+  },
+  "password.edit": {
+    "name": "password.edit",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Settings\\PasswordController@edit",
+    "uri": "settings/password",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "password.update": {
+    "name": "password.update",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Settings\\PasswordController@update",
+    "uri": "settings/password",
+    "method": [
+      "PUT"
+    ]
+  },
+  "appearance.edit": {
+    "name": "appearance.edit",
+    "domain": null,
+    "action": "Closure",
+    "uri": "settings/appearance",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "two-factor.show": {
+    "name": "two-factor.show",
+    "domain": null,
+    "action": "App\\Http\\Controllers\\Settings\\TwoFactorAuthenticationController@show",
+    "uri": "settings/two-factor",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  },
+  "storage.local": {
+    "name": "storage.local",
+    "domain": null,
+    "action": "Closure",
+    "uri": "storage/{path}",
+    "method": [
+      "GET",
+      "HEAD"
+    ]
+  }
+}

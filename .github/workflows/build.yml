@@ -99,6 +99,7 @@ jobs:
           php artisan config:clear
       - name: Prepare test database
         run: |
+          php artisan schema:dump --prune
           php artisan migrate --force
       - name: Run PHP Linting (Pint)
         run: |

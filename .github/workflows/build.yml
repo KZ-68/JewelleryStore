@@ -105,13 +105,13 @@ jobs:
       - name: Run PHP Linting (Pint)
         run: |
           mkdir -p artifacts/${{ matrix.node }}/
-          vendor/bin/pint --test > artifacts/${{ matrix.node }}/pint-results.txt
+          vendor/bin/pint --test > artifacts/${{ matrix.node }}/pint-results-${{ matrix.node }}.txt
         continue-on-error: true
       - name: Upload Pint results as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pint-results
-          path: artifacts/${{ matrix.node }}/pint-results.txt
+          name: pint-results-${{ matrix.node }}
+          path: artifacts/${{ matrix.node }}/pint-results-${{ matrix.node }}.txt
       - name: Start Laravel server in background
         run: |
           php artisan serve --host=127.0.0.1 --port=8000 > /dev/null 2>&1 &

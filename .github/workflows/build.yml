@@ -127,7 +127,7 @@ jobs:
         continue-on-error: true  
       - name: Run Lighthouse Audit
         run: |
-          lighthouse http://127.0.0.1:8000 \
+          npx lighthouse http://127.0.0.1:8000 \
             --only-categories=performance \
             --output=json \
             --output-path=./lighthouse-report.json \

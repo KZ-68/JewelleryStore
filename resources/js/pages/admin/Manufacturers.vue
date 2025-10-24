@@ -22,11 +22,11 @@ const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'as
 
 const url = route('admin.back-office.showManufacturers', {}, false, Ziggy);
 
-const updateSort = () => {
+const updateFilters = () => {
   router.get(url, {
-  sortBy: sortBy.value,
-  order: order.value,
-});
+    sortBy: sortBy.value,
+    order: order.value,
+  });
 }
 
 const navigate = (url: string) => {
@@ -40,12 +40,12 @@ const navigate = (url: string) => {
       <h2 class="text-3xl my-6">Manufacturers</h2>
       <label for="sortBy" class="my-4">Trier par :</label>
       <div id="manufacturers-filters-wrapper" class="flex flex-row my-6 gap-2">
-        <select id="sortBy" v-model="sortBy" @change="updateSort" class="rounded-md bg-neutral-100 p-2">
+        <select id="sortBy" v-model="sortBy" @change="updateFilters" class="rounded-md bg-neutral-100 p-2">
           <option value="name">Nom</option>
           <option value="created_at">Date de création</option>
         </select>
-        <select id="order" v-model="order" @change="updateSort" class="rounded-md bg-neutral-100 p-2">
-          <option value="asc">Ascendent</option>
+        <select id="order" v-model="order" @change="updateFilters" class="rounded-md bg-neutral-100 p-2">
+          <option value="asc">Ascendant</option>
           <option value="desc">Descendant</option>
         </select>
       </div>

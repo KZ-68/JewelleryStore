@@ -165,7 +165,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots-${{ matrix.node }
+          name: cypress-screenshots-${{ matrix.node }}
           path: ./tests/cypress/screenshots/${{ matrix.node }}/
   merge:
     runs-on: ubuntu-latest

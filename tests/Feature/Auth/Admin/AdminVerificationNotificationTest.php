@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Auth\Admin;
 
+use Tests\TestCase;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
 
 class AdminVerificationNotificationTest extends TestCase
 {
@@ -15,8 +16,9 @@ class AdminVerificationNotificationTest extends TestCase
     public function test_sends_verification_notification(): void
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->unverified()->create();
+        $user->assignRole('admin');
 
         $this->actingAs($user)
             ->post(route('verification.send'))
@@ -28,8 +30,9 @@ class AdminVerificationNotificationTest extends TestCase
     public function test_does_not_send_verification_notification_if_email_is_verified(): void
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $this->actingAs($user)
             ->post(route('verification.send'))

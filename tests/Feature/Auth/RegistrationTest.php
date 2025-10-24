@@ -2,12 +2,18 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function __construct()
+    {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
+    }
 
     public function test_registration_screen_can_be_rendered()
     {

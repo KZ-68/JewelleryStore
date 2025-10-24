@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\Customer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\RateLimiter;
-use Laravel\Fortify\Features;
 use Tests\TestCase;
+use App\Models\Customer;
+use Laravel\Fortify\Features;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
@@ -21,7 +22,9 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
+        $user->assignRole('basic');
 
         $response = $this->post(route('login.store'), [
             'email' => $user->email,
@@ -43,7 +46,9 @@ class AuthenticationTest extends TestCase
             'confirmPassword' => true,
         ]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
+        $user->assignRole('basic');
 
         $user->forceFill([
             'two_factor_secret' => encrypt('test-secret'),
@@ -63,7 +68,9 @@ class AuthenticationTest extends TestCase
 
     public function test_customers_can_not_authenticate_with_invalid_password()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
+        $user->assignRole('basic');
 
         $this->post(route('login.store'), [
             'email' => $user->email,
@@ -75,7 +82,9 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
+        $user->assignRole('basic');
 
         $response = $this->actingAs($user)->post(route('logout'));
 
@@ -85,7 +94,9 @@ class AuthenticationTest extends TestCase
 
     public function test_users_are_rate_limited()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
+        $user->assignRole('basic');
 
         RateLimiter::increment(implode('|', [$user->email, '127.0.0.1']), amount: 10);
 

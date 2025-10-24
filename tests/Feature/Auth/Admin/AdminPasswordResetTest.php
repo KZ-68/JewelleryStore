@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Auth\Admin;
 
+use Tests\TestCase;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
 
 class AdminPasswordResetTest extends TestCase
 {
@@ -22,8 +23,9 @@ class AdminPasswordResetTest extends TestCase
     public function test_reset_password_link_can_be_requested()
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $this->post(route('admin-password.email'), ['email' => $user->email]);
 
@@ -33,8 +35,9 @@ class AdminPasswordResetTest extends TestCase
     public function test_reset_password_screen_can_be_rendered()
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $this->post(route('admin-password.email'), ['email' => $user->email]);
 
@@ -50,8 +53,9 @@ class AdminPasswordResetTest extends TestCase
     public function test_password_can_be_reset_with_valid_token()
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $this->post(route('admin-password.email'), ['email' => $user->email]);
 
@@ -73,7 +77,9 @@ class AdminPasswordResetTest extends TestCase
 
     public function test_password_cannot_be_reset_with_invalid_token(): void
     {
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $response = $this->post(route('admin-password.store'), [
             'token' => 'invalid-token',

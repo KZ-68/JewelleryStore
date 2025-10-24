@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Auth\Admin;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AdminRegistrationTest extends TestCase
 {

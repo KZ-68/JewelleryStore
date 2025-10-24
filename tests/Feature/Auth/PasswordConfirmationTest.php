@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\Customer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
+use App\Models\Customer;
+use Spatie\Permission\Models\Role;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PasswordConfirmationTest extends TestCase
 {
@@ -14,7 +15,7 @@ class PasswordConfirmationTest extends TestCase
     public function test_confirm_password_screen_can_be_rendered()
     {
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         $response = $this->actingAs($user)->get(route('password.confirm'));
 
         $response->assertStatus(200);

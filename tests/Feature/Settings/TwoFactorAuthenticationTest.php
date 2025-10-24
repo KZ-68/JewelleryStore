@@ -2,15 +2,21 @@
 
 namespace Tests\Feature\Settings;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
-use Laravel\Fortify\Features;
 use Tests\TestCase;
+use App\Models\User;
+use Laravel\Fortify\Features;
+use Spatie\Permission\Models\Role;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TwoFactorAuthenticationTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function __construct()
+    {
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
+    }
 
     public function test_two_factor_settings_page_can_be_rendered()
     {
@@ -24,7 +30,7 @@ class TwoFactorAuthenticationTest extends TestCase
         ]);
 
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
             ->get(route('two-factor.show'))
@@ -41,7 +47,7 @@ class TwoFactorAuthenticationTest extends TestCase
         }
 
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,
@@ -60,7 +66,7 @@ class TwoFactorAuthenticationTest extends TestCase
         }
 
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => false,
@@ -83,7 +89,7 @@ class TwoFactorAuthenticationTest extends TestCase
         config(['fortify.features' => []]);
 
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
             ->get(route('two-factor.show'))

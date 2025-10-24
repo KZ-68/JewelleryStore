@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\Customer;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
+use App\Models\Customer;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EmailVerificationTest extends TestCase
 {
@@ -15,7 +16,9 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_verification_screen_can_be_rendered()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->unverified()->create();
+        $user->assignRole('basic');
 
         $response = $this->actingAs($user)->get(route('verification.notice'));
 
@@ -24,8 +27,9 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_can_be_verified()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->unverified()->create();
-
+        $user->assignRole('basic');
         Event::fake();
 
         $verificationUrl = URL::temporarySignedRoute(
@@ -43,8 +47,9 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_is_not_verified_with_invalid_hash()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->unverified()->create();
-
+        $user->assignRole('basic');
         Event::fake();
 
         $verificationUrl = URL::temporarySignedRoute(
@@ -61,8 +66,9 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_is_not_verified_with_invalid_user_id(): void
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->unverified()->create();
-
+        $user->assignRole('basic');
         Event::fake();
 
         $verificationUrl = URL::temporarySignedRoute(
@@ -79,8 +85,9 @@ class EmailVerificationTest extends TestCase
 
     public function test_verified_user_is_redirected_to_profile_from_verification_prompt(): void
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         Event::fake();
 
         $response = $this->actingAs($user)->get(route('verification.notice'));
@@ -91,8 +98,9 @@ class EmailVerificationTest extends TestCase
 
     public function test_already_verified_user_visiting_verification_link_is_redirected_without_firing_event_again(): void
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         Event::fake();
 
         $verificationUrl = URL::temporarySignedRoute(

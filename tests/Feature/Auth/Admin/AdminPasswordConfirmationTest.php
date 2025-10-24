@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Auth\Admin;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AdminPasswordConfirmationTest extends TestCase
 {
@@ -13,8 +14,9 @@ class AdminPasswordConfirmationTest extends TestCase
 
     public function test_confirm_password_screen_can_be_rendered()
     {
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $response = $this->actingAs($user)->get(route('admin-password.confirm'));
 
         $response->assertStatus(200);

@@ -2,18 +2,24 @@
 
 namespace Tests\Feature\Settings;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProfileUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function __construct()
+    {
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
+    }
+
     public function test_profile_page_is_displayed()
     {
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $response = $this
             ->actingAs($user)
             ->get(route('profile.edit'));
@@ -24,7 +30,7 @@ class ProfileUpdateTest extends TestCase
     public function test_profile_information_can_be_updated()
     {
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $response = $this
             ->actingAs($user)
             ->patch(route('profile.update'), [

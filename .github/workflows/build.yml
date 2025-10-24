@@ -98,7 +98,7 @@ jobs:
           php artisan config:clear
       - name: Prepare test database
         run: |
-          php artisan schema:dump --prune
+          php artisan migrate:status
           php artisan migrate --force
       - name: Clean cache for migration force
         run: |

@@ -51,7 +51,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
-          extensions: dom, ctype, curl, xml, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, filter, json
+          extensions: dom, ctype, curl, xml, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, filter, json, xdebug
           coverage: none
       - name: Install Node.js
         uses: actions/setup-node@v4

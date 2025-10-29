@@ -72,7 +72,7 @@ jobs:
         run: |
           composer validate --strict
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm ci  
+          npm ci
       - name: Install Xvbf for chrome/selenium
         run: |
           sudo apt-get update
@@ -107,6 +107,10 @@ jobs:
       - name: Clean cache for migration force
         run: |
           php artisan cache:clear
+      - name: Wayfinder and Build Front
+        run: |
+          php artisan wayfinder:generate 
+          npm run build
       - name: Run PHP Linting (Pint)
         run: |
           mkdir -p artifacts/${{ matrix.node }}/
@@ -130,18 +134,23 @@ jobs:
       - name: Run PHPUnit Tests
         run: php artisan test
         continue-on-error: true  
-      - name: Run Lighthouse Audit
+      - name: Run Lighthouse Collect
         run: |
-          npx lighthouse http://127.0.0.1:8000 \
-            --only-categories="accessibility,best-practices,seo,performance"
-            --output=json \
-            --output-path=./lighthouse-report.json \
-            --chrome-flags="--headless --no-sandbox --disable-gpu" \
+          LHCI_BUILD_CONTEXT__CURRENT_HASH=github-actions \
+          lhci collect --config=.lighthouserc.cjs || true
+      - name: Run Lighthouse Upload
+        run: |
+          LHCI_BUILD_CONTEXT__CURRENT_HASH=github-actions \
+          lhci upload --config=.lighthouserc.cjs || true
+      - name: Show report files
+        run: ls -l .lighthouseci
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
-          path: ./lighthouse-report.json
+          path: |
+            .lighthouseci/*.html
+            .lighthouseci/*.json
       - name: Run PHPUnit coverage test
         run: |
           vendor/bin/phpunit --coverage-clover coverage.xml

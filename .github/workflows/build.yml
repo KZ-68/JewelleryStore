@@ -136,6 +136,7 @@ jobs:
         continue-on-error: true  
       - name: Run Lighthouse Collect
         run: |
+          mkdir .lighthouseci
           LHCI_BUILD_CONTEXT__CURRENT_HASH=github-actions \
           lhci collect --config=.lighthouserc.cjs || true
       - name: Run Lighthouse Upload

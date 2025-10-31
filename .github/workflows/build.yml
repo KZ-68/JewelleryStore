@@ -170,7 +170,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          record: false
+          record: true
           tag: node-${{ matrix.node }}
           browser: chrome
           headed: false

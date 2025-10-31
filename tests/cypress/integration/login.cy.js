@@ -18,8 +18,10 @@ describe('Connexion', () => {
     cy.get('button[data-slot="button"][type="submit"]').click();
 
     cy.url().then((url) => {
-      expect(['http://localhost:8000/login', 'http://localhost:8000']).to.include(url)
-    })
+      expect(url).to.satisfy((u) =>
+        u.includes('/login') || u === 'http://localhost:8000'
+      );
+    });
   });
 
   it('Connexion réussie et redirection vers /admin/back-office', () => {

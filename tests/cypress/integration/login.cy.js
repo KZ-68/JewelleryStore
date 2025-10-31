@@ -1,5 +1,5 @@
 describe('Connexion', () => {
-  const baseUrl = 'http://localhost:8000'; // Laravel + Inertia est souvent servi sur 8000
+  const baseUrl = 'http://127.0.0.1:8000'; // Laravel + Inertia est souvent servi sur 8000
 
   beforeEach(() => {
     cy.visit(`${baseUrl}/admin/login`);
@@ -19,16 +19,13 @@ describe('Connexion', () => {
 
     cy.url().then((url) => {
       expect(url).to.satisfy((u) =>
-        u.includes('/login') || u === 'http://localhost:8000'
+        u.includes('/login') || u === 'http://127.0.0.1:8000'
       );
     });
   });
 
   it('Connexion réussie et redirection vers /admin/back-office', () => {
-    cy.get('input[name="email"]').type('jean@example.com');
-    cy.get('input[name="password"]').type('password');
-    cy.get('button[data-slot="button"][type="submit"]').click();
-    cy.wait(20000);
+    cy.login({id: 4, email: "jean@exemple.com", password: ""});
     cy.visit(`${baseUrl}/admin/back-office`);
     cy.contains('Laravel Starter Kit').should('exist');
   });

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Models\User;
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\StoreContactRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ContactController extends Controller
 {
@@ -20,16 +18,13 @@ class ContactController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-
         $validator = Validator::make($request->all(), [
-             
-            'email' => ['required','email', 'required','string','lowercase','max:255',],
-            'subject' => ['required','string', 'max:174'],
-            'message' => ['required','textarea','string', 'min:3', 'max:500'],
-            'agreed' => ['required', 'checkbox', 'boolean', 'value:true']
+            'email' => ['required', 'email', 'required', 'string', 'lowercase', 'max:255'],
+            'subject' => ['required', 'string', 'max:174'],
+            'message' => ['required', 'textarea', 'string', 'min:3', 'max:500'],
+            'agreed' => ['required', 'checkbox', 'boolean', 'value:true'],
         ]);
-        
-        
+
         if ($validator->fails()) {
             return redirect('/contact')
                 ->withErrors($validator)
@@ -40,5 +35,4 @@ class ContactController extends Controller
 
         return redirect('/contact');
     }
-
 }

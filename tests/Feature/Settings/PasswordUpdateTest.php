@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\Settings;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PasswordUpdateTest extends TestCase
 {
@@ -13,8 +14,9 @@ class PasswordUpdateTest extends TestCase
 
     public function test_password_update_page_is_displayed()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $response = $this
             ->actingAs($user)
             ->get(route('password.edit'));
@@ -24,8 +26,9 @@ class PasswordUpdateTest extends TestCase
 
     public function test_password_can_be_updated()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $response = $this
             ->actingAs($user)
             ->from(route('password.edit'))
@@ -45,7 +48,7 @@ class PasswordUpdateTest extends TestCase
     public function test_correct_password_must_be_provided_to_update_password()
     {
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $response = $this
             ->actingAs($user)
             ->from(route('password.edit'))

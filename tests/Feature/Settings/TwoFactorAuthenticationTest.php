@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Settings;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
-use Laravel\Fortify\Features;
 use Tests\TestCase;
+use App\Models\User;
+use Laravel\Fortify\Features;
+use Spatie\Permission\Models\Role;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TwoFactorAuthenticationTest extends TestCase
 {
@@ -23,8 +24,9 @@ class TwoFactorAuthenticationTest extends TestCase
             'confirmPassword' => true,
         ]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
             ->get(route('two-factor.show'))
@@ -40,8 +42,9 @@ class TwoFactorAuthenticationTest extends TestCase
             $this->markTestSkipped('Two-factor authentication is not enabled.');
         }
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,
@@ -59,8 +62,9 @@ class TwoFactorAuthenticationTest extends TestCase
             $this->markTestSkipped('Two-factor authentication is not enabled.');
         }
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => false,
@@ -82,8 +86,9 @@ class TwoFactorAuthenticationTest extends TestCase
 
         config(['fortify.features' => []]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
-
+        $user->assignRole('admin');
         $this->actingAs($user)
             ->withSession(['auth.password_confirmed_at' => time()])
             ->get(route('two-factor.show'))

@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class BackOfficeTest extends TestCase
 {
@@ -12,16 +13,18 @@ class BackOfficeTest extends TestCase
 
     public function test_guests_are_redirected_to_the_login_page()
     {
-        $response = $this->get(route('bo.show'));
+        $response = $this->get(route('admin.back-office.showBO'));
         $response->assertRedirect(route('admin-login'));
     }
 
     public function test_authenticated_users_can_visit_the_dashboard()
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
         $this->actingAs($user);
 
-        $response = $this->get(route('bo.show'));
+        $response = $this->get(route('admin.back-office.showBO'));
         $response->assertStatus(200);
     }
 }

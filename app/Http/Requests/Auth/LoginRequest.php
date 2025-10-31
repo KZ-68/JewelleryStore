@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Models\User;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -41,12 +41,10 @@ class LoginRequest extends FormRequest
     public function validateCredentials(string $guard = 'web'): User|Customer|null
     {
         $this->ensureIsNotRateLimited();
-
         if($guard === 'web') {
             /** @var Customer|null $user */
             $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
-
-            if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+            if (! $user || !Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([
@@ -58,8 +56,7 @@ class LoginRequest extends FormRequest
         if($guard === 'admin') {
             /** @var User|null $user */
             $user = Auth::guard($guard)->getProvider()->retrieveByCredentials($this->only('email', 'password'));
-
-            if (! $user || ! Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
+            if (! $user || !Auth::getProvider()->validateCredentials($user, $this->only('password'))) {
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([
@@ -69,8 +66,8 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
-                
-        return $user;        
+
+        return $user;
     }
 
     /**
@@ -85,14 +82,10 @@ class LoginRequest extends FormRequest
         }
 
         event(new Lockout($this));
-
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)]),
         ]);
     }
 

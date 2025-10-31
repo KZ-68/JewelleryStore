@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
+use Tests\TestCase;
 use App\Models\Customer;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
 
 class PasswordResetTest extends TestCase
 {
@@ -22,9 +23,9 @@ class PasswordResetTest extends TestCase
     public function test_reset_password_link_can_be_requested()
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         $this->post(route('password.email'), ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class);
@@ -33,9 +34,9 @@ class PasswordResetTest extends TestCase
     public function test_reset_password_screen_can_be_rendered()
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         $this->post(route('password.email'), ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
@@ -50,9 +51,9 @@ class PasswordResetTest extends TestCase
     public function test_password_can_be_reset_with_valid_token()
     {
         Notification::fake();
-
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         $this->post(route('password.email'), ['email' => $user->email]);
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
@@ -73,8 +74,9 @@ class PasswordResetTest extends TestCase
 
     public function test_password_cannot_be_reset_with_invalid_token(): void
     {
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         $response = $this->post(route('password.store'), [
             'token' => 'invalid-token',
             'email' => $user->email,

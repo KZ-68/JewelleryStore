@@ -31,10 +31,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
-
         if (Auth::guard('web')->attempt($credentials)) {
             $user = $request->validateCredentials('web');
-
             if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
                 $request->session()->put([
                     'login.id' => $user->getKey(),
@@ -45,16 +43,13 @@ class AuthenticatedSessionController extends Controller
             }
 
             Auth::login($user, $request->boolean('remember'));
-
             $request->session()->regenerate();
 
             return redirect()->intended(route('home', absolute: false));
         }
 
-        
         if (Auth::guard('admin')->attempt($credentials)) {
             $user = $request->validateCredentials('admin');
-
             if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
                 $request->session()->put([
                     'login.id' => $user->getKey(),
@@ -65,12 +60,11 @@ class AuthenticatedSessionController extends Controller
             }
 
             Auth::login($user, $request->boolean('remember'));
-
             $request->session()->regenerate();
 
             return redirect()->intended(route('admin.back-office.showBO', absolute: false));
         }
-       
+
         return redirect()->intended(route('home', absolute: false));
     }
 
@@ -80,7 +74,6 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('admin')->check() ? Auth::guard('admin')->logout() : Auth::guard('web')->logout();
-        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

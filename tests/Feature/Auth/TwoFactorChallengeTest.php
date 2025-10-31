@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\Customer;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
-use Laravel\Fortify\Features;
 use Tests\TestCase;
+use App\Models\Customer;
+use Laravel\Fortify\Features;
+use Spatie\Permission\Models\Role;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TwoFactorChallengeTest extends TestCase
 {
@@ -34,8 +35,9 @@ class TwoFactorChallengeTest extends TestCase
             'confirmPassword' => true,
         ]);
 
+        Role::create(['guard_name' => 'web', 'name' => 'basic']);
         $user = Customer::factory()->create();
-
+        $user->assignRole('basic');
         $user->forceFill([
             'two_factor_secret' => encrypt('test-secret'),
             'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),

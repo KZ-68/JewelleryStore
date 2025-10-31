@@ -1,12 +1,13 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Feature\Auth\Admin;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Testing\AssertableInertia as Assert;
-use Laravel\Fortify\Features;
 use Tests\TestCase;
+use App\Models\User;
+use Laravel\Fortify\Features;
+use Spatie\Permission\Models\Role;
+use Inertia\Testing\AssertableInertia as Assert;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AdminTwoFactorChallengeTest extends TestCase
 {
@@ -34,7 +35,9 @@ class AdminTwoFactorChallengeTest extends TestCase
             'confirmPassword' => true,
         ]);
 
+        Role::create(['guard_name' => 'admin', 'name' => 'admin']);
         $user = User::factory()->create();
+        $user->assignRole('admin');
 
         $user->forceFill([
             'two_factor_secret' => encrypt('test-secret'),

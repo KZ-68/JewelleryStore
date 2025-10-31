@@ -51,8 +51,10 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
-          extensions: dom, ctype, curl, xml, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, filter, json, xdebug
+          extensions: dom, ctype, curl, xml, libxml, mbstring, zip, pcntl, pdo, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, filter, json
           coverage: none
+      - name: Install xdebug
+        run: sudo apt install php8.4-xdebug
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:

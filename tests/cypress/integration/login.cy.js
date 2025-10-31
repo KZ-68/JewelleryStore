@@ -28,7 +28,7 @@ describe('Connexion', () => {
     cy.get('input[name="email"]').type('jean@example.com');
     cy.get('input[name="password"]').type('password');
     cy.get('button[data-slot="button"][type="submit"]').click();
-
+    cy.wait(20000);
     cy.visit(`${baseUrl}/admin/back-office`);
     cy.contains('Laravel Starter Kit').should('exist');
   });

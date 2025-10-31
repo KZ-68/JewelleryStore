@@ -35,7 +35,6 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: ${{ secrets.LARAVEL_MYSQL_DATABASE_1 }}
-          MYSQL_PASSWORD:
         ports:
           - 3306:3306
         options: >-

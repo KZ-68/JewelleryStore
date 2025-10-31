@@ -174,7 +174,7 @@ jobs:
           tag: node-${{ matrix.node }}
           browser: chrome
           headed: false
-          start: npm start
+          wait-on: http://127.0.0.1:8000
           auto-cancel-after-failures: 2
           working-directory: ./tests/cypress
           install: false

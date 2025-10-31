@@ -29,7 +29,7 @@ describe('Connexion', () => {
     cy.get('input[name="password"]').type('password');
     cy.get('button[data-slot="button"][type="submit"]').click();
 
-    cy.visit(`${baseUrl}/admin/login`);
+    cy.visit(`${baseUrl}/admin/back-office`);
     cy.contains('Laravel Starter Kit').should('exist');
   });
 });

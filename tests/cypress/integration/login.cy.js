@@ -24,9 +24,12 @@ describe('Connexion', () => {
     });
   });
 
-  it('Connexion réussie et redirection vers /admin/back-office', () => {
-    cy.login({id: 4, email: "jean@exemple.com", password: ""});
-    cy.visit(`${baseUrl}/admin/back-office`);
+  it('Connexion réussie et accès au back-office', () => {
+    cy.get('input[name="email"]').type('jean@example.com');
+    cy.get('input[name="password"]').type('password');
+    cy.get('button[type="submit"]').click();
+
+    cy.url().should('include', '/admin/back-office');
     cy.contains('Laravel Starter Kit').should('exist');
   });
 });

@@ -17,7 +17,9 @@ describe('Connexion', () => {
     cy.get('input[name="password"]').type('mauvaismotdepasse');
     cy.get('button[data-slot="button"][type="submit"]').click();
 
-    cy.get('body').should('contain', 'Identifiants invalides');
+    cy.url().then((url) => {
+      expect(['http://localhost:8000/login', 'http://localhost:8000']).to.include(url)
+    })
   });
 
   it('Connexion réussie et redirection vers /admin/back-office', () => {

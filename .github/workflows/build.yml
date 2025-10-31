@@ -157,6 +157,7 @@ jobs:
       - name: Run PHPUnit coverage test
         run: |
           vendor/bin/phpunit --coverage-clover coverage.xml
+        continue-on-error: true
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:

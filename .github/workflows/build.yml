@@ -177,6 +177,7 @@ jobs:
           start: npm start
           auto-cancel-after-failures: 2
           working-directory: ./tests/cypress
+          install: false
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.EXAMPLE_RECORDING_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Manufacturer;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Product;
+use App\Models\Manufacturer;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BackOfficeController extends Controller
 {
@@ -38,6 +39,34 @@ class BackOfficeController extends Controller
             'admin/Manufacturers', 
             [
                 'manufacturers' => $manufacturers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    public function showProducts(Request $request): Response
+    {
+
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'country', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $products = Product::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Products', 
+            [
+                'products' => $products,
                 'filters' => [
                     'sortBy' => $sortBy,
                     'order' => $order,

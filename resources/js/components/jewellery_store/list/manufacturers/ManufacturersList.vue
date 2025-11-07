@@ -3,7 +3,7 @@ import type { Manufacturer } from '@/types/manufacturer'
 
 
 interface ManufacturersListProps {
-    classname:string;
+    classname:string
     manufacturers: Manufacturer[]
     sortBy: string
     order: 'asc' | 'desc'

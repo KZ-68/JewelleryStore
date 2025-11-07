@@ -19,6 +19,12 @@ class BackOfficeController extends Controller
         return Inertia::render('admin/BackOffice', []);
     }
 
+    /**
+     * @var mixed $sortBy Get manufacturers sorted by name by default
+     * @var mixed $order Get manufacturers order
+     * @param Request $request Get the request
+     * @return Response Return the response object
+    */
     public function showManufacturers(Request $request): Response
     {
 
@@ -47,14 +53,21 @@ class BackOfficeController extends Controller
         );
     }
 
-    public function showProducts(Request $request): Response
+    /**
+     * 
+     * @var mixed $sortBy Get products sorted by name by default
+     * @var mixed $order Get products order
+     * @param Request $request Get the request
+     * @return Response Return the response object
+    */
+    public function showProducts(Request $request): Response 
     {
 
-        $sortBy = $request->get('sortBy', 'name');
+        $sortBy = $request->get('sortBy', 'id');
         $order = $request->get('order', 'asc');
 
-        if (!in_array($sortBy, ['name', 'country', 'created_at'])) {
-            $sortBy = 'name';
+        if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
+            $sortBy = 'id';
         }
 
         if (!in_array(strtolower($order), ['asc', 'desc'])) {

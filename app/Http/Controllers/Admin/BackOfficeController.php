@@ -1,4 +1,8 @@
 <?php
+/* 
+* Controller File for the Back Office section
+* List all methods for the pages connected to the Back Office
+*/
 
 namespace App\Http\Controllers\Admin;
 
@@ -12,22 +16,26 @@ use App\Http\Controllers\Controller;
 class BackOfficeController extends Controller
 {
     /**
-     * Show the BackOffice page.
-     */
+    * Render the view assigned to the Back Office page
+    * @param Request Get the request, via GET method
+    * @return Response Return an Inertia Object response with the rendered view
+    */
     public function showBO(Request $request): Response
     {
         return Inertia::render('admin/BackOffice', []);
     }
 
     /**
+     * Render the view assigned to the manufacturers list page
      * @var mixed $sortBy Get manufacturers sorted by name by default
      * @var mixed $order Get manufacturers order
      * @param Request $request Get the request
-     * @return Response Return the response object
+     * @return Response Return an Inertia Object response with the rendered view
     */
     public function showManufacturers(Request $request): Response
     {
 
+        // Create filters for dynamic change on the manufacturers list
         $sortBy = $request->get('sortBy', 'name');
         $order = $request->get('order', 'asc');
 
@@ -54,15 +62,16 @@ class BackOfficeController extends Controller
     }
 
     /**
-     * 
+     * Render the view assigned to the products list page
      * @var mixed $sortBy Get products sorted by name by default
      * @var mixed $order Get products order
      * @param Request $request Get the request
-     * @return Response Return the response object
+     * @return Response Return an Inertia Object response with the rendered view
     */
     public function showProducts(Request $request): Response 
     {
 
+        // Create filters for dynamic change on the products list
         $sortBy = $request->get('sortBy', 'id');
         $order = $request->get('order', 'asc');
 

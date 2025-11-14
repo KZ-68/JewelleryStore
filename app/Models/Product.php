@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -13,6 +14,7 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'reference',
         'ean13',
@@ -20,6 +22,23 @@ class Product extends Model
         'retailPrice',
         'active',
     ];
+
+    // Create a slug automaticaly after the creation of the product
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            $slug = Str::slug($product->name);
+
+            $count = Product::where('slug', $slug)->count();
+            if ($count) {
+                $slug .= '-' . ($count + 1);
+            }
+
+            $product->slug = $slug;
+        });
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -29,12 +48,9 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'name' => 'string',
-            'description' => 'string',
-            'reference' => 'string',
-            'ean13' => 'string',
             'retailPrice' => 'float',
-            'active' => 'boolean',
+            'created_at' => 'datetime:Y-m-d H:i:s',
+            'updated_at' => 'datetime:Y-m-d H:i:s',
         ];
     }
 }

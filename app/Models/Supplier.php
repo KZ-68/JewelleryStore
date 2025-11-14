@@ -23,7 +23,8 @@ class Supplier extends Model
     protected function casts(): array
     {
         return [
-            'name' => 'string',
+            'created_at' => 'datetime:Y-m-d H:i:s',
+            'updated_at' => 'datetime:Y-m-d H:i:s',
         ];
     }
 }

@@ -28,6 +28,8 @@ class Address extends Model
             'details_1' => 'string',
             'details_2' => 'string',
             'postal_code' => 'string',
+            'created_at' => 'datetime:Y-m-d H:i:s',
+            'updated_at' => 'datetime:Y-m-d H:i:s',
         ];
     }
 }

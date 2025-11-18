@@ -58,7 +58,7 @@ class ProductFrontController extends Controller
 
         $product = Product::where('name', $request->get('name'))->first();
         $product->name = $request->get('name');
-        $product->description = $request->get('descriptio');
+        $product->description = $request->get('description');
         $product->reference = $request->get('reference');
         $product->ean13 = $request->get('ean13');
         $product->quantity = $request->get('quantity');

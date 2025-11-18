@@ -28,7 +28,7 @@ defineProps<ProductsListProps>()
                 </tr>
             </thead>
             <tbody v-if="products.length > 0" id="products-list">
-                <tr v-for="product in products" v-bind:key="product.id" class="flex flex-row gap-[5%] justify-around bg-gray-200 py-2 px-3 my-4 rounded-md">
+                <tr v-for="product in products" v-bind:key="product.id" class="flex flex-row gap-[5%] items-center justify-around bg-gray-200 py-2 px-3 my-4 rounded-md h-[5rem]">
                     <th scope="row" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.id }}</th>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.name }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.reference }}</td>

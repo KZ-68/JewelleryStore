@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Product;
+use App\Models\Supplier;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -89,6 +90,42 @@ class BackOfficeController extends Controller
             'admin/Products', 
             [
                 'products' => $products,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+    
+    /**
+     * Render the view assigned to the suppliers list page
+     * @var mixed $sortBy Get suppliers sorted by name by default
+     * @var mixed $order Get suppliers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showSuppliers(Request $request): Response
+    {
+
+        // Create filters for dynamic change on the suppliers list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $suppliers = Supplier::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Suppliers', 
+            [
+                'suppliers' => $suppliers,
                 'filters' => [
                     'sortBy' => $sortBy,
                     'order' => $order,

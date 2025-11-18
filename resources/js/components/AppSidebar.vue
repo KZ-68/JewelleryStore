@@ -11,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { showBO, showManufacturers, showProducts } from '@/routes/admin/back-office';
+import { showBO, showManufacturers, showProducts, showSuppliers } from '@/routes/admin/back-office';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid } from 'lucide-vue-next';
@@ -31,6 +31,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Manufacturers',
         href: showManufacturers(),
+        icon: LayoutGrid,
+    },
+     {
+        title: 'Suppliers',
+        href: showSuppliers(),
         icon: LayoutGrid,
     },
 ];

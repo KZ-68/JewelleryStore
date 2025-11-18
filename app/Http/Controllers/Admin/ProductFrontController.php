@@ -35,6 +35,52 @@ class ProductFrontController extends Controller
     }
 
     /**
+    * Create product view
+    * @param Request Get the request, via GET method
+    * @return Response|RedirectResponse Return an Inertia Object response with the rendered view or a redirection
+    */
+    public function newProduct(Request $request): Response|RedirectResponse
+    {
+        return Inertia::render('admin/NewProduct', []);
+    }
+
+    /**
+    * This method validate every fields used in the new product form.
+    * @param Request Get the POST method body from the form
+    * @return RedirectResponse Send a response with a redirection
+    */
+    public function create(Request $request): RedirectResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'string|min:0|max:500',
+            'reference' => 'required|string|max:100',
+            'ean13' => 'string|nullable|max:13',
+            'quantity' => 'required|integer|numeric|min:0|max:10000000',
+            'retailPrice' => 'required|decimal:0,2',
+            'active' => 'required|boolean'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/admin/back-office/products')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $product = new Product;
+        $product->name = $request->get('name');
+        $product->description = $request->get('description');
+        $product->reference = $request->get('reference');
+        $product->ean13 = $request->get('ean13');
+        $product->quantity = $request->get('quantity');
+        $product->retailPrice = $request->get('retailPrice');
+        $product->active = $request->get('active');
+        $product->save();
+
+        return redirect('/admin/back-office/products');
+    }
+
+    /**
     * This method validate every fields used in the product details form.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection

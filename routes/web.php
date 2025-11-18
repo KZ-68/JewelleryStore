@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BackOfficeController;
+use App\Http\Controllers\Admin\ProductFrontController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +21,16 @@ Route::get('privacy', function () {
     return Inertia::render('web/Privacy');
 })->name('privacy');
 
+Route::get('not-found', function() {
+    return Inertia::render('web/NotFound');
+})->name('not-found');
+
 Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');
     Route::get('/admin/back-office/manufacturers', [BackOfficeController::class, 'showManufacturers'])->name('admin.back-office.showManufacturers');
     Route::get('/admin/back-office/products', [BackOfficeController::class, 'showProducts'])->name('admin.back-office.showProducts');
+    Route::get('/admin/back-office/products/{slug}', [ProductFrontController::class, 'show'])->name('product-details');
+    Route::post('/admin/back-office/products/{slug}', [ProductFrontController::class, 'update'])->name('product-details.update');
 });
 
 require __DIR__.'/auth.php';

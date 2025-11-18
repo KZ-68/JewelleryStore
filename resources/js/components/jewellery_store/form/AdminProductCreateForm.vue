@@ -3,26 +3,25 @@ import ProductFrontController from '@/actions/App/Http/Controllers/Admin/Product
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/vue3';
-import type { Product } from '@/types/product'
 
-interface AdminProductMainFormProps {
+interface AdminProductCreateFormProps {
     classname:string;
-    product: Product;
 }   
 
-const props = defineProps<AdminProductMainFormProps>();
+const props = defineProps<AdminProductCreateFormProps>();
 </script>
 
 <template>
-    <section id="admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
         <Form
-            v-bind="ProductFrontController.update.form({ slug: props.product.slug })"
+            v-bind="ProductFrontController.create.form()"
             :reset-on-success="['product-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
+                    <Label for="name" class="text-lg">Product Name</Label>
                     <Input
                         id="name"
                         type="text"
@@ -31,7 +30,6 @@ const props = defineProps<AdminProductMainFormProps>();
                         autofocus
                         :tabindex="1"
                         autocomplete="name"
-                        :default-value=props.product.name
                         class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
                     />
                     <InputError :message="errors.name" />
@@ -49,7 +47,6 @@ const props = defineProps<AdminProductMainFormProps>();
                         autofocus
                         :tabindex="2"
                         placeholder="Add a description..."
-                        :value=props.product.description
                         class="bg-gray-100 p-1 rounded-md"
                     />
                     <InputError :message="errors.description" />
@@ -65,7 +62,7 @@ const props = defineProps<AdminProductMainFormProps>();
                         autofocus
                         :tabindex="3"
                         autocomplete="reference"
-                        :default-value=props.product.reference
+                        placeholder="Add the product reference..."
                         class="bg-gray-100 p-1 rounded-md"
                     />
                     <InputError :message="errors.reference" />
@@ -80,7 +77,6 @@ const props = defineProps<AdminProductMainFormProps>();
                         autofocus
                         :tabindex="4"
                         autocomplete="ean13"
-                        :default-value=props.product.ean13
                         placeholder="Add a bar code for your product"
                         class="bg-gray-100 p-1 rounded-md"
                     />
@@ -95,7 +91,7 @@ const props = defineProps<AdminProductMainFormProps>();
                         name="quantity"
                         required
                         :tabindex="5"
-                        :default-value=props.product.quantity
+                        placeholder="How many products ?"
                         class="bg-gray-100 p-1 rounded-md"
                     />
                     <InputError :message="errors.quantity" />
@@ -110,13 +106,20 @@ const props = defineProps<AdminProductMainFormProps>();
                         step="0.0"
                         required
                         :tabindex="5"
-                        :default-value=props.product.retailPrice
                         class="bg-gray-100 p-1 rounded-md"
                     />
                     <InputError :message="errors.retailPrice" />
                 </div>
 
-                <section id="admin-product-details-footer" class="flex flex-row gap-4 py-8">
+                <div class="grid gap-2">
+                    <Label for="active" class="text-lg">Activate Product</Label>
+                    <select id="active" name="active" required>
+                        <option :value=0 :selected=true>No</option>
+                        <option :value=1>Yes</option>
+                    </select>
+                </div>
+
+                <section id="new-admin-product-details-footer" class="flex flex-row gap-4 py-8">
                     <Button
                     type="submit"
                     class="w-20 bg-black text-white"

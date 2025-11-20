@@ -8,6 +8,7 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Manufacturer;
@@ -130,6 +131,37 @@ class BackOfficeController extends Controller
                     'sortBy' => $sortBy,
                     'order' => $order,
                 ],
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the categories list page
+     * @var mixed $sortBy Get categories sorted by name by default
+     * @var mixed $order Get categories order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showCategories(Request $request): Response
+    {
+        // Create filters for dynamic change on the categories list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $categories = Category::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Categories', 
+            [
+                'categories' => $categories,
             ]
         );
     }

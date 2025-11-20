@@ -86,6 +86,7 @@ class SupplierFrontController extends Controller
         }
 
         $supplier = Supplier::where('name', $request->get('name'))->first();
+        $supplier->name = $request->get('name');
         $supplier->save();
 
         return redirect('/admin/back-office/suppliers');

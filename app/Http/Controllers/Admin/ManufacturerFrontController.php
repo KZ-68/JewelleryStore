@@ -70,7 +70,7 @@ class ManufacturerFrontController extends Controller
     }
 
     /**
-    * This method validate every fields used in the product details form.
+    * This method validate every fields used in the manufacturer details form.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
     */
@@ -87,6 +87,7 @@ class ManufacturerFrontController extends Controller
         }
 
         $manufacturer = Manufacturer::where('name', $request->get('name'))->first();
+        $manufacturer->name = $request->get('name');
         $manufacturer->save();
 
         return redirect('/admin/back-office/manufacturers');
@@ -97,10 +98,25 @@ class ManufacturerFrontController extends Controller
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
     */
-    public function delete(Request $request): RedirectResponse
+    public function destroy(Request $request): RedirectResponse
     {
         $manufacturer = Manufacturer::where('name', $request->get('name'))->first();
         $manufacturer->delete();
+
+        return redirect('/admin/back-office/manufacturers');
+    }
+
+    /**
+    * This method validate data and confirm the deletion.
+    * @param Request Get the POST method body from the form
+    * @return RedirectResponse Send a response with a redirection
+    */
+    public function destroyBulk(Request $request): RedirectResponse
+    {
+        $manufacturers = Manufacturer::whereIn('name', $request->get('names'))->get();
+        foreach($manufacturers as $manufacturer) {
+            $manufacturer->delete();
+        }
 
         return redirect('/admin/back-office/manufacturers');
     }

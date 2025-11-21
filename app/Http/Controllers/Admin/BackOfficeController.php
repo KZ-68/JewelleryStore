@@ -156,7 +156,7 @@ class BackOfficeController extends Controller
             $order = 'asc';
         }
 
-        $categories = Category::orderBy($sortBy, $order)->get();
+        $categories = Category::where('parent_id', null)->orderBy($sortBy, $order)->get();
 
         return Inertia::render(
             'admin/Categories', 

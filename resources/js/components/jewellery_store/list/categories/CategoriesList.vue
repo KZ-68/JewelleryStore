@@ -9,8 +9,6 @@ import { Ziggy } from '../../../../ziggy.js';
 interface CategoriesListProps {
     classname:string
     categories: Category[]
-    sortBy: string
-    order: 'asc' | 'desc'
 }
 
 // const emit = defineEmits<{

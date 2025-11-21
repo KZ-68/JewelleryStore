@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Nette\Utils\Json;
 
 class CategoryFrontController extends Controller
 {
@@ -41,7 +42,7 @@ class CategoryFrontController extends Controller
     */
     public function showSubCategories(Request $request): Response|RedirectResponse
     {
-        $subCategories = Category::where('parent_id',  $request->id)->get();
+        $subCategories = Category::where('parent_id', $request->id)->get();
 
         if(!$subCategories) {
             redirect('not-found', 404);
@@ -59,10 +60,37 @@ class CategoryFrontController extends Controller
     */
     public function newCategory(Request $request): Response|RedirectResponse
     {
-        return Inertia::render('admin/NewCategory', []);
+        $categories = Category::All();
+
+        $root = Category::where('index', 1)->first();
+        $root = strval($root->id);
+
+        $tree = $categories->map(function ($cat) {
+            return [
+                $cat->id => [
+                    'text' => $cat->name,
+                    'children' => $cat->subCategories->map(function ($sub) {
+                        return "$sub->id";
+                    }),
+                    'state' => [
+                        'checked' => false,
+                        'indeterminate'=> false,
+                        'draggable'=> true,
+                        'dropable'=> false
+                    ]
+                ]
+            ];
+        });
+
+        Json::encode($tree, true);
+
+        return Inertia::render('admin/NewCategory', [
+            'categories' => $tree,
+            'root' => $root
+        ]);
     }
 
-        /**
+    /**
     * This method validate every fields used in the new category form.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
@@ -72,7 +100,7 @@ class CategoryFrontController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'string|min:0|max:500',
-            'parent_id' => 'nullable|integer'
+            'id' => 'nullable|integer'
         ]);
 
         if ($validator->fails()) {

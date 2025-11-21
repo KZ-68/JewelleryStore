@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -38,6 +39,14 @@ class Product extends Model
 
             $product->slug = $slug;
         });
+    }
+
+    /**
+     * The categories that belong to the product.
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'category_product', 'product_id', 'category_id');
     }
 
     /**

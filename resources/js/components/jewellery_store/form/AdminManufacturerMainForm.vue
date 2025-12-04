@@ -23,6 +23,7 @@ const props = defineProps<AdminManufacturerMainFormProps>();
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
+                    <Label for="name" class="text-lg">Manufacturer Name</Label>
                     <Input
                         id="name"
                         type="text"

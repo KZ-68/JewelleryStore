@@ -17,7 +17,6 @@ interface AdminCategoryMainFormProps {
 }   
 
 const props = defineProps<AdminCategoryMainFormProps>();
-
 const categories = Object.assign({}, ...props.categories);
 
 const config = ref({
@@ -47,7 +46,7 @@ function log(s: string): void {
 </script>
 
 <template>
-    <section id="admin-category-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="admin-category-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="CategoryFrontController.create.form()"
             :reset-on-success="['category-details']"

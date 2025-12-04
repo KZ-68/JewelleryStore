@@ -29,9 +29,29 @@ class CategoryFrontController extends Controller
             redirect('not-found', 404);
         }
 
+        $tree = Category::All()->map(function ($cat) {
+            return [
+                $cat->id => [
+                    'text' => $cat->name,
+                    'children' => $cat->subCategories->map(function ($sub) {
+                        return "$sub->id";
+                    }),
+                    'state' => [
+                        'checked' => false,
+                        'indeterminate'=> false,
+                        'draggable'=> true,
+                        'dropable'=> false
+                    ]
+                ]
+            ];
+        });
+
+        Json::encode($tree, true);
+
         return Inertia::render('admin/CategoryDetails', [
             'slug' => $category->slug,
-            'category' => $category
+            'category' => $category,
+            'categories' => $tree
         ]);
     }
 
@@ -62,9 +82,6 @@ class CategoryFrontController extends Controller
     {
         $categories = Category::All();
 
-        $root = Category::where('index', 1)->first();
-        $root = strval($root->id);
-
         $tree = $categories->map(function ($cat) {
             return [
                 $cat->id => [
@@ -85,8 +102,7 @@ class CategoryFrontController extends Controller
         Json::encode($tree, true);
 
         return Inertia::render('admin/NewCategory', [
-            'categories' => $tree,
-            'root' => $root
+            'categories' => $tree
         ]);
     }
 

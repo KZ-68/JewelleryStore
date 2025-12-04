@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class ProductFrontController extends Controller
 {
@@ -41,7 +42,11 @@ class ProductFrontController extends Controller
     */
     public function newProduct(Request $request): Response|RedirectResponse
     {
-        return Inertia::render('admin/NewProduct', []);
+        $categories = Category::all();
+
+        return Inertia::render('admin/NewProduct', [
+            'categories' => $categories
+        ]);
     }
 
     /**

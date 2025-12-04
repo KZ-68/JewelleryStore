@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +18,23 @@ class Manufacturer extends Model
         'name',
         'slug'
     ];
+
+        // Create a slug automaticaly after the creation of the manufacturer
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($manufacturer) {
+            $slug = Str::slug($manufacturer->name);
+
+            $count = Manufacturer::where('slug', $slug)->count();
+            if ($count) {
+                $slug .= '-' . ($count + 1);
+            }
+
+            $manufacturer->slug = $slug;
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

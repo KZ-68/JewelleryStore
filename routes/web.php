@@ -41,9 +41,9 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/manufacturers/new', [ManufacturerFrontController::class, 'newManufacturer'])->name('new-manufacturer');
     Route::post('/admin/back-office/manufacturers/new', [ManufacturerFrontController::class, 'create'])->name('new-manufacturer.create');
     Route::get('/admin/back-office/manufacturers/{slug}', [ManufacturerFrontController::class, 'show'])->name('manufacturers-details');
-    Route::post('/admin/back-office/manufacturers/{slug}', [ManufacturerFrontController::class, 'update'])->name('manufacturers-details.update');
     Route::post('/admin/back-office/manufacturers/{slug}', [ManufacturerFrontController::class, 'destroy'])->name('delete-manufacturer');
     Route::post('/admin/back-office/manufacturers', [ManufacturerFrontController::class, 'destroyBulk'])->name('delete-manufacturers');
+    Route::post('/admin/back-office/manufacturers/{slug}', [ManufacturerFrontController::class, 'update'])->name('manufacturers-details.update');
     Route::get('/admin/back-office/suppliers/new', [SupplierFrontController::class, 'newSupplier'])->name('new-supplier');
     Route::post('/admin/back-office/suppliers/new', [SupplierFrontController::class, 'create'])->name('new-supplier.create');
     Route::get('/admin/back-office/suppliers/{slug}', [SupplierFrontController::class, 'show'])->name('suppliers-details');
@@ -51,9 +51,9 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/categories/new', [CategoryFrontController::class, 'newCategory'])->name('new-category');
     Route::post('/admin/back-office/categories/new', [CategoryFrontController::class, 'create'])->name('new-category.create');
     Route::get('/admin/back-office/categories/{slug}', [CategoryFrontController::class, 'show'])->name('category-details');
-    Route::post('/admin/back-office/categories/{slug}', [CategoryFrontController::class, 'update'])->name('category-details.update');
     Route::post('/admin/back-office/categories/{slug}', [CategoryFrontController::class, 'destroy'])->name('delete-category');
     Route::post('/admin/back-office/categories', [CategoryFrontController::class, 'destroyBulk'])->name('delete-categories');
+    Route::post('/admin/back-office/categories/{slug}', [CategoryFrontController::class, 'update'])->name('category-details.update');
     Route::get('/admin/back-office/categories/{id}/sub-categories', [CategoryFrontController::class, 'showSubCategories'])->name('admin.back-office.showSubCategories');
 });
 

@@ -3,8 +3,10 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import AdminProductCreateForm from '@/components/jewellery_store/form/AdminProductCreateForm.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { showProducts } from '@/routes/admin/back-office';
+import { TreeNode } from '@/types/treenode';
 
 interface NewProductProps {
+    categories: Array<TreeNode[]>
 }  
 
 const props = defineProps<NewProductProps>()
@@ -18,7 +20,7 @@ const props = defineProps<NewProductProps>()
             <hgroup id="new-product-page-top" class="mx-4 mt-8 mb-4">
                 <h1 id="new-product-page-heading" class="text-xl">Add a new product</h1>
             </hgroup>
-            <AdminProductCreateForm classname="" ></AdminProductCreateForm>
+            <AdminProductCreateForm classname="" :categories=props.categories></AdminProductCreateForm>
             <Link :href="showProducts()" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
                 Back to products list
             </Link>

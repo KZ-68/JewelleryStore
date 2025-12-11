@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryFrontController;
 use App\Http\Controllers\Admin\ProductFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
 use App\Http\Controllers\Admin\SupplierFrontController;
+use App\Http\Controllers\Admin\CarrierFrontController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,11 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::post('/admin/back-office/categories', [CategoryFrontController::class, 'destroyBulk'])->name('delete-categories');
     Route::post('/admin/back-office/categories/{slug}', [CategoryFrontController::class, 'update'])->name('category-details.update');
     Route::get('/admin/back-office/categories/{id}/sub-categories', [CategoryFrontController::class, 'showSubCategories'])->name('admin.back-office.showSubCategories');
+    Route::get('/admin/back-office/carriers/new', [CarrierFrontController::class, 'newCarrier'])->name('new-supplier');
+    Route::post('/admin/back-office/carriers/new', [CarrierFrontController::class, 'create'])->name('new-supplier.create');
+    Route::get('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'show'])->name('carriers-details');
+    Route::post('/admin/back-office/carriers/{slug}', [CategoryFrontController::class, 'destroy'])->name('delete-carrier');
+    Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'update'])->name('carriers-details.update');
 });
 
 require __DIR__.'/auth.php';

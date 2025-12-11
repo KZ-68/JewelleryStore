@@ -115,7 +115,6 @@ const props = defineProps<AdminProductMainFormProps>();
                     />
                     <InputError :message="errors.retailPrice" />
                 </div>
-
                 <section id="admin-product-details-footer" class="flex flex-row gap-4 py-8">
                     <Button
                     type="submit"

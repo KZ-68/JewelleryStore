@@ -162,7 +162,7 @@ class CategoryFrontController extends Controller
         return redirect('/admin/back-office/categories');
     }
 
-        /**
+    /**
     * This method validate data and confirm the deletion.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection

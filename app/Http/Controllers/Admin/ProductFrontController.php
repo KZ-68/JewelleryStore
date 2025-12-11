@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Nette\Utils\Json;
 
 class ProductFrontController extends Controller
 {
@@ -44,8 +45,27 @@ class ProductFrontController extends Controller
     {
         $categories = Category::all();
 
+        $tree = $categories->map(function ($cat) {
+            return [
+                $cat->id => [
+                    'text' => $cat->name,
+                    'children' => $cat->subCategories->map(function ($sub) {
+                        return "$sub->id";
+                    }),
+                    'state' => [
+                        'checked' => false,
+                        'indeterminate'=> false,
+                        'draggable'=> true,
+                        'dropable'=> false
+                    ]
+                ]
+            ];
+        });
+
+        Json::encode($tree, true);
+
         return Inertia::render('admin/NewProduct', [
-            'categories' => $categories
+            'categories' => $tree
         ]);
     }
 
@@ -56,6 +76,12 @@ class ProductFrontController extends Controller
     */
     public function create(Request $request): RedirectResponse
     {
+        if($request->get('categories_selected') !== null) {
+            $categories = json_decode($request->get('categories_selected'), true);
+        } else {
+            $categories = $request->get('category_id');
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'string|min:0|max:500',
@@ -80,6 +106,8 @@ class ProductFrontController extends Controller
         $product->quantity = $request->get('quantity');
         $product->retailPrice = $request->get('retailPrice');
         $product->active = $request->get('active');
+        $product->save();
+        $product->categories()->attach($categories);
         $product->save();
 
         return redirect('/admin/back-office/products');

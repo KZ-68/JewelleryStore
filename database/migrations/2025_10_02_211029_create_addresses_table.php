@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('details_1', 255);
-            $table->string('details_2', 255);
-            $table->string('postal_code', 10);
+            $table->foreignId('country_id')->nullable()->constrained('countries');
+            $table->foreignId('customer_id')->nullable()->constrained('customers');
+            $table->foreignId('manufacturer_id')->nullable()->constrained('manufacturers');
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers');
+            $table->string('details_1', 255)->nullable();
+            $table->string('details_2', 255)->nullable();
+            $table->string('postal_code', 10)->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

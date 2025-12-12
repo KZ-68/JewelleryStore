@@ -26,7 +26,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="address_line_1" class="text-lg">Address Line 1</Label>
+                    <Label for="address_line_1" class="text-md">Address Line 1</Label>
                     <textarea
                         id="address_line_1"
                         name="address_line_1"
@@ -44,7 +44,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="address_line_2" class="text-lg">Address Line 2</Label>
+                    <Label for="address_line_2" class="text-md">Address Line 2</Label>
                     <textarea
                         id="address_line_2"
                         name="address_line_2"
@@ -61,7 +61,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="city" class="text-lg">City</Label>
+                    <Label for="city" class="text-md">City</Label>
                     <Input
                         id="city"
                         type="text"
@@ -76,7 +76,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
                 
                 <div class="grid gap-2">
-                    <Label for="postal_code" class="text-lg">Postal Code</Label>
+                    <Label for="postal_code" class="text-md">Postal Code</Label>
                     <Input
                         id="postal_code"
                         type="text"
@@ -90,16 +90,16 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="country" class="text-lg">Country</Label>
+                    <Label for="country" class="text-md">Country</Label>
                     <select name="countries" v-model="countrySelected" class="border-2 rounded-md">
                         <option value="">--Please choose a country--</option>
                         <option v-for="country in countries" :value="country.local">{{ country.name }}</option>
                     </select>
-                    <input type="hidden" >
+                   <input id="country" name="country" type="hidden" :value=countrySelected>
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="region" class="text-lg">State / Region</Label>
+                    <Label for="region" class="text-md">State / Region</Label>
                     <Input
                         id="region"
                         type="text"
@@ -113,7 +113,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="district" class="text-lg">District</Label>
+                    <Label for="district" class="text-md">District</Label>
                     <Input
                         id="district"
                         type="text"
@@ -127,7 +127,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="sub_district" class="text-lg">Sub District</Label>
+                    <Label for="sub_district" class="text-md">Sub District</Label>
                     <Input
                         id="sub_district"
                         type="text"
@@ -141,7 +141,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="locality" class="text-lg">Locality</Label>
+                    <Label for="locality" class="text-md">Locality</Label>
                     <Input
                         id="locality"
                         type="text"
@@ -155,7 +155,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="sub_locality" class="text-lg">Sub Locality</Label>
+                    <Label for="sub_locality" class="text-md">Sub Locality</Label>
                     <Input
                         id="sub_locality"
                         type="text"

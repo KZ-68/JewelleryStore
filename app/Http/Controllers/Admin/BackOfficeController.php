@@ -8,8 +8,9 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Category;
+use App\Models\Carrier;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
@@ -162,6 +163,42 @@ class BackOfficeController extends Controller
             'admin/Categories', 
             [
                 'categories' => $categories,
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the carriers list page
+     * @var mixed $sortBy Get carriers sorted by name by default
+     * @var mixed $order Get carriers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showCarriers(Request $request): Response
+    {
+
+        // Create filters for dynamic change on the carriers list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $carriers = Carrier::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Carriers', 
+            [
+                'carriers' => $carriers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
             ]
         );
     }

@@ -14,9 +14,15 @@ class Address extends Model
      */
     protected $fillable = [
         'customer_id',
-        'details_1',
-        'details_2',
+        'address_line_1',
+        'address_line_2',
+        'city',
         'postal_code',
+        'region',
+        'district',
+        'sub_district',
+        'locality',
+        'sub_locality'
     ];
 
     /**
@@ -28,6 +34,14 @@ class Address extends Model
     }
 
     /**
+     * Get the country that owns the address.
+    */
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -35,8 +49,8 @@ class Address extends Model
     protected function casts(): array
     {
         return [
-            'details_1' => 'string',
-            'details_2' => 'string',
+            'address_line_1' => 'string',
+            'address_line_2' => 'string',
             'postal_code' => 'string',
             'created_at' => 'datetime:Y-m-d H:i:s',
             'updated_at' => 'datetime:Y-m-d H:i:s',

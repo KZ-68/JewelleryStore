@@ -1,26 +1,44 @@
 <?php
+/* 
+* Controller File for the Back Office section
+* List all methods for the pages connected to the Back Office
+*/
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Manufacturer;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Carrier;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Supplier;
+use App\Models\Manufacturer;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BackOfficeController extends Controller
 {
     /**
-     * Show the BackOffice page.
-     */
+    * Render the view assigned to the Back Office page
+    * @param Request Get the request, via GET method
+    * @return Response Return an Inertia Object response with the rendered view
+    */
     public function showBO(Request $request): Response
     {
         return Inertia::render('admin/BackOffice', []);
     }
 
+    /**
+     * Render the view assigned to the manufacturers list page
+     * @var mixed $sortBy Get manufacturers sorted by name by default
+     * @var mixed $order Get manufacturers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
     public function showManufacturers(Request $request): Response
     {
 
+        // Create filters for dynamic change on the manufacturers list
         $sortBy = $request->get('sortBy', 'name');
         $order = $request->get('order', 'asc');
 
@@ -38,6 +56,145 @@ class BackOfficeController extends Controller
             'admin/Manufacturers', 
             [
                 'manufacturers' => $manufacturers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the products list page
+     * @var mixed $sortBy Get products sorted by name by default
+     * @var mixed $order Get products order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showProducts(Request $request): Response 
+    {
+
+        // Create filters for dynamic change on the products list
+        $sortBy = $request->get('sortBy', 'id');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
+            $sortBy = 'id';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $products = Product::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Products', 
+            [
+                'products' => $products,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+    
+    /**
+     * Render the view assigned to the suppliers list page
+     * @var mixed $sortBy Get suppliers sorted by name by default
+     * @var mixed $order Get suppliers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showSuppliers(Request $request): Response
+    {
+
+        // Create filters for dynamic change on the suppliers list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $suppliers = Supplier::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Suppliers', 
+            [
+                'suppliers' => $suppliers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the categories list page
+     * @var mixed $sortBy Get categories sorted by name by default
+     * @var mixed $order Get categories order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showCategories(Request $request): Response
+    {
+        // Create filters for dynamic change on the categories list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $categories = Category::where('parent_id', null)->orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Categories', 
+            [
+                'categories' => $categories,
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the carriers list page
+     * @var mixed $sortBy Get carriers sorted by name by default
+     * @var mixed $order Get carriers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showCarriers(Request $request): Response
+    {
+
+        // Create filters for dynamic change on the carriers list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $carriers = Carrier::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Carriers', 
+            [
+                'carriers' => $carriers,
                 'filters' => [
                     'sortBy' => $sortBy,
                     'order' => $order,

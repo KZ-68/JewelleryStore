@@ -17,9 +17,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->string('description', 255);
+            $table->string('slug')->unique();
+            $table->string('description', 255)->nullable();
             $table->string('reference', 100);
-            $table->string('ean13', 13);
+            $table->string('ean13', 13)->nullable();
             $table->integer('quantity');
             $table->float('retailPrice', 2);
             $table->boolean('active');

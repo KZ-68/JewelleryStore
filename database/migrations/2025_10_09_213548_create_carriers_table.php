@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('carriers', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
+            $table->string('slug')->unique();
             $table->string('description', 500);
             $table->integer('carrier_position');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

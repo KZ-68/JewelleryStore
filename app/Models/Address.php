@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
@@ -12,10 +13,33 @@ class Address extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'details_1',
-        'details_2',
+        'customer_id',
+        'address_line_1',
+        'address_line_2',
+        'city',
         'postal_code',
+        'region',
+        'district',
+        'sub_district',
+        'locality',
+        'sub_locality'
     ];
+
+    /**
+     * Get the customer that owns the address.
+    */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * Get the country that owns the address.
+    */
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -25,9 +49,11 @@ class Address extends Model
     protected function casts(): array
     {
         return [
-            'details_1' => 'string',
-            'details_2' => 'string',
+            'address_line_1' => 'string',
+            'address_line_2' => 'string',
             'postal_code' => 'string',
+            'created_at' => 'datetime:Y-m-d H:i:s',
+            'updated_at' => 'datetime:Y-m-d H:i:s',
         ];
     }
 }

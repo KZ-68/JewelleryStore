@@ -8,8 +8,9 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Category;
+use App\Models\Carrier;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;

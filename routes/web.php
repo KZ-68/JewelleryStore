@@ -35,6 +35,7 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/products', [BackOfficeController::class, 'showProducts'])->name('admin.back-office.showProducts');
     Route::get('/admin/back-office/suppliers', [BackOfficeController::class, 'showSuppliers'])->name('admin.back-office.showSuppliers');
     Route::get('/admin/back-office/categories', [BackOfficeController::class, 'showCategories'])->name('admin.back-office.showCategories');
+    Route::get('/admin/back-office/carriers', [BackOfficeController::class, 'showCarriers'])->name('admin.back-office.showCarriers');
     Route::get('/admin/back-office/products/new', [ProductFrontController::class, 'newProduct'])->name('new-product');
     Route::post('/admin/back-office/products/new', [ProductFrontController::class, 'create'])->name('new-product.create');
     Route::get('/admin/back-office/products/{slug}', [ProductFrontController::class, 'show'])->name('product-details');
@@ -56,10 +57,10 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::post('/admin/back-office/categories', [CategoryFrontController::class, 'destroyBulk'])->name('delete-categories');
     Route::post('/admin/back-office/categories/{slug}', [CategoryFrontController::class, 'update'])->name('category-details.update');
     Route::get('/admin/back-office/categories/{id}/sub-categories', [CategoryFrontController::class, 'showSubCategories'])->name('admin.back-office.showSubCategories');
-    Route::get('/admin/back-office/carriers/new', [CarrierFrontController::class, 'newCarrier'])->name('new-supplier');
-    Route::post('/admin/back-office/carriers/new', [CarrierFrontController::class, 'create'])->name('new-supplier.create');
+    Route::get('/admin/back-office/carriers/new', [CarrierFrontController::class, 'newCarrier'])->name('new-carrier');
+    Route::post('/admin/back-office/carriers/new', [CarrierFrontController::class, 'create'])->name('new-carrier.create');
     Route::get('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'show'])->name('carriers-details');
-    Route::post('/admin/back-office/carriers/{slug}', [CategoryFrontController::class, 'destroy'])->name('delete-carrier');
+    Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'destroy'])->name('delete-carrier');
     Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'update'])->name('carriers-details.update');
 });
 

@@ -42,11 +42,7 @@ class CarrierFrontController extends Controller
     */
     public function newCarrier(Request $request): Response|RedirectResponse
     {
-        $countries = Country::all();
-        
-        return Inertia::render('admin/NewCarrier', [
-            'countries' => $countries,
-        ]);
+        return Inertia::render('admin/NewCarrier', []);
     }
 
     /**
@@ -104,8 +100,8 @@ class CarrierFrontController extends Controller
     */
     public function destroy(Request $request): RedirectResponse
     {
-        $category = Carrier::where('name', $request->get('name'))->first();
-        $category->delete();
+        $carrier = Carrier::where('name', $request->get('name'))->first();
+        $carrier->delete();
 
         return redirect('/admin/back-office/carriers');
     }

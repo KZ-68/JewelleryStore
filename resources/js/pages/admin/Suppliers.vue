@@ -43,10 +43,10 @@ const navigate = (url: string) => {
         <h2 class="text-3xl my-6">Suppliers</h2>
         <section id="suppliers-top-wrapper" class="flex flex-row justify-between items-center">
           <div id="suppliers-filters-wrapper" class="flex flex-row my-6 gap-2">
-            <label for="sortBy" class="my-4">Trier par :</label>
+            <label for="sortBy" class="my-4">Order by :</label>
             <select id="sortBy" v-model="sortBy" @change="updateFilters" class="rounded-md bg-neutral-100 p-2">
-              <option value="name">Nom</option>
-              <option value="created_at">Date de création</option>
+              <option value="name">Name</option>
+              <option value="created_at">Date created</option>
             </select>
             <select id="order" v-model="order" @change="updateFilters" class="rounded-md bg-neutral-100 p-2">
               <option value="asc">Ascendant</option>

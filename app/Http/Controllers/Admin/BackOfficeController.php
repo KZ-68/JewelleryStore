@@ -14,6 +14,7 @@ use App\Models\Supplier;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 
 class BackOfficeController extends Controller
 {
@@ -162,6 +163,37 @@ class BackOfficeController extends Controller
             'admin/Categories', 
             [
                 'categories' => $categories,
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the customers list page
+     * @var mixed $sortBy Get customers sorted by name by default
+     * @var mixed $order Get customers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showCustomers(Request $request): Response
+    {
+        // Create filters for dynamic change on the customers list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $customers = Customer::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Customers', 
+            [
+                'customers' => $customers,
             ]
         );
     }

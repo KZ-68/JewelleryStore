@@ -20,8 +20,12 @@ class Product extends Model
         'reference',
         'ean13',
         'quantity',
-        'retailPrice',
+        'cost_price',
+        'price_ht',
         'active',
+        'product_condition',
+        'short_description',
+        'meta_description'
     ];
 
     // Create a slug automaticaly after the creation of the product
@@ -57,7 +61,8 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'retailPrice' => 'float',
+            'cost_price' => 'float',
+            'price_ht' => 'float',
             'created_at' => 'datetime:Y-m-d H:i:s',
             'updated_at' => 'datetime:Y-m-d H:i:s',
         ];

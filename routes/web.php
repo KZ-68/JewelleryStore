@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
 use App\Http\Controllers\Admin\SupplierFrontController;
 use App\Http\Controllers\Admin\CarrierFrontController;
+use App\Http\Controllers\Admin\CustomerFrontController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,7 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/suppliers', [BackOfficeController::class, 'showSuppliers'])->name('admin.back-office.showSuppliers');
     Route::get('/admin/back-office/categories', [BackOfficeController::class, 'showCategories'])->name('admin.back-office.showCategories');
     Route::get('/admin/back-office/carriers', [BackOfficeController::class, 'showCarriers'])->name('admin.back-office.showCarriers');
+    Route::get('/admin/back-office/customers', [BackOfficeController::class, 'showCustomers'])->name('admin.back-office.showCustomers');
     Route::get('/admin/back-office/products/new', [ProductFrontController::class, 'newProduct'])->name('new-product');
     Route::post('/admin/back-office/products/new', [ProductFrontController::class, 'create'])->name('new-product.create');
     Route::get('/admin/back-office/products/{slug}', [ProductFrontController::class, 'show'])->name('product-details');
@@ -62,6 +64,11 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'show'])->name('carriers-details');
     Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'destroy'])->name('delete-carrier');
     Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'update'])->name('carriers-details.update');
+    Route::get('/admin/back-office/customers/new', [CustomerFrontController::class, 'newCustomer'])->name('new-customer');
+    Route::post('/admin/back-office/customers/new', [CustomerFrontController::class, 'create'])->name('new-customer.create');
+    Route::get('/admin/back-office/customers/{slug}', [CustomerFrontController::class, 'show'])->name('customers-details');
+    Route::post('/admin/back-office/customers/{slug}', [CustomerFrontController::class, 'destroy'])->name('delete-customer');
+    Route::post('/admin/back-office/customers/{slug}', [CustomerFrontController::class, 'update'])->name('customers-details.update');
 });
 
 require __DIR__.'/auth.php';

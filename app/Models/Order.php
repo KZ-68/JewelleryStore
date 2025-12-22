@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Status;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -46,6 +48,14 @@ class Order extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /**
+    * The statuses that belong to the order.
+    */
+    public function statuses(): BelongsToMany
+    {
+        return $this->belongsToMany(Status::class, 'order_status', 'order_id', 'status_id')->withTimestamps();
     }
 
     /**

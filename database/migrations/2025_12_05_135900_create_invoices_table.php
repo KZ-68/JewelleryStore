@@ -13,11 +13,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->nullable()->constrained('orders');
             $table->integer('number');
-            $table->integer('delivery_number');
-            $table->timestamp('delivery_date')->nullable();
-            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

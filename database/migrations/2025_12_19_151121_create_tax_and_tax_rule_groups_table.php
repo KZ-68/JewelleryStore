@@ -18,14 +18,14 @@ return new class extends Migration
             $table->boolean('applicable')->default(true);
             $table->string('type', 20);
             $table->string('description', 128);
-            $table->integer('rate_order');
+            $table->timestamps();
         });
 
         Schema::create('tax_rules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_tax')->nullable()->constrained('taxes');
             $table->foreignId('id_country')->nullable()->constrained('countries');
-            $table->string('bahavior', 20);
+            $table->string('behavior', 20);
             $table->integer('rate_order');
         });
 

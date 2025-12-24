@@ -54,6 +54,23 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'category_product', 'product_id', 'category_id')->withTimestamps();
     }
 
+    /**
+    * The suppliers that belong to the product.
+    */
+    public function suppliers(): BelongsToMany
+    {
+        return $this->belongsToMany(Supplier::class, 'supplier_product', 'product_id', 'supplier_id')->withTimestamps();
+    }
+
+    
+    /**
+    * The orders that belong to the product.
+    */
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class, 'order_product', 'product_id', 'order_id')->withTimestamps();
+    }
+
     public function taxRuleGroup(): BelongsTo
     {
         return $this->belongsTo(TaxRuleGroup::class);

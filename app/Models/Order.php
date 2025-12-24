@@ -58,6 +58,15 @@ class Order extends Model
         return $this->belongsToMany(Status::class, 'order_status', 'order_id', 'status_id')->withTimestamps();
     }
 
+    
+    /**
+    * The products that belong to the order.
+    */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id')->withTimestamps();
+    }
+
     /**
      * Get the attributes that should be cast.
      *

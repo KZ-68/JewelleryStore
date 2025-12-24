@@ -29,9 +29,9 @@ class Group extends Model
         ];
     }
 
-        /**
-     * The categories that belong to the product.
-     */
+    /**
+    * The customers that belong to the group.
+    */
     public function customers(): BelongsToMany
     {
         return $this->belongsToMany(Customer::class, 'customer_group', 'group_id', 'customer_id')->withTimestamps();

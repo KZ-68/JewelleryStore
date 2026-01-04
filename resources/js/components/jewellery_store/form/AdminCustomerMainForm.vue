@@ -4,17 +4,21 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/vue3';
 import type { Customer } from '@/types/customer'
+import type { Group } from '@/types/group'
 
 interface AdminCustomerCreateFormProps {
     classname:string
     customer:Customer
+    groups:Group[]
 }   
 
 const props = defineProps<AdminCustomerCreateFormProps>();
+
+const checkedGroups = []
 </script>
 
 <template>
-    <section id="new-admin-customer-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-customer-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="CustomerFrontController.create.form()"
             :options="{
@@ -94,6 +98,24 @@ const props = defineProps<AdminCustomerCreateFormProps>();
                 />
                 <InputError :message="errors.password_confirmation" />
             </div>
+
+            <div class="grid gap-2">
+                <Label for="group">Customer Groups</Label>
+                <ul>
+                    <li :v-for="group in props.groups">
+                        <Input 
+                            id="group"
+                            name="group"
+                            type="checkbox"
+                            class="mt-1 block w-full"
+                            @check="checkedGroups.push(group)"
+                        />
+                    </li>
+                </ul>
+                <InputError :message="errors.group" />
+            </div>
+            <input id="checked_groups" name="checked_groups" type="hidden" :value=JSON.stringify(checkedGroups)>
+
 
             <div class="flex items-center gap-4">
                 <Button

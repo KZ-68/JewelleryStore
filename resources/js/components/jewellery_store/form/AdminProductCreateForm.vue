@@ -52,7 +52,7 @@ function log(s: string): void {
 </script>
 
 <template>
-    <section id="new-admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="ProductFrontController.create.form()"
             :reset-on-success="['product-details']"

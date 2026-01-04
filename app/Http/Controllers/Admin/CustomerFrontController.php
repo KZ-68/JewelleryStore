@@ -6,13 +6,14 @@
 namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
+use App\Models\Group;
 use Inertia\Response;
 use App\Models\Customer;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerFrontController extends Controller
 {
@@ -24,13 +25,15 @@ class CustomerFrontController extends Controller
     public function show(Request $request): Response|RedirectResponse
     {
         $customer = Customer::where('id', $request->id)->firstOrFail();
+        $groups = Group::all();
 
         if(!$customer) {
             redirect('not-found', 404);
         }
 
         return Inertia::render('admin/CustomerDetails', [
-            'customer' => $customer
+            'customer' => $customer,
+            'groups' => $groups
         ]);
     }
 
@@ -100,10 +103,17 @@ class CustomerFrontController extends Controller
                 ->withInput();
         }
 
+        
+
         $customer = Customer::where('email', $request->get('email'))->first();
         $customer->name = $request->get('name');
         $customer->email = $request->get('email');
         $customer->save();
+        if($request->get('checked_groups') !== null) {
+            $checkedGroups = json_decode($request->get('checked_groups'), true);
+            $customer->groups()->attach($checkedGroups);
+            $customer->save();
+        }
 
         return redirect('/admin/back-office/customers');
     }

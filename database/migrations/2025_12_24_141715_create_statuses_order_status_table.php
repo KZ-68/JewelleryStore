@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('statuses', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->boolean('active')->default(true);
+            $table->timestamps();
+        });
+
         Schema::create('order_status', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_id');
@@ -26,6 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('statuses');
         Schema::dropIfExists('order_status');
     }
 };

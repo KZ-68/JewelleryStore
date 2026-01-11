@@ -12,9 +12,31 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('id_tax_rule_group')->nullable()->constrained('tax_rule_groups');
             $table->foreignId('id_seller')->nullable()->constrained('sellers');
+            $table->string('name', 255);
+            $table->string('slug')->unique();
+            $table->string('description', 255)->nullable();
+            $table->string('reference', 100);
+            $table->string('ean13', 13)->nullable();
+            $table->integer('quantity');
+            $table->float('price_ht', 2);
+            $table->float('cost_price', 2);
+            $table->string('product_condition', 20)->nullable();
+            $table->string('short_description', 100)->nullable();
+            $table->string('meta_description', 255)->nullable();
+            $table->boolean('active');
+            $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('products');
+    }
 };

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\ProfileController;
-use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
-use App\Http\Controllers\Web\AddressFrontController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Web\AddressFrontController;
+use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\InvoiceFrontController;
+use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 
 Route::middleware(['role:basic', 'auth:web'])->group(function () {
     Route::redirect('settings', '/settings/profile');
@@ -25,4 +26,7 @@ Route::middleware(['role:basic', 'auth:web'])->group(function () {
     Route::post('settings/addresses', [AddressFrontController::class, 'deleteAddress'])->name('addresses.deleteAddress');
     Route::get('settings/addresses/new', [AddressFrontController::class, 'newAddress'])->name('addresses.newAddress');
     Route::post('settings/addresses/new', [AddressFrontController::class, 'create'])->name('addresses.create');
+    Route::get('settings/invoices', [InvoiceFrontController::class, 'showInvoices'])->name('invoices.showInvoices');
+    Route::post('settings/invoices/download', [InvoiceFrontController::class, 'downloadPdf'])->name('invoices.downloadPdf');
+    Route::post('settings/invoices/display', [InvoiceFrontController::class, 'displayPdf'])->name('invoices.displayPdf');
 });

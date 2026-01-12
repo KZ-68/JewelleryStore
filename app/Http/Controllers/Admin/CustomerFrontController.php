@@ -103,7 +103,6 @@ class CustomerFrontController extends Controller
                 ->withInput();
         }
 
-        
 
         $customer = Customer::where('email', $request->get('email'))->first();
         $customer->name = $request->get('name');

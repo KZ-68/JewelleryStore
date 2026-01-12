@@ -44,7 +44,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                         rows="5" 
                         cols="100"
                         min="3"
-                        max="500"
+                        max="255"
                         required
                         autofocus
                         :tabindex="2"
@@ -61,8 +61,8 @@ const props = defineProps<AdminAddressCreateFormProps>();
                         name="address_line_2"
                         rows="5" 
                         cols="100"
-                        min="3"
-                        max="500"
+                        min="0"
+                        max="255"
                         autofocus
                         :tabindex="2"
                         placeholder="..."
@@ -77,7 +77,6 @@ const props = defineProps<AdminAddressCreateFormProps>();
                         id="city"
                         type="text"
                         name="city"
-                        required
                         autofocus
                         :tabindex="1"
                         autocomplete="city"

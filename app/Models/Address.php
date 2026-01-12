@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Address extends Model
 {
@@ -40,6 +41,14 @@ class Address extends Model
     public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+    * The deliveries that belong to the address.
+    */
+    public function deliveries(): BelongsToMany
+    {
+        return $this->belongsToMany(Delivery::class, 'delivery_address', 'address_id', 'delivery_id')->withTimestamps();
     }
 
     /**

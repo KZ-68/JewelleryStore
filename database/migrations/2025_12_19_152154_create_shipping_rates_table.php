@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('shipping_rates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_carrier')->nullable()->constrained('carriers');
-            $table->foreignId('id_country')->nullable()->constrained('countries');
+            $table->foreignId('carrier_id')->nullable()->constrained('carriers');
+            $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->float('min_total', 2);
             $table->float('max_total', 2);
             $table->float('price', 2);

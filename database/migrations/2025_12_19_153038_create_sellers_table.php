@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('sellers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_customer')->constrained('customers');
+            $table->foreignId('customer_id')->constrained('customers');
             $table->string('seller_code')->unique();
             $table->timestamps();
         });
 
         Schema::create('seller_tax_informations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_seller')->nullable()->constrained('sellers');
+            $table->foreignId('seller_id')->nullable()->constrained('sellers');
             $table->string('tax_country', 2);
             $table->string('tax_type', 20);
             $table->string('tax_number', 50);

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_tax_rule_group')->nullable()->constrained('tax_rule_groups');
-            $table->foreignId('id_seller')->nullable()->constrained('sellers');
+            $table->foreignId('tax_rule_group_id')->nullable()->constrained('tax_rule_groups');
+            $table->foreignId('seller_id')->nullable()->constrained('sellers');
             $table->string('name', 255);
             $table->string('slug')->unique();
             $table->string('description', 255)->nullable();

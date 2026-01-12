@@ -22,7 +22,7 @@ Route::middleware(['role:basic', 'auth:web'])->group(function () {
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
     Route::get('settings/addresses', [AddressFrontController::class, 'showAddresses'])->name('addresses.showAddresses');
-    Route::delete('settings/addresses', [AddressFrontController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('settings/addresses', [AddressFrontController::class, 'deleteAddress'])->name('addresses.deleteAddress');
     Route::get('settings/addresses/new', [AddressFrontController::class, 'newAddress'])->name('addresses.newAddress');
     Route::post('settings/addresses/new', [AddressFrontController::class, 'create'])->name('addresses.create');
 });

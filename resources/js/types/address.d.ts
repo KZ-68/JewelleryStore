@@ -4,6 +4,7 @@ export interface Address {
     customer_id: number
     manufacturer_id: number
     supplier_id: number
+    name: string
     address_line_1: string
     address_line_2: string
     city: string

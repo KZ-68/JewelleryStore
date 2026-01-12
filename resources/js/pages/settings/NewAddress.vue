@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
+import SettingsLayout from '@/layouts/settings/Layout.vue';
 import AdminAddressCreateForm from '@/components/jewellery_store/form/AdminAddressCreateForm.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { showAddresses } from '@/routes/addresses';
@@ -15,7 +15,7 @@ const props = defineProps<NewAddressProps>()
 
 <template>
   <Head title='New Address'/>
-  <AppLayout>
+  <SettingsLayout>
     <section id="new-carrier-page-wrapper" class="flex flex-col mx-2">
       <hgroup id="new-carrier-page-top" class="mx-4 mt-8 mb-4">
         <h1 id="new-carrier-page-heading" class="text-xl">Add a new address</h1>            
@@ -25,5 +25,5 @@ const props = defineProps<NewAddressProps>()
         Back to addresses list
       </Link>
     </section>
-  </AppLayout>
+  </SettingsLayout>
 </template>

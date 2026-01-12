@@ -10,6 +10,7 @@ import { showAddresses } from '@/routes/addresses';
 import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
+import { showInvoices } from '@/routes/invoices';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -31,6 +32,10 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Addresses',
         href: showAddresses(),
+    },
+    {
+        title: 'Invoices',
+        href: showInvoices(),
     },
 ];
 

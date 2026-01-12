@@ -20,7 +20,7 @@ defineProps<AddressCardProps>()
 
 <template>
     <section id="address-card-wrapper" class="m-2">
-        <div class="border-black border-2 focus:border-red-800 rounded-lg py-4 px-8">
+        <div class="border-black border-2 focus:border-red-800 rounded-lg py-4 px-8 w-xs">
             <Button @click="deleteAddress(address.name)"><TrashIcon class="text-red-500" /></Button>
             <hgroup class="flex flex-col border-b-[2px] border-black my-2">
                 <h2 class="my-2">{{ address.name }}</h2>

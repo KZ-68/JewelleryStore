@@ -68,6 +68,14 @@ class Order extends Model
     }
 
     /**
+    * The invoices that belong to the order.
+    */
+    public function invoices(): BelongsToMany
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_order', 'order_id', 'invoice_id')->withTimestamps();
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

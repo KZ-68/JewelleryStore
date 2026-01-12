@@ -13,12 +13,12 @@ class PdfService {
     }
 
     public function display(Array $data) {
-        $pdf = Pdf::loadView('pdf.invoice_pdf', [[
+        $pdf = Pdf::loadView('pdf.invoice_pdf', [
             "invoice" => $data['invoice'],
             "address" => $data['address'],
             "customer" => $data['customer'],
             "products" => $data['products']
-        ]]);
+        ]);
     
         return $pdf->stream('invoice_pdf.pdf');
     }

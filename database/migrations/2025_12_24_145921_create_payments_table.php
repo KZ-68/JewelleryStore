@@ -20,7 +20,7 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('payment_id')->nullable()->constrained('payments');
-            $table->integer('number');
+            $table->string('number');
             $table->timestamps();
         });
     }
@@ -30,7 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
         Schema::dropIfExists('payments');
+        Schema::dropIfExists('invoices');
     }
 };

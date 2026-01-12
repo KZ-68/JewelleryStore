@@ -26,6 +26,17 @@ const props = defineProps<AdminAddressCreateFormProps>();
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
+                    <Label for="name" class="text-md">Name</Label>
+                    <Input
+                        id="name"
+                        name="name"
+                        required
+                        placeholder="Add a name..."
+                        class="bg-gray-100 p-1 rounded-md"
+                    />
+                    <InputError :message="errors.name" />
+                </div>
+                <div class="grid gap-2">
                     <Label for="address_line_1" class="text-md">Address Line 1</Label>
                     <textarea
                         id="address_line_1"

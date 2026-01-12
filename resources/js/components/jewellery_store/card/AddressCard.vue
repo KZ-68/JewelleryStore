@@ -11,8 +11,8 @@ interface AddressCardProps {
     address: Address
 }
 
-const deleteCarrier = (id: number) => {
-    router.post(route('delete-address', {id: id}, false, Ziggy), {id: id})
+const deleteAddress = (name: string) => {
+    router.post(route('addresses.deleteAddress', {name: name}, false, Ziggy), {name: name})
 }
 
 defineProps<AddressCardProps>()
@@ -21,6 +21,10 @@ defineProps<AddressCardProps>()
 <template>
     <section id="address-card-wrapper" class="m-2">
         <div class="border-black border-2 focus:border-red-800 rounded-lg py-4 px-8">
+            <Button @click="deleteAddress(address.name)"><TrashIcon class="text-red-500" /></Button>
+            <hgroup class="flex flex-col border-b-[2px] border-black my-2">
+                <h2 class="my-2">{{ address.name }}</h2>
+            </hgroup>
             <ul class="flex flex-col gap-2 py-2">
                 <li class="font-semibold">{{ address.address_line_1 }}</li>
                 <li v-if="address.address_line_2 !== null" class="font-semibold">{{ address.address_line_2 }}</li>
@@ -33,7 +37,7 @@ defineProps<AddressCardProps>()
                 <li v-if="address.locality !== null" class="font-semibold">{{ address.locality }}</li>
                 <li v-if="address.sub_locality !== null" class="font-semibold">{{ address.sub_locality }}</li>
             </ul>
+            
         </div>
-        <Button @click="deleteCarrier(address.id)"><TrashIcon class="text-red-500" /></Button>
     </section>
 </template>

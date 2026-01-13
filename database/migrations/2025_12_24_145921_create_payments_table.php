@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->foreignId('payment_id')->nullable()->constrained('payments');
             $table->string('number');
             $table->timestamps();
+            $table->date('due_date')->nullable()->after('created_at');
         });
     }
 

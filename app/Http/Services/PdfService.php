@@ -18,8 +18,13 @@ class PdfService {
             "address" => $data['address'],
             "customer" => $data['customer'],
             "products" => $data['products']
-        ]);
-    
-        return $pdf->stream('invoice_pdf.pdf');
+        ])->setPaper('A4', 'portrait')->setOptions(['isRemoteEnabled' => true,'defaultFont' => 'DejaVu Sans',]);
+        $filename = "invoice-{$data['invoice']->number}.pdf";
+
+        if(!file_exists($filename)) {
+            $pdf->save($filename, 'invoices');
+        }
+
+        return $pdf->stream();
     }
 }

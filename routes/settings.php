@@ -28,5 +28,5 @@ Route::middleware(['role:basic', 'auth:web'])->group(function () {
     Route::post('settings/addresses/new', [AddressFrontController::class, 'create'])->name('addresses.create');
     Route::get('settings/invoices', [InvoiceFrontController::class, 'showInvoices'])->name('invoices.showInvoices');
     Route::post('settings/invoices/download', [InvoiceFrontController::class, 'downloadPdf'])->name('invoices.downloadPdf');
-    Route::post('settings/invoices/display', [InvoiceFrontController::class, 'displayPdf'])->name('invoices.displayPdf');
+    Route::get('settings/invoices/display', [InvoiceFrontController::class, 'displayPdf'])->name('invoices.displayPdf');
 });

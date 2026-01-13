@@ -16,7 +16,7 @@ interface InvoicesListProps {
 // }>() 
 
 const displayPdf = (number: string) => {
-    router.post(route('invoices.displayPdf', {number: number}, false, Ziggy), {number: number})
+    window.open(route('invoices.displayPdf', {number: number}, false, Ziggy), '_blank')
 }
 
 defineProps<InvoicesListProps>()

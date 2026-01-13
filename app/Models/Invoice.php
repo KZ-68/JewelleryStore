@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Order;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Invoice extends Model
@@ -18,7 +20,15 @@ class Invoice extends Model
         'number',
     ];
 
-        
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (empty($model->due_date)) {
+                $model->due_date = Carbon::now()->addDays(30)->toDateString();
+            }
+        });
+    }
+       
     /**
     * The orders that belong to the invoice.
     */
@@ -27,15 +37,17 @@ class Invoice extends Model
         return $this->belongsToMany(Order::class, 'invoice_order', 'invoice_id', 'order_id')->withTimestamps();
     }
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected function createdAt(): Attribute
     {
-        return [
-            'created_at' => 'datetime:Y-m-d H:i:s'
-        ];
+        return Attribute::make(
+            get: fn ($value) => \Carbon\Carbon::parse($value)->toDateString(),
+        );
+    }
+
+    protected function dueDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => \Carbon\Carbon::parse($value)->toDateString(),
+        );
     }
 }

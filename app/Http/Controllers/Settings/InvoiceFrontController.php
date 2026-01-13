@@ -82,6 +82,6 @@ class InvoiceFrontController extends Controller
             "products" => $order->products
         ];
 
-        $pdfService->display($data);
+        return $pdfService->display($data);
     }
 }

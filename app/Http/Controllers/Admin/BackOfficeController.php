@@ -6,16 +6,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Tax;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Carrier;
 use App\Models\Product;
+use App\Models\TaxRule;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Manufacturer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Customer;
+use App\Models\TaxRuleGroup;
 
 class BackOfficeController extends Controller
 {
@@ -195,6 +198,44 @@ class BackOfficeController extends Controller
             'admin/Customers', 
             [
                 'customers' => $customers,
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the taxes and tax rules list page
+     * @var mixed $sortBy Get taxes sorted by name by default
+     * @var mixed $order Get taxes order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showTaxes(Request $request): Response
+    {
+        // Create filters for dynamic change on the taxes list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $taxes = Tax::orderBy($sortBy, $order)->get();
+        // Tax Rule Groups data
+        $taxRuleGroups = TaxRuleGroup::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Taxes', 
+            [
+                'taxes' => $taxes,
+                'taxRuleGroups' => $taxRuleGroups,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
             ]
         );
     }

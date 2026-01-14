@@ -31,8 +31,8 @@ class TaxRule extends Model
         return $this->belongsTo(Tax::class);
     }
 
-    public function taxRuleGroups(): HasMany
+    public function taxRuleGroup(): BelongsTo
     {
-        return $this->hasMany(TaxRuleGroup::class);
+        return $this->belongsTo(TaxRuleGroup::class);
     }
 }

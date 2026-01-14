@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\TaxRule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TaxRuleGroup extends Model
 {
@@ -20,8 +20,8 @@ class TaxRuleGroup extends Model
         'active'
     ];
 
-    public function taxRule(): BelongsTo
+    public function taxRules(): HasMany
     {
-        return $this->belongsTo(TaxRule::class);
+        return $this->hasMany(TaxRule::class);
     }
 }

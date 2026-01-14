@@ -88,7 +88,8 @@ class ProductFrontController extends Controller
             'reference' => 'required|string|max:100',
             'ean13' => 'string|nullable|max:13',
             'quantity' => 'required|integer|numeric|min:0|max:10000000',
-            'retailPrice' => 'required|decimal:0,2',
+            'price_ht' => 'required|decimal:0,2',
+            'cost_price' => 'required|decimal:0,2',
             'active' => 'required|boolean'
         ]);
 
@@ -104,7 +105,8 @@ class ProductFrontController extends Controller
         $product->reference = $request->get('reference');
         $product->ean13 = $request->get('ean13');
         $product->quantity = $request->get('quantity');
-        $product->retailPrice = $request->get('retailPrice');
+        $product->price_ht = $request->get('price_ht');
+        $product->cost_price = $request->get('cost_price');
         $product->active = $request->get('active');
         $product->save();
         $product->categories()->attach($categories);
@@ -126,7 +128,8 @@ class ProductFrontController extends Controller
             'reference' => 'required|string|max:100',
             'ean13' => 'string|nullable|max:13',
             'quantity' => 'required|integer|numeric|min:0|max:10000000',
-            'retailPrice' => 'required|decimal:0,2'        
+            'price_ht' => 'required|decimal:0,2',
+            'cost_price' => 'required|decimal:0,2',  
         ]);
 
         if ($validator->fails()) {
@@ -141,7 +144,9 @@ class ProductFrontController extends Controller
         $product->reference = $request->get('reference');
         $product->ean13 = $request->get('ean13');
         $product->quantity = $request->get('quantity');
-        $product->retailPrice = $request->get('retailPrice');
+        $product->price_ht = $request->get('price_ht');
+        $product->cost_price = $request->get('cost_price');
+        $product->active = $request->get('active');
         $product->save();
 
         return redirect('/admin/back-office/products');

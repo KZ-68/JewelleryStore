@@ -11,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { showBO, showManufacturers, showProducts, showSuppliers, showCategories } from '@/routes/admin/back-office';
+import { showBO, showManufacturers, showProducts, showSuppliers, showCategories, showTaxes } from '@/routes/admin/back-office';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid } from 'lucide-vue-next';
@@ -41,6 +41,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Categories',
         href: showCategories(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Taxes and Tax Rules',
+        href: showTaxes(),
         icon: LayoutGrid,
     },
 ];

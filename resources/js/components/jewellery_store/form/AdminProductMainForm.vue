@@ -102,19 +102,35 @@ const props = defineProps<AdminProductMainFormProps>();
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="retailPrice" class="text-lg">Retail Price</Label>
+                    <Label for="price_ht" class="text-lg">Price without Tax</Label>
                     <Input
-                        id="retail-price"
+                        id="price_ht"
                         type="number" 
-                        name="retailPrice"
-                        step="0.0"
+                        name="price_ht"
+                        step=".01"
                         required
                         :tabindex="5"
-                        :default-value=props.product.retailPrice
+                        :default-value=props.product.price_ht
                         class="bg-gray-100 p-1 rounded-md"
                     />
-                    <InputError :message="errors.retailPrice" />
+                    <InputError :message="errors.cost_price" />
                 </div>
+
+                <div class="grid gap-2">
+                    <Label for="cost_price" class="text-lg">Cost price</Label>
+                    <Input
+                        id="cost_price"
+                        type="number" 
+                        name="cost_price"
+                        step=".01"
+                        required
+                        :tabindex="5"
+                        :default-value=props.product.cost_price
+                        class="bg-gray-100 p-1 rounded-md"
+                    />
+                    <InputError :message="errors.cost_price" />
+                </div>
+
                 <section id="admin-product-details-footer" class="flex flex-row gap-4 py-8">
                     <Button
                     type="submit"

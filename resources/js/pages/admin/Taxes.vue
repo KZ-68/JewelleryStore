@@ -5,7 +5,8 @@ import type { Tax } from '@/types/tax'
 import type { TaxRuleGroup } from '@/types/taxRuleGroup'
 import TaxesList from '@/components/jewellery_store/list/taxes/TaxesList.vue'
 import TaxRuleGroupsList from '@/components/jewellery_store/list/taxes/TaxRuleGroupsList.vue'
-import { newTax, newTaxRuleGroup } from '@/actions/App/Http/Controllers/Admin/TaxFrontController';
+import { newTax } from '@/actions/App/Http/Controllers/Admin/TaxFrontController';
+import { newTaxRuleGroup } from '@/actions/App/Http/Controllers/Admin/TaxRuleGroupFrontController';
 import { router } from '@inertiajs/vue3'
 import { ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';

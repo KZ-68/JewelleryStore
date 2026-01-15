@@ -39,7 +39,7 @@ const navigate = (url: string) => {
   router.visit(url, { preserveScroll: true, preserveState: true })
 }
 
-const activetab = ref(1;
+const activetab = ref(1);
 </script>
 
 <template>
@@ -103,7 +103,7 @@ const activetab = ref(1;
                       :href="newTaxRuleGroup()"
                       class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                   >
-                      Add a tax
+                      Create a new tax rule
                   </Link>
                 </nav>
               </section>

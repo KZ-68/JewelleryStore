@@ -73,7 +73,7 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::post('/admin/back-office/customers/{slug}', [CustomerFrontController::class, 'update'])->name('customers-details.update');
     Route::get('/admin/back-office/taxes/new', [TaxFrontController::class, 'newTax'])->name('new-tax');
     Route::post('/admin/back-office/taxes/new', [TaxFrontController::class, 'create'])->name('new-tax.create');
-    Route::get('/admin/back-office/taxes/{slug}', [TaxFrontController::class, 'show'])->name('taxes-details');
+    Route::get('/admin/back-office/taxes/{slug}', [TaxFrontController::class, 'show'])->name('tax-details');
     Route::post('/admin/back-office/taxes/{slug}', [TaxFrontController::class, 'update'])->name('tax-details.update');
     Route::get('/admin/back-office/taxes/rule-groups/new', [TaxFrontController::class, 'newTaxRuleGroup'])->name('new-tax-rule-group');
     Route::post('/admin/back-office/taxes/rule-groups/new', [TaxFrontController::class, 'createRuleGroup'])->name('new-tax-rule-group.create');

@@ -16,7 +16,7 @@ interface TaxesListProps {
 //   (e: 'navigate', url: string): void
 // }>() 
 
-defineProps<TaxesListProps>()
+const props = defineProps<TaxesListProps>()
 </script>
 
 <template>
@@ -31,13 +31,13 @@ defineProps<TaxesListProps>()
                     <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Edit</th>
                 </tr>
             </thead>
-            <tbody v-if="taxes.length > 0" id="taxes-list">
-                <tr v-for="tax in taxes" v-bind:key="tax.id" class="flex flex-row gap-[5%] items-center justify-around bg-gray-200 py-2 px-3 my-4 rounded-md h-[5rem]">
+            <tbody v-if="props.taxes.length > 0" id="taxes-list">
+                <tr v-for="tax in props.taxes" v-bind:key="tax.id" class="flex flex-row gap-[5%] items-center justify-around bg-gray-200 py-2 px-3 my-4 rounded-md h-[5rem]">
                     <th scope="row" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.id }}</th>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.name }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.rate }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.applicable }}</td>
-                    <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('admin.back-office.taxes.show', {slug: tax.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
+                    <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('tax-details', {slug: tax.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
                 </tr>
             </tbody>
             <tbody v-else id="taxes-list">

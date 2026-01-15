@@ -19,7 +19,7 @@ const isApplicable = ref(props.tax.applicable);
 <template>
     <section id="admin-tax-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="TaxFrontController.update.form({ name: props.tax.name })"
+            v-bind="TaxFrontController.update.form({ slug: props.tax.slug })"
             :reset-on-success="['tax-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -43,8 +43,8 @@ const isApplicable = ref(props.tax.applicable);
                 <div class="grid gap-2">
                     <Label for="applicable" class="text-lg">Applicable ?</Label>
                     <select v-model="isApplicable" id="applicable" name="applicable" required>
-                        <option :value=true>Yes</option>
-                        <option :value=false>No</option>
+                        <option :value="1">Yes</option>
+                        <option :value="0">No</option>
                     </select>
                 </div>
                 

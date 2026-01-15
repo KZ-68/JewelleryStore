@@ -50,7 +50,7 @@ const props = defineProps<AdminTaxCreateFormProps>();
                         name="type"
                         required
                         autofocus
-                        :tabindex="1"
+                        :tabindex="3"
                         placeholder="Add a type..."
                         class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
                     />
@@ -64,7 +64,7 @@ const props = defineProps<AdminTaxCreateFormProps>();
                         type="text"
                         name="description"
                         autofocus
-                        :tabindex="1"
+                        :tabindex="4"
                         placeholder="Add a description..."
                         class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
                     />

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignId('payment_id')->nullable()->constrained('payments');
             $table->string('number');
             $table->timestamps();
-            $table->date('due_date')->nullable()->after('created_at');
+            $table->date('due_date')->nullable();
         });
     }
 

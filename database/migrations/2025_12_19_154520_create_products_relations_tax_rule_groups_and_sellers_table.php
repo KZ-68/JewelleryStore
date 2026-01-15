@@ -11,6 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('category_product');
+        Schema::dropIfExists('products');
+
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tax_rule_group_id')->nullable()->constrained('tax_rule_groups');
@@ -29,6 +32,15 @@ return new class extends Migration
             $table->boolean('active');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
+        });
+
+        Schema::create('category_product', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('category_id');
+            $table->timestamps();
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 

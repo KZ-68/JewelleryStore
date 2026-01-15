@@ -9,16 +9,15 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Tax;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Carrier;
+
 use App\Models\Product;
-use App\Models\TaxRule;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Manufacturer;
+use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\TaxRuleGroup;
 
 class BackOfficeController extends Controller
 {

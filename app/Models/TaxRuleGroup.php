@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TaxRuleGroup extends Model
 {
-    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *

@@ -22,7 +22,7 @@ class TaxFrontController extends Controller
     */
     public function show(Request $request): Response|RedirectResponse
     {
-        $tax = Tax::where('name', $request->name)->firstOrFail();
+        $tax = Tax::where('slug', $request->slug)->firstOrFail();
 
         if(!$tax) {
             redirect('not-found', 404);
@@ -51,23 +51,22 @@ class TaxFrontController extends Controller
     public function create(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'rate' => 'required|float',     
+            'rate' => 'required|decimal:0,2',     
             'applicable' => 'required|boolean',
             'type' => 'required|string|max:20',
-            'description' => 'string|max:128'
+            'description' => 'string|nullable|max:128'
         ]);
 
         if ($validator->fails()) {
+            dd('test');
             return redirect('/admin/back-office/taxes')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         $tax = new Tax;
-        $tax = Tax::where('name', $request->get('name'))->first();
         $taxRatePercent = $request->get('rate') * 100;
-        $tax->name = `{$request->get('type')} $taxRatePercent`;
+        $tax->name = "{$request->get('type')} {$taxRatePercent} %";
         $tax->rate = $request->get('rate');
         $tax->applicable = $request->get('applicable');
         $tax->type = $request->get('type');
@@ -88,11 +87,10 @@ class TaxFrontController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'rate' => 'required|float',     
+            'rate' => 'required|decimal:0,2',     
             'applicable' => 'required|boolean',
             'type' => 'required|string|max:20',
-            'description' => 'string|max:128'
+            'description' => 'string|nullable|max:128'
         ]);
 
         if ($validator->fails()) {

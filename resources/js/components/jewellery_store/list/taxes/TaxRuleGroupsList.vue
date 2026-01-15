@@ -7,7 +7,7 @@ import { FileEditIcon } from 'lucide-vue-next';
 
 interface TaxRuleGroupsListProps {
     classname:string
-    taxRuleGroups: TaxRuleGroup[]
+    taxRuleGroups: TaxRuleGroup[]    
     sortBy: string
     order: 'asc' | 'desc'
 }
@@ -34,7 +34,7 @@ defineProps<TaxRuleGroupsListProps>()
             <tbody v-if="taxRuleGroups.length > 0" id="tax-rule-groups-list">
                 <tr v-for="taxRuleGroup in taxRuleGroups" v-bind:key="taxRuleGroup.id" class="flex flex-row gap-[5%] items-center justify-around bg-gray-200 py-2 px-3 my-4 rounded-md h-[5rem]">
                     <th scope="row" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ taxRuleGroup.id }}</th>
-                    <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('admin.back-office.taxes.showRules', {slug: taxRuleGroup.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
+                    <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('admin.back-office.taxes.showRuleGroup', {slug: taxRuleGroup.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
                 </tr>
             </tbody>
             <tbody v-else id="tax-rule-groups-list">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TaxFrontController from '@/actions/App/Http/Controllers/Admin/TaxFrontController';
+import TaxRuleGroupFrontController from '@/actions/App/Http/Controllers/Admin/TaxRuleGroupFrontController';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Country } from '@/types/country';
@@ -8,21 +8,21 @@ import { Form } from '@inertiajs/vue3';
 import { ref } from "vue";
 
 interface AdminTaxRuleGroupCreateFormProps {
-    classname:string;
+    classname:string
     countries: Country[]
     taxes: Tax[]
 }   
 
 const props = defineProps<AdminTaxRuleGroupCreateFormProps>();
 
-const countriesSelected = ref(['']);
-const taxSelected = ref('');
+const selectedCountries = ref([]);
+const selectedTax = ref('');
 </script>
 
 <template>
     <section id="new-admin-tax-rule-group-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
         <Form
-            v-bind="TaxFrontController.create.form()"
+            v-bind="TaxRuleGroupFrontController.createRuleGroup.form()"
             :reset-on-success="['tax-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -53,20 +53,20 @@ const taxSelected = ref('');
 
                 <div class="grid gap-2">
                     <Label for="country" class="text-md">Countries</Label>
-                    <select name="countries" v-model="countriesSelected" class="border-2 rounded-md">
+                    <select name="countries" v-model="selectedCountries" class="border-2 rounded-md" multiple>
                         <option value="">--Please choose a country--</option>
-                        <option v-for="country in countries" :value="country.local">{{ country.name }}</option>
+                        <option v-for="country in countries" :value="country.local" :key="country.id">{{ country.name }}</option>
                     </select>
-                   <input id="country" name="country" type="hidden" :value=countriesSelected>
+                    <input id="selected-countries" name="selected-countries" type="hidden" :value=JSON.stringify(selectedCountries)>
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="taxes" class="text-md">Taxes</Label>
-                    <select name="taxes" v-model="taxSelected" class="border-2 rounded-md">
+                    <select name="taxes" v-model="selectedTax" class="border-2 rounded-md">
                         <option value="">--Please choose a tax--</option>
-                        <option v-for="tax in taxes" :value="tax.name">{{ tax.name }}</option>
+                        <option v-for="tax in taxes" :value="tax.name" :key="tax.id">{{ tax.name }}</option>
                     </select>
-                   <input id="tax" name="tax" type="hidden" :value=taxSelected>
+                   <input id="tax" name="tax" type="hidden" :value=selectedTax>
                 </div>
 
                 <div class="grid gap-2">

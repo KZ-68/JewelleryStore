@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 128);
             $table->string('slug')->unique();
-            $table->decimal('rate', 2, 2);
+            $table->decimal('rate', 6, 2);
             $table->boolean('applicable')->default(true);
             $table->string('type', 20);
             $table->string('description', 128)->nullable();
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->boolean('active')->default(true);
+            $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
 
         Schema::create('tax_rules', function (Blueprint $table) {
@@ -36,8 +38,6 @@ return new class extends Migration
             $table->foreignId('tax_rule_group_id')->nullable()->constrained('tax_rule_groups');
             $table->string('behavior', 20);
             $table->integer('rate_order');
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 

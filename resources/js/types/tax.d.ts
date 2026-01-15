@@ -1,6 +1,7 @@
 export interface Tax {
     id: number
     name: string
+    slug: string
     rate: number
     applicable: boolean
     type: string

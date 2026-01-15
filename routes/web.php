@@ -1,17 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\BackOfficeController;
-use App\Http\Controllers\Admin\CategoryFrontController;
-use App\Http\Controllers\Admin\ProductFrontController;
-use App\Http\Controllers\Admin\ManufacturerFrontController;
-use App\Http\Controllers\Admin\SupplierFrontController;
-use App\Http\Controllers\Admin\CarrierFrontController;
-use App\Http\Controllers\Admin\CustomerFrontController;
-use App\Http\Controllers\Admin\TaxFrontController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\Admin\TaxFrontController;
+use App\Http\Controllers\Admin\BackOfficeController;
+use App\Http\Controllers\Admin\CarrierFrontController;
+use App\Http\Controllers\Admin\ProductFrontController;
+use App\Http\Controllers\Admin\CategoryFrontController;
+use App\Http\Controllers\Admin\CustomerFrontController;
+use App\Http\Controllers\Admin\SupplierFrontController;
+use App\Http\Controllers\Admin\ManufacturerFrontController;
+use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
 
 Route::get('/', function () {
     return Inertia::render('Home');
@@ -75,10 +76,10 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::post('/admin/back-office/taxes/new', [TaxFrontController::class, 'create'])->name('new-tax.create');
     Route::get('/admin/back-office/taxes/{slug}', [TaxFrontController::class, 'show'])->name('tax-details');
     Route::post('/admin/back-office/taxes/{slug}', [TaxFrontController::class, 'update'])->name('tax-details.update');
-    Route::get('/admin/back-office/taxes/rule-groups/new', [TaxFrontController::class, 'newTaxRuleGroup'])->name('new-tax-rule-group');
-    Route::post('/admin/back-office/taxes/rule-groups/new', [TaxFrontController::class, 'createRuleGroup'])->name('new-tax-rule-group.create');
-    Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxFrontController::class, 'showRuleGroups'])->name('tax-rule-group-details');
-    Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxFrontController::class, 'updateRuleGroups'])->name('tax-rule-group-details.update');
+    Route::get('/admin/back-office/taxes/rule-groups/new', [TaxRuleGroupFrontController::class, 'newTaxRuleGroup'])->name('new-tax-rule-group');
+    Route::post('/admin/back-office/taxes/rule-groups/new', [TaxRuleGroupFrontController::class, 'createRuleGroup'])->name('new-tax-rule-group.create');
+    Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'showRuleGroup'])->name('tax-rule-group-details');
+    Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'updateRuleGroup'])->name('tax-rule-group-details.update');
 });
 
 require __DIR__.'/auth.php';

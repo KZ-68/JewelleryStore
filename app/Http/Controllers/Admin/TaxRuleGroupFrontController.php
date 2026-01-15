@@ -23,7 +23,7 @@ class TaxRuleGroupFrontController extends Controller
     * @param Request Get the request, via GET method
     * @return Response|RedirectResponse Return an Inertia Object response with the rendered view or a redirection
     */
-    public function show(Request $request): Response|RedirectResponse
+    public function showRuleGroup(Request $request): Response|RedirectResponse
     {
         $taxRuleGroup = TaxRuleGroup::where('name', $request->name)->firstOrFail();
 
@@ -43,7 +43,12 @@ class TaxRuleGroupFrontController extends Controller
     */
     public function newTaxRuleGroup(Request $request): Response|RedirectResponse
     {
-        return Inertia::render('admin/NewTaxRuleGroup', []);
+        $taxes = Tax::all();
+        $countries = Country::all();
+        return Inertia::render('admin/NewTaxRuleGroup', [
+            'taxes' => $taxes,
+            'countries' => $countries
+        ]);
     }
 
     /**
@@ -51,7 +56,7 @@ class TaxRuleGroupFrontController extends Controller
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
     */
-    public function create(Request $request): RedirectResponse
+    public function createRuleGroup(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -69,13 +74,15 @@ class TaxRuleGroupFrontController extends Controller
         $taxRuleGroup->active = $request->get('active');
         $taxRuleGroup->save();
         $taxRuleGroup = TaxRuleGroup::where('name', $request->get('name'))->first();
-
-        if(count($request->get('countries')) > 1) {
-            foreach ($request->get('countries') as $country) {
+        $selectedCountries = json_decode($request->get('selected-countries'), true);
+        if(count($selectedCountries) > 1) {
+            foreach ($selectedCountries as $countryLocal) {
                 $taxRule = new TaxRule;
                 $taxRule->tax()->associate(Tax::where('name', $request->get('tax'))->first());
-                $taxRule->country()->associate(Country::where('local', $country->local)->first());
+                $taxRule->country()->associate(Country::where('local', $countryLocal)->first());
                 $taxRule->taxRuleGroup()->associate($taxRuleGroup);
+                $taxRule->behavior = $request->get('behavior');
+                $taxRule->rate_order = $request->get('rate_order');
                 $taxRule->save();
                 $taxRule = null;
             }
@@ -87,7 +94,7 @@ class TaxRuleGroupFrontController extends Controller
             $taxRule->save();
         }
         
-        return redirect('/admin/back-office/taxes/rule-groups');
+        return redirect('/admin/back-office/taxes');
     }
 
     /**
@@ -95,7 +102,7 @@ class TaxRuleGroupFrontController extends Controller
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
     */
-    public function update(Request $request): RedirectResponse
+    public function updateRuleGroup(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

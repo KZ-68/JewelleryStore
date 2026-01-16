@@ -22,6 +22,7 @@ class Product extends Model
         'ean13',
         'quantity',
         'cost_price',
+        'retail_price',
         'price_ht',
         'active',
         'product_condition',
@@ -62,7 +63,6 @@ class Product extends Model
         return $this->belongsToMany(Supplier::class, 'supplier_product', 'product_id', 'supplier_id')->withTimestamps();
     }
 
-    
     /**
     * The orders that belong to the product.
     */

@@ -7,14 +7,16 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Product;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Controller;
-use App\Models\Category;
 use Nette\Utils\Json;
-
+use App\Models\Product;
+use App\Models\TaxRule;
+use App\Models\Category;
+use App\Models\TaxRuleGroup;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Services\Tax\TaxCalculatorService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 class ProductFrontController extends Controller
 {
     /**
@@ -25,6 +27,7 @@ class ProductFrontController extends Controller
     public function show(Request $request): Response|RedirectResponse
     {
         $product = Product::where('slug', $request->slug)->firstOrFail();
+        $taxRuleGroups = TaxRuleGroup::all();
 
         if(!$product) {
             redirect('not-found', 404);
@@ -32,7 +35,8 @@ class ProductFrontController extends Controller
 
         return Inertia::render('admin/ProductDetails', [
             'slug' => $product->slug,
-            'product' => $product
+            'product' => $product,
+            'taxRuleGroups' => $taxRuleGroups
         ]);
     }
 
@@ -124,12 +128,12 @@ class ProductFrontController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'description' => 'string|min:0|max:500',
+            'description' => 'string|nullable|min:0|max:500',
             'reference' => 'required|string|max:100',
             'ean13' => 'string|nullable|max:13',
             'quantity' => 'required|integer|numeric|min:0|max:10000000',
             'price_ht' => 'required|decimal:0,2',
-            'cost_price' => 'required|decimal:0,2',  
+            'cost_price' => 'required|decimal:0,2'
         ]);
 
         if ($validator->fails()) {
@@ -146,7 +150,12 @@ class ProductFrontController extends Controller
         $product->quantity = $request->get('quantity');
         $product->price_ht = $request->get('price_ht');
         $product->cost_price = $request->get('cost_price');
-        $product->active = $request->get('active');
+        if($request->get('tax_rule_group_id') !== null) {
+            $taxCalculator = new TaxCalculatorService;
+            $taxRule = TaxRule::where('id', $request->get('tax_rule_group_id'))->first();
+            $product->retail_price = $taxCalculator->withTax($request->get('price_ht'), $taxRule->tax->rate);
+            $product->taxRuleGroup()->associate($request->get('tax_rule_group_id'));
+        }
         $product->save();
 
         return redirect('/admin/back-office/products');

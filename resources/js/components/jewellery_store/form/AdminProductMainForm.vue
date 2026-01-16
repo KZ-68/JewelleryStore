@@ -4,13 +4,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/vue3';
 import type { Product } from '@/types/product'
+import { TaxRuleGroup } from '@/types/taxRuleGroup';
+import { ref, setBlockTracking } from "vue";
 
 interface AdminProductMainFormProps {
     classname:string;
     product: Product;
+    taxRuleGroups: TaxRuleGroup[]
 }   
 
 const props = defineProps<AdminProductMainFormProps>();
+const selectedTaxRuleGroup = ref('');
 </script>
 
 <template>
@@ -21,8 +25,11 @@ const props = defineProps<AdminProductMainFormProps>();
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
         >
-            <div class="grid gap-6">
-                <div class="grid gap-2">
+            <div id="product-page-header-wrapper" class="flex flex-row gap-6 align-center items-center px-8 py-10">
+                <figure class="border h-40 w-40">
+                    <figcaption>An product image</figcaption>
+                </figure>
+                <h1 id="product-heading">
                     <Input
                         id="name"
                         type="text"
@@ -34,9 +41,10 @@ const props = defineProps<AdminProductMainFormProps>();
                         :default-value=props.product.name
                         class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
                     />
-                    <InputError :message="errors.name" />
-                </div>
-
+                </h1>
+                <InputError :message="errors.name" />
+            </div>
+            <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="description" class="text-lg">Product Description</Label>
                     <textarea
@@ -129,6 +137,14 @@ const props = defineProps<AdminProductMainFormProps>();
                         class="bg-gray-100 p-1 rounded-md"
                     />
                     <InputError :message="errors.cost_price" />
+                </div>
+
+                <div>
+                    <Label for="taxRuleGroups" class="text-base">Select a tax rule group :</Label>
+                    <select v-model="selectedTaxRuleGroup" id="taxRuleGroups" name="taxRuleGroups" class="border-2 rounded-md">
+                        <option v-for="taxRuleGroup in taxRuleGroups" :value="taxRuleGroup.id" :key="taxRuleGroup.id">{{ taxRuleGroup.name }}</option>
+                    </select>
+                    <input id="tax_rule_group_id" name="tax_rule_group_id" type="hidden" :value=selectedTaxRuleGroup>
                 </div>
 
                 <section id="admin-product-details-footer" class="flex flex-row gap-4 py-8">

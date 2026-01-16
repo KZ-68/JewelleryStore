@@ -25,14 +25,20 @@ class TaxRuleGroupFrontController extends Controller
     */
     public function showRuleGroup(Request $request): Response|RedirectResponse
     {
-        $taxRuleGroup = TaxRuleGroup::where('name', $request->name)->firstOrFail();
+        $taxRuleGroup = TaxRuleGroup::where('slug', $request->slug)->first();
+        $taxRules = $taxRuleGroup->taxRules;
+        $countries = Country::all();
+        $taxes = Tax::all();
 
         if(!$taxRuleGroup) {
             redirect('not-found', 404);
         }
 
         return Inertia::render('admin/TaxRuleGroupDetails', [
-            'taxRuleGroup' => $taxRuleGroup
+            'taxRuleGroup' => $taxRuleGroup,
+            'taxRules' => $taxRules,
+            'countries' => $countries,
+            'taxes' => $taxes
         ]);
     }
 
@@ -91,6 +97,8 @@ class TaxRuleGroupFrontController extends Controller
             $taxRule->tax()->associate(Tax::where('name', $request->get('tax'))->first());
             $taxRule->country()->associate(Country::where('local', $request->get('countries'))->first());
             $taxRule->taxRuleGroup()->associate($taxRuleGroup);
+            $taxRule->behavior = $request->get('behavior');
+            $taxRule->rate_order = $request->get('rate_order');
             $taxRule->save();
         }
         
@@ -118,7 +126,21 @@ class TaxRuleGroupFrontController extends Controller
         $taxRuleGroup = TaxRuleGroup::where('name', $request->get('name'))->first();
         $taxRuleGroup->active = $request->get('active');
         $taxRuleGroup->save();
+        $taxRules = $taxRuleGroup->taxRules;
 
+        foreach ($taxRules as $taxRule) {
+            $taxRule->tax()->disassociate();
+            $taxRule->tax()->associate(Tax::where('name', $request->get('tax'))->first());
+            $taxRule->country()->disassociate();
+            $taxRule->country()->associate(Country::where('id', $request->get('selected-country'))->first());
+            $taxRule->taxRuleGroup()->disassociate();
+            $taxRule->taxRuleGroup()->associate($taxRuleGroup);
+            $taxRule->behavior = $request->get('behavior');
+            $taxRule->rate_order = $request->get('rate_order');
+            $taxRule->save();
+            
+        }
+        
         return redirect('/admin/back-office/taxes/rule-groups');
     }
 }

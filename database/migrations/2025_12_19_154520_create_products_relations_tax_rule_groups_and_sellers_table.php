@@ -25,11 +25,12 @@ return new class extends Migration
             $table->string('ean13', 13)->nullable();
             $table->integer('quantity');
             $table->decimal('price_ht', 20, 6);
+            $table->decimal('retail_price', 20, 6);
             $table->decimal('cost_price', 20, 6);
             $table->string('product_condition', 20)->nullable();
             $table->string('short_description', 100)->nullable();
             $table->string('meta_description', 255)->nullable();
-            $table->boolean('active');
+            $table->boolean('active')->default(true);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

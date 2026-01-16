@@ -38,6 +38,7 @@ return new class extends Migration
             $table->foreignId('tax_rule_group_id')->nullable()->constrained('tax_rule_groups');
             $table->string('behavior', 20);
             $table->integer('rate_order');
+            $table->timestamps();
         });
     }
 

@@ -79,7 +79,7 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/taxes/rule-groups/new', [TaxRuleGroupFrontController::class, 'newTaxRuleGroup'])->name('new-tax-rule-group');
     Route::post('/admin/back-office/taxes/rule-groups/new', [TaxRuleGroupFrontController::class, 'createRuleGroup'])->name('new-tax-rule-group.create');
     Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'showRuleGroup'])->name('tax-rule-group-details');
-    Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'updateRuleGroup'])->name('tax-rule-group-details.update');
+    Route::post('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'updateRuleGroup'])->name('tax-rule-group-details.update');
 });
 
 require __DIR__.'/auth.php';

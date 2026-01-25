@@ -24,14 +24,17 @@ class CarrierFrontController extends Controller
     public function show(Request $request): Response|RedirectResponse
     {
         $carrier = Carrier::where('slug', $request->slug)->firstOrFail();
+        $countries = Country::all();
 
         if(!$carrier) {
             redirect('not-found', 404);
         }
 
-        return Inertia::render('admin/CarrierDetails', [
+        return Inertia::render('admin/CarrierManagement', [
             'slug' => $carrier->slug,
-            'carrier' => $carrier
+            'carrier' => $carrier,
+            'countries' => $countries,
+            'isUpdate' => true
         ]);
     }
 

@@ -44,6 +44,11 @@ class Carrier extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function shippingRates(): HasMany
+    {
+        return $this->hasMany(ShippingRate::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

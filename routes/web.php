@@ -6,12 +6,14 @@ use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Admin\TaxFrontController;
 use App\Http\Controllers\Admin\BackOfficeController;
+use App\Http\Controllers\Admin\CarrierDataFrontController;
 use App\Http\Controllers\Admin\CarrierFrontController;
 use App\Http\Controllers\Admin\ProductFrontController;
 use App\Http\Controllers\Admin\CategoryFrontController;
 use App\Http\Controllers\Admin\CustomerFrontController;
 use App\Http\Controllers\Admin\SupplierFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
+use App\Http\Controllers\Admin\ShippingRateFrontController;
 use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
 
 Route::get('/', function () {
@@ -64,9 +66,9 @@ Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office/categories/{id}/sub-categories', [CategoryFrontController::class, 'showSubCategories'])->name('admin.back-office.showSubCategories');
     Route::get('/admin/back-office/carriers/new', [CarrierFrontController::class, 'newCarrier'])->name('new-carrier');
     Route::post('/admin/back-office/carriers/new', [CarrierFrontController::class, 'create'])->name('new-carrier.create');
-    Route::get('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'show'])->name('carriers-details');
+    Route::get('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'show'])->name('carrier-management');
     Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'destroy'])->name('delete-carrier');
-    Route::post('/admin/back-office/carriers/{slug}', [CarrierFrontController::class, 'update'])->name('carriers-details.update');
+    Route::post('/admin/back-office/carriers/{slug}', [CarrierDataFrontController::class, 'carrierManagementUpdate'])->name('carrierManagementUpdate');
     Route::get('/admin/back-office/customers/new', [CustomerFrontController::class, 'newCustomer'])->name('new-customer');
     Route::post('/admin/back-office/customers/new', [CustomerFrontController::class, 'create'])->name('new-customer.create');
     Route::get('/admin/back-office/customers/{slug}', [CustomerFrontController::class, 'show'])->name('customers-details');

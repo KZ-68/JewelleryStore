@@ -5,16 +5,18 @@ import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/vue3';
 import type { Product } from '@/types/product'
 import { TaxRuleGroup } from '@/types/taxRuleGroup';
-import { ref, setBlockTracking } from "vue";
+import { ref } from "vue";
 
 interface AdminProductMainFormProps {
     classname:string;
     product: Product;
     taxRuleGroups: TaxRuleGroup[]
+    priceWithTax: number
+    taxRuleGroupId: number
 }   
 
 const props = defineProps<AdminProductMainFormProps>();
-const selectedTaxRuleGroup = ref('');
+const selectedTaxRuleGroup = ref(props.taxRuleGroupId ? props.taxRuleGroupId : '');
 </script>
 
 <template>
@@ -122,6 +124,11 @@ const selectedTaxRuleGroup = ref('');
                         class="bg-gray-100 p-1 rounded-md"
                     />
                     <InputError :message="errors.cost_price" />
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <p>Price with tax :</p>
+                    <data class="price-with-tax" :value=props.priceWithTax>{{ props.priceWithTax }}</data>
                 </div>
 
                 <div class="grid gap-2">

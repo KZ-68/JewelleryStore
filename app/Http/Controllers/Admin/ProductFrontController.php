@@ -28,6 +28,11 @@ class ProductFrontController extends Controller
     {
         $product = Product::where('slug', $request->slug)->firstOrFail();
         $taxRuleGroups = TaxRuleGroup::all();
+        $selectedTaxRuleGroup = $product->taxRuleGroup;
+        $taxRule = TaxRule::where('tax_rule_group_id', $selectedTaxRuleGroup->id)->firstOrFail();
+        $tax = $taxRule->tax;
+        $calculator = new TaxCalculatorService;
+        $priceWithTax = $calculator->withTax($product->price_ht, $tax->percentage);
 
         if(!$product) {
             redirect('not-found', 404);
@@ -36,7 +41,9 @@ class ProductFrontController extends Controller
         return Inertia::render('admin/ProductDetails', [
             'slug' => $product->slug,
             'product' => $product,
-            'taxRuleGroups' => $taxRuleGroups
+            'taxRuleGroups' => $taxRuleGroups,
+            'priceWithTax' => $priceWithTax,
+            'taxRuleGroupId' => $selectedTaxRuleGroup->id
         ]);
     }
 

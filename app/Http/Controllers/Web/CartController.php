@@ -19,6 +19,7 @@ class CartController extends Controller
     */
     public function show(Request $request): Response
     {
+        
         return Inertia::render('web/Cart', [
             'status' => $request->session()->get('status'),
         ]);

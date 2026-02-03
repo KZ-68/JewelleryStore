@@ -15,24 +15,25 @@ use App\Http\Controllers\Admin\SupplierFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
 use App\Http\Controllers\Admin\ShippingRateFrontController;
 use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
+use App\Http\Controllers\Web\ShopProductFrontController;
 
 Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
-
 Route::get('contact', [ContactController::class, 'create'])->name('contact.create');
-
 Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
 
 Route::get('privacy', function () {
     return Inertia::render('web/Privacy');
 })->name('privacy');
-
 Route::get('not-found', function() {
     return Inertia::render('web/NotFound');
 })->name('not-found');
+
+Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products');
+Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
 
 Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');

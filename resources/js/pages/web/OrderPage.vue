@@ -33,9 +33,7 @@ const accountForm = useForm({
 
 const addressForm = useForm({
     country_id: 0,
-    customer_id: 0,
-    manufacturer_id: 0,
-    supplier_id: 0,
+    customer_id: props.customer ? props.customer.id : 0,
     name: '',
     address_line_1: '',
     address_line_2: '',
@@ -74,7 +72,7 @@ const submitLogin = () => {
 </script>
 
 <template>
-  <div id="carrier-management-steps-wrapper">
+  <div id="order-page-steps-wrapper">
      <component
       :is="currentComponent"
       :accountForm="accountForm"

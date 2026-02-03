@@ -3,6 +3,14 @@ import { login, register } from '@/routes';
 import { showBO }  from '@/routes/admin/back-office'
 import { Head, Link } from '@inertiajs/vue3';
 import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
+import { Category } from '@/types/category';
+import CategoryMenu from '@/components/jewellery_store/nav/CategoryMenu.vue';
+
+interface HomeProps {
+    categories: Category[]
+}
+
+const props = defineProps<HomeProps>()
 </script>
 
 <template>
@@ -16,10 +24,8 @@ import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
         <header
             class="mb-6 w-full text-sm not-has-[nav]:hidden"
         >
-            <div id="banner" class="pt-3 pb-3">
-
-            </div>
             <nav class="flex items-center justify-end gap-4 px-4">
+                <CategoryMenu :categories="props.categories"></CategoryMenu>
                 <Link
                     
                     :href="showBO()"

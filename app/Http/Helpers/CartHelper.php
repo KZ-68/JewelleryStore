@@ -2,9 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\Cart;
-use App\Models\Customer;
-use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CartHelper
@@ -18,10 +15,11 @@ class CartHelper
         }
     }
 
-    public function add(Product $product): void
+    public function add(array $product, float $retailPrice): void
     {
         $cart = $this->get();
         array_push($cart['products'], $product);
+        array_push($cart['products']['retail-price'], $retailPrice);
         $this->set($cart);
     }
 

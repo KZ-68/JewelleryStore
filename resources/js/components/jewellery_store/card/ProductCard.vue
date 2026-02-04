@@ -2,6 +2,7 @@
 import axios from 'axios'
 import type { Product } from '@/types/product'
 import { onMounted, ref } from "vue";
+import { ShoppingCart } from 'lucide-vue-next';
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../../ziggy.js';
 
@@ -14,6 +15,16 @@ interface ProductCardProps {
 const retailPrice = ref(0);
 
 const props = defineProps<ProductCardProps>()
+
+async function addToCart(product:Product, quantity: number, retailPrice: number) {
+    try {
+        await axios.post(
+            route('cart.addToCart', {product : product, quantity: quantity, retail_price: retailPrice}, false, Ziggy)
+        )
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
+}
 
 onMounted(async () => {
     try {
@@ -29,8 +40,8 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="grow max-w-[20%] inline-flex px-2 pb-4 min-w-[20%]">
-        <a href="#" class="relative bg-white inline-flex items-stretch w-full h-full p-0 box-border">
+    <div class="relative grow max-w-[20%] bg-white inline-flex flex-col px-2 pb-2 min-w-[20%] box-border shadow-md rounded-lg">
+        <a href="#" class="relative inline-flex items-stretch w-full h-full p-0">
             <div class="absolute top-[4px] right-[4px] w-[28px] h-[28px] text-center z-10 rounded-full">
                 <div>
                     <span class="absolute top-[4px] right-[4px] w-[24px] h-[24px] text-center z-10 rounded-full bg-gray-200">
@@ -41,7 +52,7 @@ onMounted(async () => {
                 </div>
             </div>
 
-            <div class="relative shadow-md rounded-lg min-w-full flex flex-col">
+            <div class="relative min-w-full flex flex-col">
                 <div class="relative">
                     <div class="relative h-0 rounded-t-lg pb-[100%] w-full bg-white text-ellipsis	overflow-hidden"> 
                         <div class="bg-no-repeat bg-cover inline-block my-0 mx-auto text-center w-full h-full absolute">
@@ -51,14 +62,19 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <div class="relative p-2 box-border overflow-hidden grow">
-                    <span class="text-gray-800 max-h-[38px] text-sm font-semibold leading-5 overflow-hidden whitespace-normal break-words		">
-                        {{ props.product.name }}
-                    </span>
-                    <div>
-                        <div class="block w-full text-sm font-bold text-amber-700">
-                            {{ retailPrice }}
+                <div id="product-card-footer" class="relative inline-flex flex-row items-center gap-3 mx-2">
+                    <div class="relative p-3 box-border overflow-hidden grow">
+                        <span class="text-gray-800 max-h-[38px] text-sm font-semibold leading-5 overflow-hidden whitespace-normal break-words">
+                            {{ props.product.name }}
+                        </span>
+                        <div>
+                            <div class="block w-full text-sm font-bold text-amber-700">
+                                {{ retailPrice }}
+                            </div>
                         </div>
+                    </div>
+                    <div id="add-cart-button" class="w-[42px] bg-red-900 z-10 rounded-full py-0.5 px-0.5">
+                        <button @click="addToCart(props.product, 1, retailPrice)" class="text-white m-1.5 cursor-pointer"><ShoppingCart /></button>
                     </div>
                 </div>
             </div>

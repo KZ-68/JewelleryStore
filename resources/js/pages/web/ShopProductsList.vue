@@ -7,7 +7,7 @@ import { Category } from '@/types/category';
 interface ProductsListProps {
     classname:string
     products: Product[]
-    categories: Category[]
+    frontCategories: Category[]
 }
 
 // const emit = defineEmits<{
@@ -19,7 +19,7 @@ const props = defineProps<ProductsListProps>()
 
 <template>
     <header>
-        <CategoryMenu :categories="props.categories"></CategoryMenu>
+        <CategoryMenu :frontCategories="props.frontCategories"></CategoryMenu>
     </header>
     <div class="w-[1190px] mx-auto my-auto">
         <div class="flex flex-col w-full h-auto mt-[3%]">

@@ -9,8 +9,8 @@ import { TaxRuleGroup } from '@/types/taxRuleGroup';
 interface ProductDetailsProps {
   product: Product
   taxRuleGroups: TaxRuleGroup[]
-  priceWithTax: number
-  taxRuleGroupId: number
+  priceWithTax: number|null
+  taxRuleGroupId: number|string
 }  
 
 const props = defineProps<ProductDetailsProps>()

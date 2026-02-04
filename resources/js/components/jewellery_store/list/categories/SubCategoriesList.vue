@@ -49,7 +49,7 @@ defineExpose({
         </ul>
         <ul v-else id="sub-categories-list" class="flex flex-col gap-4">
             <li class="text-center bg-white rounded-md py-4 px-5 my-3 min-h-[5rem]">
-                <p>No Category registered</p>
+                <p>No SubCategory registered</p>
             </li>
         </ul>
     </section>

@@ -7,7 +7,7 @@ import { Category } from '@/types/category';
 import CategoryMenu from '@/components/jewellery_store/nav/CategoryMenu.vue';
 
 interface HomeProps {
-    categories: Category[]
+    frontCategories: Category[]
 }
 
 const props = defineProps<HomeProps>()
@@ -25,7 +25,7 @@ const props = defineProps<HomeProps>()
             class="mb-6 w-full text-sm not-has-[nav]:hidden"
         >
             <nav class="flex items-center justify-end gap-4 px-4">
-                <CategoryMenu :categories="props.categories"></CategoryMenu>
+                <CategoryMenu :frontCategories="props.frontCategories"></CategoryMenu>
                 <Link
                     
                     :href="showBO()"

@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
                 'customer' => Auth::guard('web')->check() ? Auth::guard('web')->user() : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'categories' => Category::all()
+            'frontCategories' => Category::all()
         ];
     }
 }

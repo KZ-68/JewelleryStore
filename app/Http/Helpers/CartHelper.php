@@ -1,52 +1,111 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Http\Helpers;
 
-use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\Customer;
+use Illuminate\Support\Facades\Session;
 
 class CartHelper
 {
-    public function __construct(Request $request)
+    private const SESSION_KEY = 'cart';
+
+    public function __construct()
     {
-        if($this->get() === null) {
-            if($request->user('web') === null) {
-                $this->set($this->empty());
-            }
+        if (!Session::has(self::SESSION_KEY)) {
+            $this->initialize();
         }
     }
 
-    public function add(array $product, float $retailPrice): void
+    public function add(array $product, int $quantity = 1, float $retailPrice = 0.00): void
     {
         $cart = $this->get();
-        array_push($cart['products'], $product);
-        array_push($cart['products']['retail-price'], $retailPrice);
+
+        foreach ($cart['products'] as &$item) {
+            if ($item['product_id'] === $product['id']) {
+                $item['quantity'] += $quantity;
+                $item['retail_price'] += $retailPrice;
+                $this->set($cart);
+                return;
+            }
+        }
+
+        $cart['products'][] = [
+            'product_id' => $product['id'],
+            'name'       => $product['name'],
+            'retail_price' => $retailPrice,
+            'quantity'   => $quantity,
+        ];
+
         $this->set($cart);
     }
 
     public function remove(int $productId): void
     {
         $cart = $this->get();
-        array_splice($cart['products'], array_search($productId, array_column($cart['products'], 'id')), 1);
+
+        $cart['products'] = array_values(
+            array_filter($cart['products'], fn ($product) => $product['product_id'] !== $productId)
+        );
+
         $this->set($cart);
     }
 
     public function clear(): void
     {
+        Session::forget(self::SESSION_KEY);
+        $this->initialize();
+    }
+
+    public function get(): array
+    {
+        return Session::get(self::SESSION_KEY, $this->empty());
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->get()['products']);
+    }
+
+    private function initialize(): void
+    {
         $this->set($this->empty());
     }
 
-    public function empty(): ?array
+    private function empty(): array
     {
-        return [];
+        return [
+            'products' => [],
+        ];
     }
 
-    public function get(): ?array
+    private function set(array $cart): void
     {
-        return request()->session()->get('cart');
+        Session::put(self::SESSION_KEY, $cart);
     }
 
-    private function set($cart): void
+    public function persistForUser(Customer $customer): ?Cart
     {
-        request()->session()->put('cart', $cart);
+        $cartSession = $this->get();
+
+        if (empty($cartSession['products'])) {
+            return null;
+        }
+
+        $cart = Cart::firstOrCreate(
+            ['user_id' => $customer->id, 'status' => 'draft']
+        );
+
+        foreach ($cartSession['products'] as $product) {
+            $cart->products()->updateOrCreate(
+                ['product_id' => $product['product_id']],
+                [
+                    'price'    => $product['price'],
+                    'quantity' => $product['quantity'],
+                ]
+            );
+        }
+
+        return $cart;
     }
 }

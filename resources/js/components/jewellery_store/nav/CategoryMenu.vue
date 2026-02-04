@@ -5,7 +5,7 @@ import { route } from '../../../../../vendor/tightenco/ziggy';
 import { Ziggy } from '../../../ziggy.js';
 
 interface CategoryMenuProps {
-    categories: Category[]
+    frontCategories: Category[]
 }
 
 const props = defineProps<CategoryMenuProps>();
@@ -33,7 +33,7 @@ const hasChildren = (category: Category) => {
   <nav class="w-full bg-white rounded-lg shadow-md">
     <ul class="flex flex-row">
       <li 
-        v-for="category in props.categories" 
+        v-for="category in props.frontCategories" 
         :key="category.id"
         class="border-b border-gray-200 last:border-b-0"
       >

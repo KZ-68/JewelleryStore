@@ -11,12 +11,12 @@ interface AdminProductMainFormProps {
     classname:string;
     product: Product;
     taxRuleGroups: TaxRuleGroup[]
-    priceWithTax: number
-    taxRuleGroupId: number
+    priceWithTax: number|null
+    taxRuleGroupId: number|string
 }   
 
 const props = defineProps<AdminProductMainFormProps>();
-const selectedTaxRuleGroup = ref(props.taxRuleGroupId ? props.taxRuleGroupId : '');
+const selectedTaxRuleGroup = ref(props.taxRuleGroupId !== '' ? props.taxRuleGroupId : '');
 </script>
 
 <template>
@@ -128,7 +128,7 @@ const selectedTaxRuleGroup = ref(props.taxRuleGroupId ? props.taxRuleGroupId : '
 
                 <div class="flex flex-col gap-2">
                     <p>Price with tax :</p>
-                    <data class="price-with-tax" :value=props.priceWithTax>{{ props.priceWithTax }}</data>
+                    <data class="price-with-tax" :value=props.priceWithTax??0>{{ props.priceWithTax ?? 0 }}</data>
                 </div>
 
                 <div class="grid gap-2">

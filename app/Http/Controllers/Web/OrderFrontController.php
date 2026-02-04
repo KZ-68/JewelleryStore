@@ -14,7 +14,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class OrderController extends Controller
+class OrderFrontController extends Controller
 {
     /**
      * Render the view assigned to the order page
@@ -24,7 +24,11 @@ class OrderController extends Controller
     public function showOrderPage(Request $request): Response
     {
         $user = $request->user();
-        $customer = Customer::where('email', $user->email)->firstOrFail();
+        if(!$user) {
+            $customer = '';
+        } else {
+            $customer = Customer::where('email', $user->email)->firstOrFail();
+        }
         $carriers = Carrier::all();
         $countries = Country::all();
         $payments = Payment::all();

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Account from '@/components/jewellery_store/form/OrderAccountForm.vue'
 import { useForm } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 import { Carrier } from '@/types/carrier'
@@ -7,6 +8,7 @@ import { Customer } from '@/types/customer'
 import { Payment } from '@/types/payment'
 import { route } from '../../../../vendor/tightenco/ziggy';
 import { Ziggy } from '../../ziggy.js';
+import OrderSummary from '@/components/jewellery_store/OrderSummary.vue'
  
 interface OrderPageProps {
     customer: Customer
@@ -19,9 +21,9 @@ const props = defineProps<OrderPageProps>()
 
 const steps = [
     Account,
-    Address,
-    CarrierChoice,
-    PaymentChoice
+    // Address,
+    // CarrierChoice,
+    // PaymentChoice
 ]
 
 const currentStep = ref(0)
@@ -72,17 +74,20 @@ const submitLogin = () => {
 </script>
 
 <template>
-  <div id="order-page-steps-wrapper">
-     <component
-      :is="currentComponent"
-      :accountForm="accountForm"
-      :addressForm="addressForm"
-      :countries="countries"
-      :is-last="currentStep === steps.length - 1"
-      @next="next"
-      @prev="prev"
-      @submitAddressForm="submitAddressForm"
-      @submitLogin="submitLogin"
-    />
+  <div id="order-page-wrapper" class="flex flex-row gap-2 justify-evenly bg-gray-100">
+    <div id="order-page-steps-wrapper">
+      <component
+        :is="currentComponent"
+        :accountForm="accountForm"
+        :addressForm="addressForm"
+        :countries="countries"
+        :is-last="currentStep === steps.length - 1"
+        @next="next"
+        @prev="prev"
+        @submitAddressForm="submitAddressForm"
+        @submitLogin="submitLogin"
+      />
+    </div>
+    <OrderSummary></OrderSummary>
   </div>
 </template>

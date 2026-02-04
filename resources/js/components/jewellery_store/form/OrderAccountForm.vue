@@ -22,7 +22,10 @@ const props = defineProps<OrderAccountFormProps>();
 </script>
 
 <template>
-    <section id="order-account-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <div class="my-4 mx-4 w-[900px] max-w-[900px] px-8 py-4 gap-1 rounded-lg bg-white dark:bg-neutral-800">
+        <p>Account Connection</p>
+    </div>
+    <section id="order-account-form-wrapper" class="my-2 mx-4 w-[900px] max-w-[900px] p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <AuthBase
         title="Log in to your admin account"
         description="Enter your email and password below to log in"

@@ -24,10 +24,6 @@ class CarrierDataFrontController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required|string',
-            'min_total' => 'required|decimal:0,2',
-            'max_total' => 'required|decimal:0,2',
-            'price' => 'required|decimal:0,2',
-            'id_carrier' => 'integer'
         ]);
 
         if ($validator->fails()) {

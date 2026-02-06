@@ -4,10 +4,16 @@ import { showBO }  from '@/routes/admin/back-office'
 import { Head, Link } from '@inertiajs/vue3';
 import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
 import { Category } from '@/types/category';
+import { Product } from '@/types/product';
 import CategoryMenu from '@/components/jewellery_store/nav/CategoryMenu.vue';
+import TopProductCarousel from '@/components/jewellery_store/carousel/TopProductCarousel.vue';
+import CartNotifier from '@/components/jewellery_store/cart/notifier/CartNotifier.vue';
+import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 
 interface HomeProps {
     frontCategories: Category[]
+    topProducts: Product[]
+    cartProductsCount: number
 }
 
 const props = defineProps<HomeProps>()
@@ -19,48 +25,14 @@ const props = defineProps<HomeProps>()
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
     <div
-        class="flex min-h-screen flex-col items-center bg-[#FDFDFC] text-[#1b1b18] lg:justify-center dark:bg-[#0a0a0a]"
+        class="flex min-h-screen flex-col bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a]"
     >
-        <header
-            class="mb-6 w-full text-sm not-has-[nav]:hidden"
-        >
-            <nav class="flex items-center justify-end gap-4 px-4">
-                <CategoryMenu :frontCategories="props.frontCategories"></CategoryMenu>
-                <Link
-                    
-                    :href="showBO()"
-                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                >
-                    Dashboard
-                </Link>
-                
-                <LogoutButton v-if="$page.props.auth.user">Logout</LogoutButton>
-                <LogoutButton v-else-if="$page.props.auth.customer">Logout</LogoutButton>
-                <template v-else>
-                    <Link
-                        :href="login()"
-                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                    >
-                        Log in
-                    </Link>
-                    <Link
-                        :href="register()"
-                        class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                    >
-                        Register
-                    </Link>
-                </template>
-            </nav>
-        </header>
-        <div
+        <ShopHeader :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
+        <main
             class="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"
         >
-            <main
-                class="flex w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row"
-            >
-                
-            </main>
-        </div>
+            <TopProductCarousel :topProducts="props.topProducts"></TopProductCarousel>
+        </main>
         <div class="hidden h-14.5 lg:block"></div>
     </div>
 </template>

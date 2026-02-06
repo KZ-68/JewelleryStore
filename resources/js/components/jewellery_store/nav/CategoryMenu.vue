@@ -30,7 +30,7 @@ const hasChildren = (category: Category) => {
 </script>
 
 <template>
-  <nav class="w-full bg-white rounded-lg shadow-md">
+  <nav class="w-[88rem] bg-white rounded-lg shadow-md">
     <ul class="flex flex-row">
       <li 
         v-for="category in props.frontCategories" 

@@ -29,7 +29,7 @@ async function addToCart(product:Product, quantity: number, retailPrice: number)
 onMounted(async () => {
     try {
         await axios.post(
-            route('products.shopRetailPrice', {slug : props.product.slug}, false, Ziggy)
+            route('products.shopRetailPrice', {slug : props.product.slug}, false, Ziggy), {slug : props.product.slug}
         ).then(response => {
             retailPrice.value = response.data.price
         })
@@ -40,7 +40,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="relative grow max-w-[20%] bg-white inline-flex flex-col px-2 pb-2 min-w-[20%] box-border shadow-md rounded-lg">
+    <div class="relative grow max-w-[16rem] bg-white inline-flex flex-col px-2 pb-2 min-w-[16rem] box-border shadow-md rounded-lg">
         <a href="#" class="relative inline-flex items-stretch w-full h-full p-0">
             <div class="absolute top-[4px] right-[4px] w-[28px] h-[28px] text-center z-10 rounded-full">
                 <div>
@@ -56,8 +56,10 @@ onMounted(async () => {
                 <div class="relative">
                     <div class="relative h-0 rounded-t-lg pb-[100%] w-full bg-white text-ellipsis	overflow-hidden"> 
                         <div class="bg-no-repeat bg-cover inline-block my-0 mx-auto text-center w-full h-full absolute">
-                            <img v-if="image == null" src="{{ asset('storage/public/img/p/not-found.jpg') }}" alt="Image Not Found text">
-                            <img v-else src="{{ asset('storage/public/img/p/'. props.product.id . '/'. props.image) }}" alt="Jewellery Product Image">
+                            <figure class="flex justify-center py-2 items-center">
+                                <img v-if="image == null" src="/storage/img/p/not-found.jpg" alt="Image Not Found text">
+                                <img v-else src="{{'storage/img/p/'. props.product.id . '/'. props.image }}" alt="Jewellery Product Image">
+                            </figure>
                         </div>
                     </div>
                 </div>

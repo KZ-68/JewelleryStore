@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Services\Tax\TaxCalculatorService;
 
 class ShopProductFrontController extends Controller
@@ -43,10 +42,10 @@ class ShopProductFrontController extends Controller
         $taxRule = TaxRule::where('tax_rule_group_id', $selectedTaxRuleGroup->id)->firstOrFail();
         $tax = $taxRule->tax;
         $calculator = new TaxCalculatorService;
-        $priceWithTax = $calculator->withTax($product->price_ht, $tax->percentage);
+        $priceWithTax = $calculator->withTax($product->price_ht, $tax->rate);
 
         return response()->json([
             'price' => $priceWithTax,
         ]);
-    } 
+    }
 }

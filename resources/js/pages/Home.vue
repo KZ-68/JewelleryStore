@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { login, register } from '@/routes';
-import { showBO }  from '@/routes/admin/back-office'
-import { Head, Link } from '@inertiajs/vue3';
-import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
+import { Head } from '@inertiajs/vue3';
 import { Category } from '@/types/category';
 import { Product } from '@/types/product';
-import CategoryMenu from '@/components/jewellery_store/nav/CategoryMenu.vue';
 import TopProductCarousel from '@/components/jewellery_store/carousel/TopProductCarousel.vue';
-import CartNotifier from '@/components/jewellery_store/cart/notifier/CartNotifier.vue';
 import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 
 interface HomeProps {

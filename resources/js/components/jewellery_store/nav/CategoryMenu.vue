@@ -39,7 +39,7 @@ const hasChildren = (category: Category) => {
       >
         <div class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
           <a 
-            href="#"
+            :href="route('showCategoryProducts', {slug: category.slug}, false, Ziggy)"
             class="flex-1 font-medium text-gray-800 hover:text-blue-500 transition-colors"
           >
             {{ category.name }}

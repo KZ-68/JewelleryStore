@@ -7,9 +7,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Tax;
+use App\Models\User;
 use Inertia\Inertia;
-use Inertia\Response;
 
+use Inertia\Response;
 use App\Models\Carrier;
 use App\Models\Product;
 use App\Models\Category;
@@ -198,6 +199,10 @@ class BackOfficeController extends Controller
             'admin/Customers', 
             [
                 'customers' => $customers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
             ]
         );
     }
@@ -267,6 +272,40 @@ class BackOfficeController extends Controller
             [
                 'taxes' => $taxes,
                 'taxRuleGroups' => $taxRuleGroups,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the team users list page
+     * @var mixed $sortBy Get users sorted by name by default
+     * @var mixed $order Get users order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showTeam(Request $request): Response
+    {
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $usersWithRoles = User::with('roles')->orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Users', 
+            [
+                'users' => $usersWithRoles,
                 'filters' => [
                     'sortBy' => $sortBy,
                     'order' => $order,

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('product_condition', 20)->nullable();
             $table->string('short_description', 100)->nullable();
             $table->string('meta_description', 255)->nullable();
-            $table->boolean('active')->default(true);
+            $table->boolean('active')->default(false);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

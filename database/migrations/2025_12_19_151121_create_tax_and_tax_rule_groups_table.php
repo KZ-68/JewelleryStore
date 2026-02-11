@@ -26,6 +26,7 @@ return new class extends Migration
         Schema::create('tax_rule_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
+            $table->string('slug', 255)->unique();
             $table->boolean('active')->default(true);
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
@@ -37,8 +38,9 @@ return new class extends Migration
             $table->foreignId('country_id')->nullable()->constrained('countries');
             $table->foreignId('tax_rule_group_id')->nullable()->constrained('tax_rule_groups');
             $table->string('behavior', 20);
-            $table->integer('rate_order');
+            $table->integer('rate_order')->default(1);
             $table->timestamps();
+            $table->softDeletes()->nullable();
         });
     }
 

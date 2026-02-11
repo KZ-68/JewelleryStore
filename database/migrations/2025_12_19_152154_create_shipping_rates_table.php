@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('max_total', 2);
             $table->float('price', 2);
             $table->timestamps();
+            $table->softDeletes()->nullable();
         });
     }
 

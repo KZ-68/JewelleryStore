@@ -10,6 +10,8 @@ interface ProductCardProps {
     classname:string
     product: Product
     image: null|string
+    sortBy: string
+    order: 'asc' | 'desc'
 }
 
 const retailPrice = ref(0);
@@ -41,7 +43,7 @@ onMounted(async () => {
 
 <template>
     <div class="relative grow max-w-[16rem] bg-white inline-flex flex-col px-2 pb-2 min-w-[16rem] box-border shadow-md rounded-lg">
-        <a href="#" class="relative inline-flex items-stretch w-full h-full p-0">
+        <a :href="route('showShopProduct', {slug: props.product.slug}, false, Ziggy)" class="relative inline-flex items-stretch w-full h-full p-0">
             <div class="absolute top-[4px] right-[4px] w-[28px] h-[28px] text-center z-10 rounded-full">
                 <div>
                     <span class="absolute top-[4px] right-[4px] w-[24px] h-[24px] text-center z-10 rounded-full bg-gray-200">

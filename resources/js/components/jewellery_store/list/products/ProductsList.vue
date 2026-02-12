@@ -9,7 +9,7 @@ interface ProductsListProps {
     classname:string
     products: Product[]
     sortBy: string
-    order: 'asc' | 'desc'
+    order: "asc" | "desc"
 }
 
 // const emit = defineEmits<{

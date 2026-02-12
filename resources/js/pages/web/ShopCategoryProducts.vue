@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import type { Product } from '@/types/product'
 import ProductCard from '@/components/jewellery_store/card/ProductCard.vue';
-import CategoryMenu from '@/components/jewellery_store/nav/CategoryMenu.vue';
 import { Category } from '@/types/category';
-import { Head, router } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import { ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
@@ -30,7 +29,7 @@ const props = defineProps<ProductsListProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'desc')
 
-const url = route('showCategoryProducts', {slug: props.category_slug}, false, Ziggy);
+const url = route('showCategoryProducts', {category_slug: props.category_slug}, false, Ziggy);
 
 const updateCustomersFilters = () => {
   router.get(url, {
@@ -67,8 +66,8 @@ const updateCustomersFilters = () => {
                 </div>
             </section>
             <div class="flex flex-col w-full h-auto mt-[3%]">
-                <div class="flex flex-wrap">
-                    <ProductCard v-for="product in props.products" classname="" :product="product" :image="null" :key="product.id"></ProductCard>
+                <div class="flex flex-wrap gap-10">
+                    <ProductCard v-for="product in props.products" classname="" :product="product" :image="null" :key="product.id" :sort-by="sortBy" :order="order"></ProductCard>
                 </div>
             </div>
         </div>

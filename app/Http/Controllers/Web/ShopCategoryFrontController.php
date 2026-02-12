@@ -37,7 +37,7 @@ class ShopCategoryFrontController extends Controller
             $order = 'asc';
         }
 
-        $category = Category::where('slug', $request->slug)->firstOrFail();
+        $category = Category::where('slug', $request->category_slug)->firstOrFail();
         $categoryProducts = $category->products;
         // $categoryProducts = Category::productsByCategoryId($request->category_id);
 

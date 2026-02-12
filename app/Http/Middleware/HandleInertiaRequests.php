@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Helpers\CartHelper;
-use App\Models\Category;
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
 use Inertia\Middleware;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Http\Helpers\CartHelper;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -55,7 +56,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'frontCategories' => Category::all(),
-            'cartProductsCount' => $cartProductsCount
+            'cartProductsCount' => $cartProductsCount,
         ];
     }
 }

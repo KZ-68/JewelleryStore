@@ -36,9 +36,10 @@ Route::get('not-found', function() {
 Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products');
 Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
 Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('showOrderPage');
-Route::get('/{slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
+Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
+Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('showShopProduct');
 
-Route::group(['middleware' => ['role:admin', 'auth:admin']], function () {
+Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');
     Route::get('/admin/back-office/manufacturers', [BackOfficeController::class, 'showManufacturers'])->name('admin.back-office.showManufacturers');
     Route::get('/admin/back-office/products', [BackOfficeController::class, 'showProducts'])->name('admin.back-office.showProducts');

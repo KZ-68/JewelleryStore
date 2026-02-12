@@ -8,7 +8,7 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\InvoiceFrontController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
 
-Route::middleware(['role:basic', 'auth:web'])->group(function () {
+Route::middleware(['web.session','role:basic', 'auth:web'])->group(function () {
     Route::redirect('settings', '/settings/profile');
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');

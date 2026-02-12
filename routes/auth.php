@@ -15,7 +15,7 @@ use App\Http\Controllers\Auth\RegisteredCustomerController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['guest:web'])->group(function () {
+Route::middleware(['web.session', 'guest:web'])->group(function () {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
@@ -42,7 +42,7 @@ Route::middleware(['guest:web'])->group(function () {
 
 });
 
-Route::middleware(['guest:admin'])->group(function () {
+Route::middleware(['admin.session', 'guest:admin'])->group(function () {
     Route::get('admin/register', [AdminRegisteredUserController::class, 'create'])
         ->name('admin-register');
 
@@ -68,7 +68,7 @@ Route::middleware(['guest:admin'])->group(function () {
         ->name('admin-password.store');
 });
 
-Route::middleware(['role:basic', 'auth:web'])->group(function () {
+Route::middleware(['web.session', 'role:basic', 'auth:web'])->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -84,7 +84,7 @@ Route::middleware(['role:basic', 'auth:web'])->group(function () {
         ->name('logout');
 });
 
-Route::prefix('admin')->middleware(['role:admin', 'auth:admin'])->group(function () {
+Route::prefix('admin')->middleware(['admin.session', 'role:admin', 'auth:admin'])->group(function () {
     Route::get('/verify-email', AdminEmailVerificationPromptController::class)
         ->name('admin-verification.notice');
 

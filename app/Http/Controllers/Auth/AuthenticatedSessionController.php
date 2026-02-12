@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Models\Role;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -33,36 +34,42 @@ class AuthenticatedSessionController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::guard('web')->attempt($credentials)) {
             $user = $request->validateCredentials('web');
-            if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
-                $request->session()->put([
-                    'login.id' => $user->getKey(),
-                    'login.remember' => $request->boolean('remember'),
-                ]);
+            $customerRoles = Role::where('guard_name', 'web')->get();
+            if($user->hasAnyRole($customerRoles)) {
+                if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
+                    $request->session()->put([
+                        'login.id' => $user->getKey(),
+                        'login.remember' => $request->boolean('remember'),
+                    ]);
 
-                return to_route('two-factor.login');
+                    return to_route('two-factor.login');
+                }
+
+                Auth::guard('web')->login($user, $request->boolean('remember'));
+                $request->session()->regenerate();
+
+                return redirect()->intended(route('home', absolute: false));
             }
-
-            Auth::login($user, $request->boolean('remember'));
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('home', absolute: false));
         }
 
         if (Auth::guard('admin')->attempt($credentials)) {
             $user = $request->validateCredentials('admin');
-            if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
-                $request->session()->put([
-                    'login.id' => $user->getKey(),
-                    'login.remember' => $request->boolean('remember'),
-                ]);
+            $adminUserRoles = Role::where('guard_name', 'admin')->get();
+            if($user->hasAnyRole($adminUserRoles)) {
+                if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
+                    $request->session()->put([
+                        'login.id' => $user->getKey(),
+                        'login.remember' => $request->boolean('remember'),
+                    ]);
 
-                return to_route('two-factor.login');
+                    return to_route('two-factor.login');
+                }
+
+                Auth::guard('admin')->login($user, $request->boolean('remember'));
+                $request->session()->regenerate();
+
+                return redirect()->intended(route('admin.back-office.showBO', absolute: false));
             }
-
-            Auth::login($user, $request->boolean('remember'));
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('admin.back-office.showBO', absolute: false));
         }
 
         return redirect()->intended(route('home', absolute: false));

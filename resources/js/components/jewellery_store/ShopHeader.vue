@@ -6,6 +6,7 @@ import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
 import { Category } from '@/types/category';
 import CartNotifier from '@/components/jewellery_store/cart/notifier/CartNotifier.vue';
 import CategoryMenu from './nav/CategoryMenu.vue';
+import SearchBar from './SearchBar.vue';
 
 interface ShopHeaderProps {
     frontCategories: Category[]
@@ -19,6 +20,7 @@ const props = defineProps<ShopHeaderProps>()
     <header class="w-full text-sm not-has-[nav]:hidden">
         <nav class="flex items-center justify-around gap-4 px-4 py-6">
             <CategoryMenu :frontCategories=props.frontCategories></CategoryMenu>
+            <SearchBar />
             <Link
                 
                 :href="showBO()"

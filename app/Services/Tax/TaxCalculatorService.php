@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Tax;
+namespace App\Services\Tax;
 
 class TaxCalculatorService
 {

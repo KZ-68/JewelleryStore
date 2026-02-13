@@ -7,6 +7,7 @@ export interface Product {
     ean13: string
     quantity: number
     price_ht: number
+    retail_price: number
     cost_price: number
     active: boolean
     created_at: string

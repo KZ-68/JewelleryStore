@@ -17,6 +17,7 @@ use App\Http\Controllers\Web\ShopProductFrontController;
 use App\Http\Controllers\Admin\CarrierDataFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
 use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
+use App\Http\Controllers\Web\SearchFrontController;
 use App\Http\Controllers\Web\ShopCategoryFrontController;
 
 Route::get('/', [HomeFrontController::class, 'show'])->name('home');
@@ -37,7 +38,9 @@ Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])
 Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
 Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('showOrderPage');
 Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
-Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('showShopProduct');
+Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
+
+Route::post('/search/{text}', [SearchFrontController::class, 'searchProducts'])->name('searchProducts');
 
 Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');

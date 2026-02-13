@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Role;
 use Inertia\Middleware;
 use App\Models\Category;
 use Illuminate\Http\Request;

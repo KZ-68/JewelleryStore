@@ -9,7 +9,7 @@ use App\Models\Invoice;
 use App\Models\Customer;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
-use App\Http\Services\PdfService;
+use App\Services\PdfService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 

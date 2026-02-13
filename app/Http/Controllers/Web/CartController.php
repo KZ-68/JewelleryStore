@@ -12,8 +12,6 @@ use App\Models\Customer;
 use App\Http\Helpers\CartHelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
-use Illuminate\Http\RedirectResponse;
 
 class CartController extends Controller
 {

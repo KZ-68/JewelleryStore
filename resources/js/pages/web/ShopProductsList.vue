@@ -26,7 +26,7 @@ const props = defineProps<ProductsListProps>()
     <div class="w-[1190px] mx-auto my-auto">
         <div class="flex flex-col w-full h-auto mt-[3%]">
             <div class="flex flex-wrap">
-                <ProductCard v-for="product in props.products" classname="" :product="product" :image="null" :key="product.id" :sort-by="sortBy" :order="order"></ProductCard>
+                <ProductCard v-for="product in props.products" classname="" :product="product" :image="product.image" :key="product.id" :sort-by="sortBy" :order="order"></ProductCard>
             </div>
         </div>
     </div>

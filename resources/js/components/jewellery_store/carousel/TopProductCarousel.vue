@@ -21,8 +21,8 @@ const props = defineProps<TopProductCarouselProps>();
             </hgroup>
             <div class="pl-6">
                 <swiper :navigation="true" :modules="[Navigation]" :slides-per-view="4" :space-between="10" class="mySwiper">
-                    <swiper-slide v-for="topProduct in props.topProducts">
-                        <ProductCard classname="" :product="topProduct" :image="null"></ProductCard>
+                    <swiper-slide v-for="topProduct in props.topProducts" :key="topProduct.id">
+                        <ProductCard classname="" :product="topProduct" :image="topProduct.image"></ProductCard>
                     </swiper-slide>
                 </swiper>
             </div>

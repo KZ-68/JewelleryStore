@@ -56,11 +56,10 @@ onMounted(async () => {
 
             <div class="relative min-w-full flex flex-col">
                 <div class="relative">
-                    <div class="relative h-0 rounded-t-lg pb-[100%] w-full bg-white text-ellipsis	overflow-hidden"> 
+                    <div class="relative h-0 rounded-t-lg pb-[100%] w-full bg-white text-ellipsis overflow-hidden"> 
                         <div class="bg-no-repeat bg-cover inline-block my-0 mx-auto text-center w-full h-full absolute">
                             <figure class="flex justify-center py-2 items-center">
-                                <img v-if="image == null" src="/storage/img/p/not-found.jpg" alt="Image Not Found text">
-                                <img v-else src="{{'storage/img/p/'. props.product.id . '/'. props.image }}" alt="Jewellery Product Image">
+                                <img :src="props.image ? props.image : '/storage/img/p/not-found.jpg'" alt="Jewellery Product Image">
                             </figure>
                         </div>
                     </div>

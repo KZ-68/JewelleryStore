@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductImageService implements ProductImageServiceInterface
 {
+    protected string $storagePath = 'app/public';
     protected string $basePath = 'img/p';
     protected array $cache = [];
 

@@ -5,6 +5,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Contracts\ProductImageServiceInterface;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Product;
@@ -22,7 +23,7 @@ class ShopProductFrontController extends Controller
     * Show shop product list view
     * @return Response|RedirectResponse Return an Inertia Object response with the rendered view or a redirection
     */
-    public function shopProductsList(Request $request): Response|RedirectResponse
+    public function shopProductsList(Request $request, ProductImageServiceInterface $image): Response|RedirectResponse
     {
         
         $sortBy = $request->get('sortBy', 'name');
@@ -38,6 +39,9 @@ class ShopProductFrontController extends Controller
 
         $products = Product::all();
         $categories = Category::all();
+        foreach ($products as $product) {
+            $product->image = $image->getFirstImage($product->id);
+        }
 
         return Inertia::render('web/ShopProductsList', [
             'products' => $products,
@@ -63,7 +67,7 @@ class ShopProductFrontController extends Controller
         ]);
     }
 
-    public function showShopProduct (Request $request): Response|RedirectResponse
+    public function showShopProduct (Request $request, ProductImageServiceInterface $image): Response|RedirectResponse
     {
         $product = Product::where('slug', $request->slug)->firstOrFail();
         $selectedTaxRuleGroup = $product->taxRuleGroup;
@@ -71,10 +75,12 @@ class ShopProductFrontController extends Controller
         $tax = $taxRule->tax;
         $calculator = new TaxCalculatorService;
         $priceWithTax = $calculator->withTax($product->price_ht, $tax->rate);
+        $productImages = $image->getProductImages($product->id);
 
         return Inertia::render('web/ShopProductPage', [
             'product' => $product,
-            'price' => $priceWithTax
+            'price' => $priceWithTax,
+            'productImages' => $productImages
         ]);
     }
 }

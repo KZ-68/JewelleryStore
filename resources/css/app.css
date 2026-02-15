@@ -162,6 +162,24 @@
     --sidebar: hsl(240 5.9% 10%);
 }
 
+#shop-product-page-images-swipper-wrapper .swiper {
+    position:unset;
+}
+
+#mySwiper .swiper-wrapper {
+    position:unset;
+}
+
+#mySwiper .swiper-button-next {
+    top: 230px;
+    right: 10px;
+}
+
+#mySwiper .swiper-button-prev {
+    top: 230px;
+}
+
+
 @layer base {
     * {
         @apply border-border outline-ring/50;

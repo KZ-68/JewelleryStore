@@ -7,16 +7,14 @@ namespace App\Http\Controllers\Web;
 
 use Inertia\Inertia;
 use Inertia\Response;
-use Nette\Utils\Json;
 use App\Models\Product;
 use App\Models\TaxRule;
 use App\Models\Category;
-use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Services\Tax\TaxCalculatorService;
+use App\Services\Tax\TaxCalculatorService;
 
 class ShopProductFrontController extends Controller
 {

@@ -42,25 +42,25 @@ async function addToCart(product:Product, quantity: number, retailPrice: number)
 <template>
     <ShopHeader :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
     <main id="shop-product-page-main" class="px-24 py-8 bg-gray-100">
-        <section id="shop-product-page-wrapper">
+        <section id="shop-product-page-main-wrapper">
             <div id="shop-product-page-header" class="flex flex-col gap-2 my-4 mx-2">
                 <h1 class="text-3xl">Product Page</h1>
             </div>
             <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-                    <div class="flex flex-row flex-nowrap justify-between mx-4">
-                        <div id="shop-product-page-images-wrapper" class="w-xl flex flex-col gap-3">
-                            <div class="lg:h-80 rounded-lg bg-white mb-4">
-                                <div class="lg:h-80 rounded-lg bg-white mb-4 flex items-center justify-center">
+                <div class="max-w-[88rem] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+                    <div class="flex flex-row flex-nowrap justify-evenly mx-4">
+                        <div id="shop-product-page-images-wrapper" class="relative w-xl flex flex-col gap-8 pl-16 pr-8">
+                            <div class="w-[450px] h-[450px] mb-4">
+                                <div class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
                                     <span class="text-5xl">1</span>
                                 </div>
                             </div>
                             
-                            <div class="flex flex-row justify-around gap-12">
-                                <swiper :navigation="true" :modules="[Navigation]" :slides-per-view="3" :space-between="10" class="mySwiper">
-                                    <swiper-slide v-for="image in productImages">
-                                        <figure class="w-2xl lg:h-54 rounded-lg bg-white mb-4 flex items-center justify-center">
-                                            <img :src="image" class="w-2xl lg:h-54 rounded-lg" />
+                            <div id="shop-product-page-images-swipper-wrapper" class="flex flex-row justify-around">
+                                <swiper :navigation="true" :modules="[Navigation]" :slides-per-view="3" :space-between="1" id="mySwiper">
+                                    <swiper-slide v-for="image in productImages" :key=image>
+                                        <figure class="w-[128px] lg:h-[128px] rounded-lg bg-white mb-4 flex items-center justify-center">
+                                            <img :src="image" class="w-[128px] lg:h-[128px] rounded-lg" />
                                         </figure>
                                     </swiper-slide>
                                 </swiper>
@@ -69,13 +69,13 @@ async function addToCart(product:Product, quantity: number, retailPrice: number)
 
                         <div class="px-4">
                             <h2 class="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">{{ product.name }}</h2>
-                            <p class="text-gray-500 text-sm">By <a href="#" class="text-indigo-600 hover:underline"></a></p>
+                            <p class="text-gray-500 text-sm">By <a href="#" class="text-red-900 hover:underline"></a></p>
 
                             <div class="flex items-center space-x-4 my-4">
                                 <div>
-                                    <div class="rounded-lg bg-gray-100 flex py-2 px-3">
-                                    <span class="text-indigo-400 mr-1 mt-1">€</span>
-                                    <span class="font-bold text-indigo-600 text-3xl">{{ props.price }}</span>
+                                    <div class="rounded-lg bg-gray-100 flex">
+                                    <span class="font-bold text-red-900 text-3xl">{{ props.price }}</span>
+                                    <span class="text-red-800 ml-2 mt-1">€</span>
                                     </div>
                                 </div>
                                 <div class="flex-1">
@@ -109,7 +109,13 @@ async function addToCart(product:Product, quantity: number, retailPrice: number)
                     </div>
                 </div>
             </div>
-            <div id="shop-product-page-footer" class="my-4"></div>
         </section>
+        <section id="shop-product-page-description-wrapper" class="my-3">
+            <h2 id="title-product" class="text-2xl font-bold">Description</h2>
+            <div class="product-description">
+                {{ product.description }}
+            </div>
+        </section>
+        <section id="shop-product-page-footer" class="my-4"></section>
     </main>
 </template>

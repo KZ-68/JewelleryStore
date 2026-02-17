@@ -24,6 +24,7 @@ Route::get('/', [HomeFrontController::class, 'show'])->name('home');
 
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.addToCart');
+Route::post('/cart/remove', [CartController::class, 'removeToCart'])->name('cart.removeToCart');
 Route::get('contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
 

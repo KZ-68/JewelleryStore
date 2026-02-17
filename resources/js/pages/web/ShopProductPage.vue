@@ -9,7 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { onMounted, ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
-import { Ziggy } from '../../ziggy.js';;
+import { Ziggy } from '../../ziggy.js';
 
 interface ProductsListProps {
     classname:string

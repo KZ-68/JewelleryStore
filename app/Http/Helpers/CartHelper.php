@@ -17,12 +17,12 @@ class CartHelper
         }
     }
 
-    public function add(array $product, int $quantity = 1, float $retailPrice = 0.00): void
+    public function add(array $product, int $id, int $quantity = 1, float $retailPrice = 0.00): void
     {
         $cart = $this->get();
 
         foreach ($cart['products'] as &$item) {
-            if ($item['product_id'] === $product['id']) {
+            if ($item['product_id'] === $id) {
                 $item['quantity'] += $quantity;
                 $item['retail_price'] += $retailPrice;
                 $this->set($cart);
@@ -31,13 +31,47 @@ class CartHelper
         }
 
         $cart['products'][] = [
-            'product_id' => $product['id'],
+            'product_id' => $id,
             'name'       => $product['name'],
             'retail_price' => $retailPrice,
             'quantity'   => $quantity,
         ];
 
         $this->set($cart);
+    }
+
+    public function increment(int $id, int $quantity = 1, float $retailPrice = 0.00): void
+    {
+        $cart = $this->get();
+
+        if(isset($cart['products']) && is_array($cart['products'])) {
+            foreach($cart['products'] as &$item) {
+                if ($item['product_id'] === $id) {
+                    $item['quantity'] += $quantity;
+                    $item['retail_price'] += $retailPrice;
+                    $this->set($cart);
+                }
+            }
+        }
+    }
+
+    public function decrement(int $id, int $quantity = 1, float $retailPrice = 0.00): void
+    {
+        $cart = $this->get();
+
+        foreach($cart['products'] as &$item) {
+            if ($item['product_id'] === $id) {
+                $item['quantity'] -= $quantity;
+                $item['retail_price'] -= $retailPrice;
+                if($item['quantity'] === 0) {
+                    $cart['products'] = [];
+                    $this->set($cart);
+                } else {
+                    $this->set($cart);
+                }
+            }
+        }
+        
     }
 
     public function remove(int $productId): void

@@ -5,13 +5,14 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
+use App\Http\Helpers\CartHelper;
 use App\Models\Cart;
+use App\Models\Customer;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Customer;
-use App\Http\Helpers\CartHelper;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class CartController extends Controller
 {
@@ -34,9 +35,10 @@ class CartController extends Controller
     public function addToCart(Request $request, CartHelper $cart) : bool
     {
         $product = $request->product;
-        (float) $retailPrice = $request->retail_price;
-        (int) $quantity = $request->quantity;
-        $cart->add($product, $quantity, $retailPrice);
+        $productId = $request->product['id'];
+        $retailPrice = $request->retail_price;
+        $quantity = $request->quantity;
+        $cart->add($product, $productId, $quantity, $retailPrice);
 
         if($request->user('web')) {
             $user = $request->user('web');
@@ -51,7 +53,10 @@ class CartController extends Controller
 
     public function removeToCart(Request $request, CartHelper $cart) : bool
     {
-        
+        $productCart = $request->product;
+        $product = Product::where('id', $productCart['product_id'])->first();
+        $cart->remove($product->id);
+
         return true;
     }
 }

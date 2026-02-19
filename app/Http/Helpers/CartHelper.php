@@ -36,6 +36,7 @@ class CartHelper
             'retail_price' => $retailPrice,
             'quantity'   => $quantity,
         ];
+        $cart['total_price'] += $retailPrice;
 
         $this->set($cart);
     }
@@ -74,13 +75,14 @@ class CartHelper
         
     }
 
-    public function remove(int $productId): void
+    public function remove(int $productId, float $retailPrice): void
     {
         $cart = $this->get();
 
         $cart['products'] = array_values(
             array_filter($cart['products'], fn ($product) => $product['product_id'] !== $productId)
         );
+        $cart['total_price'] -= $retailPrice;
 
         $this->set($cart);
     }
@@ -110,6 +112,28 @@ class CartHelper
     {
         return [
             'products' => [],
+            'total_price' => 0,
+            'delivery_address' => [
+                'country_id' => null,
+                'customer_id' => null,
+                'name' => '',
+                'address_line_1' => '',
+                'address_line_2' => '',
+                'city' => '',
+                'postal_code' => '',
+                'region' => '',
+                'district' => '',
+                'sub_district' => '',
+                'locality' => '',
+                'sub_locality' => '',
+            ],
+            'carrier' => [
+                'id' => null,
+                'name' => null,
+                'slug' => null,
+                'description' => null,
+                'carrier_position' => 0
+            ]
         ];
     }
 
@@ -141,5 +165,40 @@ class CartHelper
         }
 
         return $cart;
+    }
+
+    public function insertDeliveryAddress($user, $address): void
+    {
+        $cart = $this->get();
+        $cart['delivery_address']['country_id'] = $address->country_id;
+        if($user) {
+            $customer = Customer::where('email', $user->email)->firstOrFail();
+            $cart['delivery_address']['customer_id'] = $customer->id;
+        } else {
+            $cart['delivery_address']['customer_id'] = null;
+        }
+
+        $cart['delivery_address']['name'] = $address->name;
+        $cart['delivery_address']['address_line_1'] = $address->address_line_1;
+        $cart['delivery_address']['address_line_2'] = $address->address_line_2;
+        $cart['delivery_address']['city'] = $address->city;
+        $cart['delivery_address']['postal_code'] = $address->postal_code;
+        $cart['delivery_address']['region'] = $address->region;
+        $cart['delivery_address']['district'] = $address->district;
+        $cart['delivery_address']['sub_district'] = $address->sub_district;
+        $cart['delivery_address']['locality'] = $address->locality;
+        $cart['delivery_address']['sub_locality'] = $address->sub_locality;
+        $this->set($cart);
+    }
+
+    public function insertCarrier($carrier): void
+    {
+        $cart = $this->get();
+        $cart['carrier']['id'] = $carrier->id;
+        $cart['carrier']['name'] = $carrier->name;
+        $cart['carrier']['slug'] = $carrier->slug;
+        $cart['carrier']['description'] = $carrier->description;
+        $cart['carrier']['carrier_position'] = $carrier->carrier_position;
+        $this->set($cart);
     }
 }

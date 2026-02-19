@@ -6,6 +6,7 @@ import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 
 interface CartProduct {
+    product_id: number
     name: string
     quantity: number
     price: number
@@ -14,6 +15,7 @@ interface CartProduct {
 interface CartProps {
     frontCategories: Category[]
     products: Array<CartProduct>
+    total_price: number
     cartProductsCount: number
 }
 
@@ -26,7 +28,7 @@ const props = defineProps<CartProps>();
         <div id="cart-wrapper" class="min-h-screen p-6 text-[#1b1b18] lg:p-8 bg-gray-100 dark:bg-[#0a0a0a]">
             <div class="flex flex-row lg:justify-center gap-40">
                 <CartLeftColumn :products="props.products"/>
-                <CartSummary :products="props.products"></CartSummary>
+                <CartSummary :products="props.products" :total_price="props.total_price"></CartSummary>
             </div>
         </div>
     </main>

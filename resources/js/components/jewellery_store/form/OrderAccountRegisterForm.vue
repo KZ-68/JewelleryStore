@@ -13,7 +13,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 
 <template>
 
-    <section class="bg-white rounded-xl px-10 py-20">
+    <section class="bg-white rounded-b-xl px-10 py-20 border-t-[1px] border-gray-100">
         <Head title="Register" />
 
         <Form

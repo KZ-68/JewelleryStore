@@ -8,9 +8,10 @@ interface CartProduct {
 
 interface OrderSummaryProps {
     products: Array<CartProduct>
+    total_price: number
 }
 
-defineProps<OrderSummaryProps>()
+const props = defineProps<OrderSummaryProps>()
 </script>
 
 <template>
@@ -30,8 +31,9 @@ defineProps<OrderSummaryProps>()
         <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
         <div class="border-t mt-8">
           <div class="flex font-semibold justify-between py-6 text-sm uppercase">
-            <h2>Total cost</h2>
-            <span></span>
+            <h2>Total cost :</h2>
+            <span v-if="props.total_price && props.total_price !== 0">{{ props.total_price }}</span>
+            <span v-else>0</span>
           </div>
         </div>
     </section>

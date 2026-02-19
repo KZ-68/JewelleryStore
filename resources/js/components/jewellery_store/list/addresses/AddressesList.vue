@@ -5,20 +5,21 @@ import AddressCard from '../../card/AddressCard.vue';
 interface AddressesListProps {
     classname:string
     addresses: Address[]
+    isOrder: boolean
 }
 
 // const emit = defineEmits<{
 //   (e: 'navigate', url: string): void
 // }>() 
 
-defineProps<AddressesListProps>()
+const props = defineProps<AddressesListProps>()
 </script>
 
 <template>
-    <section id="addresses-list-wrapper" class="rounded-lg">
+    <section id="addresses-list-wrapper" class="h-[36rem] rounded-lg">
         <ul v-if="addresses.length > 0" id="addresses-list" class="flex flex-col gap-4">
             <li v-for="address in addresses" v-bind:key="address.id" class="flex flex-row justify-between bg-white rounded-md py-4 px-5 my-3">
-                <AddressCard classname="" :address="address"/>
+                <AddressCard classname="" :address="address" :isOrder="props.isOrder"/>
             </li>
         </ul>
         <ul v-else id="addresses-list" class="flex flex-col gap-4">

@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import Account from '@/components/jewellery_store/tab/OrderAccountChoiceTab.vue'
-import { useForm } from '@inertiajs/vue3'
-import { ref, computed } from 'vue'
+import AddressStep from '@/components/jewellery_store/OrderAddressStep.vue'
+import { usePage } from '@inertiajs/vue3'
+import { ref, computed, onMounted } from 'vue'
 import { Carrier } from '@/types/carrier'
 import { Country } from '@/types/country'
 import { Customer } from '@/types/customer'
 import { Payment } from '@/types/payment'
-import { route } from '../../../../vendor/tightenco/ziggy';
-import { Ziggy } from '../../ziggy.js';
 import OrderSummary from '@/components/jewellery_store/OrderSummary.vue'
+import { Address } from '@/types/address'
  
 interface CartProduct {
+    product_id: number
     name: string
     quantity: number
     price : number
@@ -22,34 +23,21 @@ interface OrderPageProps {
     countries: Country[]
     payments: Payment[]
     products: Array<CartProduct>
+    total_price: number
+    addresses: Address[]
 } 
 
 const props = defineProps<OrderPageProps>()
 
 const steps = [
     Account,
-    // Address,
-    // CarrierChoice,
+    AddressStep,
+    CarrierChoice,
     // PaymentChoice
 ]
 
-const currentStep = ref(0)
-
-const addressForm = useForm({
-    country_id: 0,
-    customer_id: props.customer ? props.customer.id : 0,
-    name: '',
-    address_line_1: '',
-    address_line_2: '',
-    city: '',
-    postal_code: '',
-    region: '',
-    district: '',
-    sub_district: '',
-    locality: '',
-    sub_locality: '',
-    country: {}
-})
+const currentStep = ref(0);
+const isAddressSelected = ref(false);
 
 const currentComponent = computed(() => steps[currentStep.value])
 
@@ -66,9 +54,18 @@ const prev = () => {
   }
 }
 
-const submitAddressForm = () => {
-  addressForm.post(route('newAddress', {}, false, Ziggy))
-}
+onMounted(async () => {
+  try {
+      if(usePage().props.auth.customer) {
+        currentStep.value++
+      }
+      if(isAddressSelected.value === true) {
+        currentStep.value === 3;
+      }
+  } catch (error) {
+      console.error('Erreur:', error);
+  }
+})
 </script>
 
 <template>
@@ -76,14 +73,13 @@ const submitAddressForm = () => {
     <div id="order-page-steps-wrapper">
       <component
         :is="currentComponent"
-        :addressForm="addressForm"
         :countries="countries"
+        :addresses="addresses"
         :is-last="currentStep === steps.length - 1"
         @next="next"
         @prev="prev"
-        @submitAddressForm="submitAddressForm"
       />
     </div>
-    <OrderSummary :products="props.products"></OrderSummary>
+    <OrderSummary :products="props.products" :total_price="total_price"></OrderSummary>
   </main>
 </template>

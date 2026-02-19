@@ -1,24 +1,24 @@
 <script setup lang="ts">
 
+interface CartProduct {
+    name: string
+    quantity: number
+    price : number
+}
+
 interface OrderSummaryProps {
-    products: Array<object>
-    product: {
-        id: number
-        name: string
-        slug: string
-        price_ht: number
-    }
+    products: Array<CartProduct>
 }
 
 defineProps<OrderSummaryProps>()
 </script>
 
 <template>
-    <section id="summary" class="h-full w-1/4 my-10 px-8 pt-20 pb-10 bg-white rounded-bl-lg">
+    <section id="summary" class="h-[50rem] w-1/4 my-10 px-8 pt-20 pb-10 bg-white rounded-bl-lg">
         <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
-        <div v-for="product in products" :key=product.id class="flex justify-between mt-10 mb-5">
+        <div v-for="product in products" :key=product.name class="flex justify-between mt-10 mb-5">
           <span class="font-semibold text-sm uppercase">{{ product.name }}</span>
-          <span class="font-semibold text-sm"></span>
+          <span class="font-semibold text-sm">x{{product.quantity}}</span>
         </div>
         <div id="shipping-section" class="my-10">
           <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Account from '@/components/jewellery_store/form/OrderAccountForm.vue'
+import Account from '@/components/jewellery_store/tab/OrderAccountChoiceTab.vue'
 import { useForm } from '@inertiajs/vue3'
 import { ref, computed } from 'vue'
 import { Carrier } from '@/types/carrier'
@@ -10,11 +10,18 @@ import { route } from '../../../../vendor/tightenco/ziggy';
 import { Ziggy } from '../../ziggy.js';
 import OrderSummary from '@/components/jewellery_store/OrderSummary.vue'
  
+interface CartProduct {
+    name: string
+    quantity: number
+    price : number
+}
+
 interface OrderPageProps {
     customer: Customer
     carriers: Carrier[]
     countries: Country[]
     payments: Payment[]
+    products: Array<CartProduct>
 } 
 
 const props = defineProps<OrderPageProps>()
@@ -27,11 +34,6 @@ const steps = [
 ]
 
 const currentStep = ref(0)
-
-const accountForm = useForm({
-    email: '',
-    plainPassword: ''
-})
 
 const addressForm = useForm({
     country_id: 0,
@@ -67,27 +69,21 @@ const prev = () => {
 const submitAddressForm = () => {
   addressForm.post(route('newAddress', {}, false, Ziggy))
 }
-
-const submitLogin = () => {
-  addressForm.post(route('login', {}, false, Ziggy))
-}
 </script>
 
 <template>
-  <div id="order-page-wrapper" class="flex flex-row gap-2 justify-evenly bg-gray-100">
+  <main id="order-page-wrapper" class="flex flex-row py-6 gap-2 justify-evenly bg-gray-100">
     <div id="order-page-steps-wrapper">
       <component
         :is="currentComponent"
-        :accountForm="accountForm"
         :addressForm="addressForm"
         :countries="countries"
         :is-last="currentStep === steps.length - 1"
         @next="next"
         @prev="prev"
         @submitAddressForm="submitAddressForm"
-        @submitLogin="submitLogin"
       />
     </div>
-    <OrderSummary></OrderSummary>
-  </div>
+    <OrderSummary :products="props.products"></OrderSummary>
+  </main>
 </template>

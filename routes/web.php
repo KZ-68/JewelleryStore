@@ -37,7 +37,9 @@ Route::get('not-found', function() {
 
 Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products');
 Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
-Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('showOrderPage');
+Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('order.showOrderPage');
+Route::post('/order/select-address', [OrderFrontController::class, 'selectAddress'])->name('order.selectAddress');
+Route::post('/order/select-carrier', [OrderFrontController::class, 'selectCarrier'])->name('order.selectCarrier');
 Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
 Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
 

@@ -1,9 +1,9 @@
 export interface Address {
     id: number
-    country_id: number
-    customer_id: number
-    manufacturer_id: number
-    supplier_id: number
+    country_id: number|null
+    customer_id: number|null
+    manufacturer_id: number|null
+    supplier_id: number|null
     name: string
     address_line_1: string
     address_line_2: string
@@ -14,8 +14,8 @@ export interface Address {
     sub_district: string
     locality: string
     sub_locality:string
-    created_at: string
-    updated_at: string
-    deleted_at: string
-    country: Country
+    created_at: string|null
+    updated_at: string|null
+    deleted_at: string|null
+    country: Country|object
 }

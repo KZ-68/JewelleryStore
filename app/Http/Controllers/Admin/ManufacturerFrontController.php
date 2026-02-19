@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

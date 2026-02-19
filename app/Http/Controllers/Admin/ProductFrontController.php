@@ -14,7 +14,7 @@ use App\Models\Category;
 use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Services\Tax\TaxCalculatorService;
+use App\Services\Tax\TaxCalculatorService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 class ProductFrontController extends Controller

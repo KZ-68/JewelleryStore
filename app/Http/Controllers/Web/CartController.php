@@ -28,7 +28,8 @@ class CartController extends Controller
 
         return Inertia::render('web/Cart', [
             'status' => $request->session()->get('status'),
-            'products' => $products
+            'products' => $products,
+            'total_price' => $cartProducts['total_price']
         ]);
     }
 
@@ -55,7 +56,7 @@ class CartController extends Controller
     {
         $productCart = $request->product;
         $product = Product::where('id', $productCart['product_id'])->first();
-        $cart->remove($product->id);
+        $cart->remove($product->id, $product->retail_price);
 
         return true;
     }

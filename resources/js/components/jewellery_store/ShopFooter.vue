@@ -21,8 +21,31 @@ import { Ziggy } from '../../ziggy.js';
                 <a href="#"></a>
             </nav>
         </div>
-        <section id="shop-footer-reassurance" class="flex flex-row">
-            <h3 class="text-xl">Available payment methods</h3>
+        <section id="shop-footer-reassurance" class="flex flex-col">
+            <h3 class="text-xl my-2">Available payment methods</h3>
+            <div class="flex flex-row gap-4">
+                <figure>
+                    <img src="/storage/img/icons/payments/1_small.png" alt="">
+                </figure>
+                <figure>
+                    <img src="/storage/img/icons/payments/2_small.png" alt="">
+                </figure>
+                <figure>
+                    <img src="/storage/img/icons/payments/3_small.png" alt="">
+                </figure>
+                <figure>
+                    <img src="/storage/img/icons/payments/4_small.png" alt="">
+                </figure>
+                <figure>
+                    <img src="/storage/img/icons/payments/5_small.png" alt="">
+                </figure>
+                <figure>
+                    <img src="/storage/img/icons/payments/16_small.png" alt="">
+                </figure>
+                <figure>
+                    <img src="/storage/img/icons/payments/22_small.png" alt="">
+                </figure>
+            </div>
         </section>
         <nav class="flex flex-row gap-3">
             <a href="#">Sitemap</a>

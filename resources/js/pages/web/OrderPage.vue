@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Account from '@/components/jewellery_store/tab/OrderAccountChoiceTab.vue'
 import AddressStep from '@/components/jewellery_store/OrderAddressStep.vue'
+import CarrierChoice from '@/components/jewellery_store/list/carriers/OrderCarriersAvailable.vue'
 import { usePage } from '@inertiajs/vue3'
 import { ref, computed, onMounted } from 'vue'
 import { Carrier } from '@/types/carrier'

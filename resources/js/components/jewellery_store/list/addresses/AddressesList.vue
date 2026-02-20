@@ -17,7 +17,7 @@ const props = defineProps<AddressesListProps>()
 
 <template>
     <section id="addresses-list-wrapper" class="h-[36rem] rounded-lg">
-        <ul v-if="addresses.length > 0" id="addresses-list" class="flex flex-row flex-wrap gap-2 mx-4">
+        <ul v-if="addresses.length > 0" id="addresses-list" class="flex flex-col md:flex-row flex-wrap gap-2 mx-4">
             <li v-for="address in addresses" v-bind:key="address.id" class="bg-white rounded-md my-3">
                 <AddressCard classname="" :address="address" :isOrder="props.isOrder"/>
             </li>

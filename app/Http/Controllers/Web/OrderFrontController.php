@@ -47,6 +47,7 @@ class OrderFrontController extends Controller
                 'customer' => $customer,
                 'countries' => $countries,
                 'payments' => $payments,
+                'products' => $cartProducts['products'],
                 'total_price' => $cartProducts['total_price']
             ]
         );
@@ -67,12 +68,12 @@ class OrderFrontController extends Controller
         } catch (\Throwable $th) {
             var_dump($th->getMessage());
             return response()->json([
-                'addressSelected' => false
+                'isAddressSelected' => false,
             ]);
         }
 
         return response()->json([
-            'addressSelected' => true,
+            'isAddressSelected' => true,
         ]);
     }
 
@@ -86,17 +87,17 @@ class OrderFrontController extends Controller
         try {
             $user = $request->user();
             $carrierId = $request->get('carrierId');
-            $carrier = Address::where('id', $carrierId)->first();
+            $carrier = Carrier::where('id', $carrierId)->first();
             $cart->insertCarrier($user, $carrier);
         } catch (\Throwable $th) {
             var_dump($th->getMessage());
             return response()->json([
-                'carrierSelected' => false
+                'isCarrierSelected' => false
             ]);
         }
 
         return response()->json([
-            'carrierSelected' => true,
+            'isCarrierSelected' => true,
         ]);
     }
 

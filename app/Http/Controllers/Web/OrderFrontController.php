@@ -88,7 +88,7 @@ class OrderFrontController extends Controller
             $user = $request->user();
             $carrierId = $request->get('carrierId');
             $carrier = Carrier::where('id', $carrierId)->first();
-            $cart->insertCarrier($user, $carrier);
+            $cart->insertCarrier($carrier);
         } catch (\Throwable $th) {
             var_dump($th->getMessage());
             return response()->json([

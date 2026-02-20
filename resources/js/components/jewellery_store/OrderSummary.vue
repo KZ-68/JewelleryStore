@@ -15,7 +15,7 @@ const props = defineProps<OrderSummaryProps>()
 </script>
 
 <template>
-    <section id="summary" class="h-[50rem] w-1/4 my-10 px-8 pt-20 pb-10 bg-white rounded-bl-lg">
+    <section id="summary" class="w-80 lg:w-1/4 h-[50rem] my-10 px-8 pt-20 pb-10 bg-white rounded-bl-lg">
         <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
         <div v-for="product in products" :key=product.name class="flex justify-between mt-10 mb-5">
           <span class="font-semibold text-sm uppercase">{{ product.name }}</span>

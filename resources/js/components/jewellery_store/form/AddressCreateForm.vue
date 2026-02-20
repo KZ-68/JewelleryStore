@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AddressFrontController from '@/actions/App/Http/Controllers/Web/AddressFrontController';
+import Button from '@/components/ui/button/Button.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Country } from '@/types/country';
@@ -9,6 +10,7 @@ import { ref } from "vue";
 interface AddressCreateFormProps {
     classname:string;
     countries: Country[]
+    isOrder: boolean
 }   
 
 const countrySelected = ref('')
@@ -19,7 +21,7 @@ const props = defineProps<AddressCreateFormProps>();
 <template>
     <section id="new-admin-address-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="AddressFrontController.create.form()"
+            v-bind="AddressFrontController.create.form({query: { isOrder: props.isOrder }})"
             :reset-on-success="['addresses.edit']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -181,7 +183,7 @@ const props = defineProps<AddressCreateFormProps>();
                 <section id="new-admin-address-footer" class="flex flex-row gap-4 py-8">
                     <Button
                     type="submit"
-                    class="w-20 bg-black text-white"
+                    class="py-4 px-6 bg-[#84070F] text-white font-bold hover:cursor-pointer"
                     :tabindex="5"
                     :disabled="processing"
                     >

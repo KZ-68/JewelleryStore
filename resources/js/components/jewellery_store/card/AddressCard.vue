@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import axios from 'axios'
 import type { Address } from '@/types/address'
 import Button from '@/components/ui/button/Button.vue';
+import { onMounted, ref, inject, Ref } from 'vue'
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { router } from '@inertiajs/vue3'
 import { TrashIcon } from 'lucide-vue-next';
@@ -12,15 +14,25 @@ interface AddressCardProps {
     isOrder: boolean
 }
 
+const props = defineProps<AddressCardProps>()
+const isAddressSelected = inject<Ref<boolean>>('isAddressSelected')!
+
 const deleteAddress = (name: string) => {
     router.post(route('addresses.deleteAddress', {name: name}, false, Ziggy), {name: name})
 }
 
-const selectAddress = (id: number) => {
-    router.post(route('order.selectAddress', {addressId: id}, false, Ziggy), {addressId: id})
+async function selectAddress(id:number) {
+    try {
+        await axios.post(
+            route('order.selectAddress', {addressId: id}, false, Ziggy)
+        ).then((response) => {
+            isAddressSelected.value = response.data.isAddressSelected;
+        })
+    } catch (error) {
+        console.error('Erreur:', error);
+    }
 }
 
-const props = defineProps<AddressCardProps>()
 </script>
 
 <template>

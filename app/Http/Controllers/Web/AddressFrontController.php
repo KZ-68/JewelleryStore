@@ -46,7 +46,7 @@ class AddressFrontController extends Controller
     }
 
     /**
-    * This method validate every fields used in the new carrier form.
+    * This method validate every fields used in the new address form.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
     */
@@ -65,10 +65,18 @@ class AddressFrontController extends Controller
             'country' => 'nullable|string',
         ]);
 
+        $isOrder = $request->boolean('isOrder');
+
         if ($validator->fails()) {
-            return redirect('/settings/addresses')
+            if($isOrder === true) {
+                return redirect('/order')
+                    ->withErrors($validator)
+                    ->withInput();
+            } else {
+                return redirect('/settings/addresses')
                 ->withErrors($validator)
                 ->withInput();
+            }
         }
 
         $user = $request->user();
@@ -89,7 +97,11 @@ class AddressFrontController extends Controller
         $address->sub_locality = $request->get('sub_locality');
         $address->save();
 
-        return redirect('/settings/addresses');
+        if($isOrder === true) {
+            return redirect()->route('order.showOrderPage');;
+        } else {
+            return redirect('/settings/addresses');
+        }
     }
 
     // /**

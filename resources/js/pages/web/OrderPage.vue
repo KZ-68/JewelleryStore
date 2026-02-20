@@ -2,14 +2,16 @@
 import Account from '@/components/jewellery_store/tab/OrderAccountChoiceTab.vue'
 import AddressStep from '@/components/jewellery_store/OrderAddressStep.vue'
 import CarrierChoice from '@/components/jewellery_store/list/carriers/OrderCarriersAvailable.vue'
+import PaymentChoice from '@/components/jewellery_store/list/payments/OrderPaymentsAvailable.vue'
 import { usePage } from '@inertiajs/vue3'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, provide, watch } from 'vue'
 import { Carrier } from '@/types/carrier'
 import { Country } from '@/types/country'
 import { Customer } from '@/types/customer'
 import { Payment } from '@/types/payment'
 import OrderSummary from '@/components/jewellery_store/OrderSummary.vue'
 import { Address } from '@/types/address'
+import products from '../../routes/products/index';
  
 interface CartProduct {
     product_id: number
@@ -34,51 +36,63 @@ const steps = [
     Account,
     AddressStep,
     CarrierChoice,
-    // PaymentChoice
+    PaymentChoice
 ]
 
 const currentStep = ref(0);
-const isAddressSelected = ref(false);
 
 const currentComponent = computed(() => steps[currentStep.value])
 
-
-const next = () => {
-  if (currentStep.value < steps.length - 1) {
-    currentStep.value++
-  }
+const selectStep = (key: number) => {
+  currentStep.value = key
 }
 
-const prev = () => {
-  if (currentStep.value > 0) {
-    currentStep.value--
+const isAddressSelected = ref(false)
+provide('isAddressSelected', isAddressSelected)
+const isCarrierSelected = ref(false)
+provide('isCarrierSelected', isCarrierSelected)
+
+watch(
+  () => isAddressSelected.value, (value) => {
+    if (value === true) {
+      currentStep.value = 2;
+    }
   }
-}
+)
+
+watch(
+  () => isCarrierSelected.value, (value) => {
+    if (value === true) {
+      currentStep.value = 3;
+    }
+  }
+)
 
 onMounted(async () => {
   try {
-      if(usePage().props.auth.customer) {
+      if (usePage().props.auth.customer) {
         currentStep.value++
-      }
-      if(isAddressSelected.value === true) {
-        currentStep.value === 3;
       }
   } catch (error) {
       console.error('Erreur:', error);
   }
+
 })
 </script>
 
 <template>
-  <main id="order-page-wrapper" class="flex flex-row py-6 gap-2 justify-evenly bg-gray-100">
+  <main id="order-page-wrapper" class="flex flex-col items-center lg:flex-row py-6 gap-2 justify-evenly bg-gray-100">
     <div id="order-page-steps-wrapper">
       <component
         :is="currentComponent"
         :countries="countries"
         :addresses="addresses"
+        :products="products"
+        :carriers="carriers"
+        :payments="payments"
+        :isAddressSelected="isAddressSelected"
         :is-last="currentStep === steps.length - 1"
-        @next="next"
-        @prev="prev"
+        @selectStep="selectStep"
       />
     </div>
     <OrderSummary :products="props.products" :total_price="total_price"></OrderSummary>

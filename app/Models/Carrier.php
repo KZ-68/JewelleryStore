@@ -30,11 +30,6 @@ class Carrier extends Model
         static::creating(function ($carrier) {
             $slug = Str::slug($carrier->name);
 
-            $count = Carrier::where('slug', $slug)->count();
-            if ($count) {
-                $slug .= '-' . ($count + 1);
-            }
-
             $carrier->slug = $slug;
         });
     }

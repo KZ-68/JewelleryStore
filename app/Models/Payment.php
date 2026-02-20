@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
@@ -13,7 +14,20 @@ class Payment extends Model
      */
     protected $fillable = [
         'name',
+        'slug'
     ];
+
+    
+    // Create a slug automaticaly after the creation of the payment
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($payment) {
+            $slug = Str::slug($payment->name);
+            $payment->slug = $slug;
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

@@ -17,6 +17,7 @@ use App\Http\Controllers\Web\ShopProductFrontController;
 use App\Http\Controllers\Admin\CarrierDataFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
 use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
+use App\Http\Controllers\Web\PaymentController;
 use App\Http\Controllers\Web\SearchFrontController;
 use App\Http\Controllers\Web\ShopCategoryFrontController;
 
@@ -40,9 +41,12 @@ Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopR
 Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('order.showOrderPage');
 Route::post('/order/select-address', [OrderFrontController::class, 'selectAddress'])->name('order.selectAddress');
 Route::post('/order/select-carrier', [OrderFrontController::class, 'selectCarrier'])->name('order.selectCarrier');
+Route::post('/order/select-payment', [OrderFrontController::class, 'selectPayment'])->name('order.selectPayment');
+Route::post('/stripe/payment/create-intent', [PaymentController::class, 'createIntent'])->name('payment.createIntent');
+Route::view('/checkout/success', 'checkout.success')->name('checkout-success');
+Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
 Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
 Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
-
 Route::post('/search/{text}', [SearchFrontController::class, 'searchProducts'])->name('searchProducts');
 
 Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], function () {

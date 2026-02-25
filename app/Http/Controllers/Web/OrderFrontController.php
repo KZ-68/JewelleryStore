@@ -85,7 +85,6 @@ class OrderFrontController extends Controller
     public function selectCarrier(Request $request, CartHelper $cart): JsonResponse
     {
         try {
-            $user = $request->user();
             $carrierId = $request->get('carrierId');
             $carrier = Carrier::where('id', $carrierId)->first();
             $cart->insertCarrier($carrier);
@@ -98,6 +97,29 @@ class OrderFrontController extends Controller
 
         return response()->json([
             'isCarrierSelected' => true,
+        ]);
+    }
+
+    /**
+     * Method select the payment and associate to Cart
+     * @param Request $request Get the request
+     * @return JsonResponse Return a Response on JSON format with boolean value for confirmation or errors
+    */
+    public function selectPayment(Request $request, CartHelper $cart): JsonResponse
+    {
+        try {
+            $paymentId = $request->get('paymentId');
+            $payment = Payment::where('id', $paymentId)->first();
+            $cart->insertPayment($payment);
+        } catch (\Throwable $th) {
+            var_dump($th->getMessage());
+            return response()->json([
+                'isPaymentSelected' => false
+            ]);
+        }
+
+        return response()->json([
+            'isPaymentSelected' => true,
         ]);
     }
 

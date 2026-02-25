@@ -51,6 +51,8 @@ const isAddressSelected = ref(false)
 provide('isAddressSelected', isAddressSelected)
 const isCarrierSelected = ref(false)
 provide('isCarrierSelected', isCarrierSelected)
+const isPaymentSelected = ref(false)
+provide('isPaymentSelected', isPaymentSelected)
 
 watch(
   () => isAddressSelected.value, (value) => {
@@ -90,6 +92,7 @@ onMounted(async () => {
         :products="products"
         :carriers="carriers"
         :payments="payments"
+        :total_price="total_price"
         :isAddressSelected="isAddressSelected"
         :is-last="currentStep === steps.length - 1"
         @selectStep="selectStep"

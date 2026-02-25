@@ -201,4 +201,13 @@ class CartHelper
         $cart['carrier']['carrier_position'] = $carrier->carrier_position;
         $this->set($cart);
     }
+
+    public function insertPayment($payment): void
+    {
+        $cart = $this->get();
+        $cart['payment']['id'] = $payment->id;
+        $cart['payment']['name'] = $payment->name;
+        $cart['payment']['slug'] = $payment->slug;
+        $this->set($cart);
+    }
 }

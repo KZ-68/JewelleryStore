@@ -11,9 +11,12 @@ use App\Models\Address;
 use App\Models\Carrier;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -121,6 +124,22 @@ class OrderFrontController extends Controller
         return response()->json([
             'isPaymentSelected' => true,
         ]);
+    }
+
+    public function orderConfirmation(): Response
+    {
+        $orderSession = Session::get("order");
+        $order = Order::where('reference', $orderSession['reference'])->first();
+        $status = Status::where('name', 'like', '%'.'Payment Confirmed'.'%')->first();
+        $order->statuses()->attach($status);
+        $order->save();
+
+        return Inertia::render(
+            'web/OrderConfirmation', 
+            [
+                'order' => $order
+            ]
+        );
     }
 
 }

@@ -2,37 +2,51 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\DTOs\CreateOrderDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\CartHelper;
+use App\Http\Requests\CreateOrderRequest;
+use App\Models\Carrier;
 use App\Models\Customer;
-use App\Models\Order;
+use App\Services\Order\CreateOrderService;
 use Illuminate\Http\Request;
-use Stripe\PaymentIntent;
-use Stripe\Stripe;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
-    public function createIntent(Request $request)
+    private const SESSION_KEY = 'order';
+
+    public function __construct(
+        private CreateOrderService $orderService
+    ) {}
+
+    public function createIntent(Request $request, CartHelper $cart, CreateOrderRequest $orderRequest)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
+        $cartProduct = $cart->get();
+        $carrier = Carrier::where('id', $cartProduct['carrier']['id'])->firstOrFail();
         $user = $request->user('web');
-        $customer = Customer::where('id', $user->id);
-        $order = new Order;
-        $order->customer()->associate($customer);
-        $order->statuses()->attach(1);
-        $order->save();
+        $customer = Customer::where('id', $user->id)->firstOrFail();
+        $dto = CreateOrderDTO::fromRequest($orderRequest);
+        $order = $this->orderService->createOrder($dto, $carrier, $customer);
+        
+        Session::put(self::SESSION_KEY, [
+            'id' => $order->id,
+            'reference' => $order->reference
+        ]);
 
-        $intent = $customer->createPaymentIntent(
-            $order->amount,
+        $payment = $customer->payWith(
+            ($request->get('amount') * 100),
+            ['card', 'bancontact'],
             [
+                'currency' => 'eur',
                 'metadata' => [
                     'order_id' => $order->id,
                 ],
-            ]
+            ],
         );
 
         return response()->json([
-            'clientSecret' => $intent->client_secret,
+            'clientSecret' => $payment->client_secret,
         ]);
     }
 }

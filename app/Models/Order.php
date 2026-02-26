@@ -36,7 +36,9 @@ class Order extends Model
         static::creating(function ($order) {
             do {
                 $ref = 'CMD-' . strtoupper(Str::random(10));
+                $order->reference = $ref;
             } while (self::where('reference', $ref)->exists());
+
         });
     }
 

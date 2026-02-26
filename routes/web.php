@@ -43,8 +43,7 @@ Route::post('/order/select-address', [OrderFrontController::class, 'selectAddres
 Route::post('/order/select-carrier', [OrderFrontController::class, 'selectCarrier'])->name('order.selectCarrier');
 Route::post('/order/select-payment', [OrderFrontController::class, 'selectPayment'])->name('order.selectPayment');
 Route::post('/stripe/payment/create-intent', [PaymentController::class, 'createIntent'])->name('payment.createIntent');
-Route::view('/checkout/success', 'checkout.success')->name('checkout-success');
-Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');
+Route::get('/order/confirmation', [OrderFrontController::class, 'orderConfirmation'])->name('order.confirmation');
 Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
 Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
 Route::post('/search/{text}', [SearchFrontController::class, 'searchProducts'])->name('searchProducts');

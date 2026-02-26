@@ -133,6 +133,7 @@ class OrderFrontController extends Controller
         $status = Status::where('name', 'like', '%'.'Payment Confirmed'.'%')->first();
         $order->statuses()->attach($status);
         $order->save();
+        Session::put('order', []);
 
         return Inertia::render(
             'web/OrderConfirmation', 

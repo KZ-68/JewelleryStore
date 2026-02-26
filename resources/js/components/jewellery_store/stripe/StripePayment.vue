@@ -56,7 +56,7 @@ const handleSubmit = async () => {
   const { error } = await stripeInstance.value.confirmPayment({
     elements: elementsInstance.value,
     confirmParams: {
-      return_url: `${window.location.origin}/payment-complete`
+      return_url: `${window.location.origin}/order/confirmation`
     }
   })
 

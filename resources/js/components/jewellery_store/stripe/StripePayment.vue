@@ -38,7 +38,7 @@ onMounted(async () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-      body: JSON.stringify({amount: props.amount})
+      body: JSON.stringify({amount: props.amount, gift:false, valid:false, returned:false})
     })
     const data = await response.json()
     clientSecret.value = data.clientSecret

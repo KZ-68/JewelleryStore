@@ -10,6 +10,7 @@ import "swiper/css/navigation";
 import { onMounted, ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
+import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 
 interface ProductsListProps {
     classname:string
@@ -118,4 +119,5 @@ async function addToCart(product:Product, quantity: number, retailPrice: number)
         </section>
         <section id="shop-product-page-footer" class="my-4"></section>
     </main>
+    <ShopFooter></ShopFooter>
 </template>

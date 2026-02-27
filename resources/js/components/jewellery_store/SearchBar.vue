@@ -32,12 +32,12 @@ async function search(text: string) {
 </script>
 
 <template>
-    <div id="search-bar-wrapper" class="relative mx-8">
-        <input @input="search(searchText)" id="shop-search-bar" type="text" name="text" v-model="searchText" class="w-3xl px-2 py-3 rounded-md border-2 border-gray-200">
-        <div id="search-results-wrapper" class="absolute px-3 py-4">
+    <div id="search-bar-wrapper" class="flex flex-col lg:block relative mx-4 lg:mx-8">
+        <input @input="search(searchText)" id="shop-search-bar" type="text" name="text" v-model="searchText" class="w-80 lg:w-3xl px-2 py-3 rounded-md border-2 border-gray-200">
+        <div id="search-results-wrapper" class="absolute px-3 py-4 z-[2]">
             <ul id="search-results-list" class="flex flex-col">
                 <li v-if="results !== null" v-for="product in results">
-                    <SearchProductCard :product="product"></SearchProductCard>
+                    <SearchProductCard :product="product" :image="product.image"></SearchProductCard>
                 </li>
                 <li v-else-if="searchBarActive === true && results === null" class="flex flex-row">
                     <p>No products found</p>

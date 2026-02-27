@@ -30,8 +30,8 @@ const hasChildren = (category: Category) => {
 </script>
 
 <template>
-  <nav class="text-lg w-[64rem] bg-white">
-    <ul class="flex flex-row">
+  <nav class="text-lg lg:w-[64rem] bg-white">
+    <ul class="flex flex-col lg:flex-row items-center lg:items-start">
       <li 
         v-for="category in props.frontCategories" 
         :key="category.id"

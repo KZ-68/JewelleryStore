@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Web;
 
 use App\Contracts\ProductImageServiceInterface;
+use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Product;
-use App\Http\Helpers\CartHelper;
-use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Collection;
 
 
 class HomeFrontController extends Controller
 {
-    public function show(CartHelper $cart, ProductImageServiceInterface $image): Response
+    public function show(ProductImageServiceInterface $image): Response
     {
         $products = Product::All();
         $topProducts = $this->topProducts($products, $image);

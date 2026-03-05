@@ -31,13 +31,13 @@ const collectionCategory = ref<null|Category>(getCategory(props.category_name))
 <template>
     <section id="discover-category-section" class="flex flex-col items-center my-24 h-96 max-h-96 lg:h-[32rem] lg:max-h-[32rem] w-full">
         <h2 class="text-2xl my-3 mx-4">{{ collectionCategory?.name }} {{isCollection === true ? 'Collection' : 'Category'}}</h2>
-        <div id="discover-category-wrapper" class="flex flex-row w-72 lg:w-[48rem] my-12">
+        <div id="discover-category-wrapper" class="flex flex-row w-72 lg:w-[82rem] my-12 border-2 border-[#84070F] rounded-md">
             <div id="discover-category-left">
                 <figure>
-                    <img src="" alt="Category Image">
+                    <img src="" alt="Category Image" class="w-72 lg:w-[48rem] h-[32rem]">
                 </figure>
             </div>
-            <div id="discover-category-right" class="flex flex-col gap-2 items-center px-12">
+            <div id="discover-category-right" class="flex flex-col gap-16 justify-center px-12">
                 <h3 id="discover-category-heading" class="text-xl ">{{ props.description }}</h3>
                 <button id="discover-btn" class="bg-[#84070F] py-2 px-3">
                     <Link href="#">

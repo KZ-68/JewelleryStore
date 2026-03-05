@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,6 +20,18 @@ class Seller extends Model
     protected $fillable = [
         'seller_code',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($seller) {
+            do {
+                $code = 'JWS-' . strtoupper(Str::random(8));
+                $seller->seller_code = $code;
+            } while (self::where('seller_code', $code)->exists());
+        });
+    }
 
     /**
      * Get the attributes that should be cast.

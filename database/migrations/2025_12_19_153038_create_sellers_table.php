@@ -24,13 +24,13 @@ return new class extends Migration
             $table->string('tax_country', 2);
             $table->string('tax_type', 20);
             $table->string('tax_number', 50);
-            $table->string('tax_scheme', 20)->nullable();
-            $table->float('reduced_tax_rate', 2)->nullable();
-            $table->string('tax_registration_status', 20)->nullable();
+            $table->string('tax_scheme', 50);
+            $table->float('reduced_tax_rate', 2);
+            $table->string('tax_registration_status', 20);
             $table->string('invoice_tax_label', 10)->nullable();
             $table->boolean('requires_tax_invoice')->default(false);
             $table->string('qualified_invoice_number', 50)->nullable();
-            $table->timestamp('valid_from');
+            $table->timestamp('valid_from')->nullable();
             $table->timestamp('valid_to')->nullable();
             $table->string('validation_status', 20)->nullable();
             $table->timestamp('verified_at')->nullable();

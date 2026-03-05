@@ -25,7 +25,7 @@ class SellerTaxInformation extends Model
         'invoice_tax_label',
         'requires_tax_invoice',
         'qualified_invoice_number',
-        'verification_status',
+        'validation_status',
     ];
 
     /**

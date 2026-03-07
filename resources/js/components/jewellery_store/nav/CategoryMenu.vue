@@ -3,6 +3,7 @@ import { Category } from '@/types/category';
 import { ref } from 'vue';
 import { route } from '../../../../../vendor/tightenco/ziggy';
 import { Ziggy } from '../../../ziggy.js';
+import SubCategory from './SubCategory.vue';
 
 interface CategoryMenuProps {
     frontCategories: Category[]
@@ -10,83 +11,55 @@ interface CategoryMenuProps {
 
 const props = defineProps<CategoryMenuProps>();
 
-const openCategories = ref(new Set());
+const categories = ref<Category[]>(props.frontCategories)
+const openCategories = ref(new Set<number>())
 
-const toggleCategory = (categoryId : number) => {
-  if (openCategories.value.has(categoryId)) {
-    openCategories.value.delete(categoryId);
-  } else {
-    openCategories.value.add(categoryId);
-  }
-};
-
-const isOpen = (categoryId : number) => {
-  return openCategories.value.has(categoryId);
-};
-
-const hasChildren = (category: Category) => {
-  return category.subCategories && category.subCategories.length > 0;
-};
+function openCategory(id: number) {
+  openCategories.value.add(id)
+}
+function closeCategory(id: number) {
+  openCategories.value.delete(id)
+}
 </script>
 
 <template>
   <nav class="text-lg lg:w-[64rem] bg-white">
     <ul class="flex flex-col lg:flex-row items-center lg:items-start">
       <li 
-        v-for="category in props.frontCategories" 
+        v-for="category in categories"
         :key="category.id"
+        class="relative group"
       >
-        <div class="flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
-          <a 
-            :href="route('showCategoryProducts', {category_slug: category.slug}, false, Ziggy)"
-            class="flex-1 font-medium text-gray-800 hover:text-blue-500 transition-colors"
+        <div 
+          v-if="category.name != 'home'"
+          class="flex justify-between px-4 py-3 hover:bg-gray-50 transition-colors"
+          @mouseenter="openCategory(category.id)" 
+          @click="closeCategory(category.id)"
+          @touchstart="openCategory(category.id)"
+        >
+          <a :href="route('showCategoryProducts', {category_slug: category.slug}, false, Ziggy)" class="flex-1 font-medium text-gray-800 hover:text-blue-500 transition-colors"
           >
             {{ category.name }}
           </a>
-          
-          <button
-            v-if="hasChildren(category)"
-            @click.prevent="toggleCategory(category.id)"
-            class="p-1 text-gray-500 hover:text-blue-500 transition-colors"
-            :aria-expanded="isOpen(category.id)"
-          >
-            <svg 
+
+          <svg
               class="w-5 h-5 transition-transform duration-300"
-              :class="{ 'rotate-180': isOpen(category.id) }"
+              :class="{ 'rotate-270': openCategories.has(category.id) }"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
               <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-            </svg>
-          </button>
+          </svg>
         </div>
-
-        <transition
-          enter-active-class="transition-all duration-300 ease-in-out"
-          leave-active-class="transition-all duration-300 ease-in-out"
-          enter-from-class="max-h-0 opacity-0"
-          enter-to-class="max-h-[500px] opacity-100"
-          leave-from-class="max-h-[500px] opacity-100"
-          leave-to-class="max-h-0 opacity-0"
-        >
-          <ul 
-            v-if="hasChildren(category) && isOpen(category.id)"
-            class="bg-gray-50 overflow-hidden"
-          >
-            <li 
-              v-for="subcategory in category.subCategories" 
-              :key="subcategory.id"
-              class="border-t border-gray-200"
-            >
-              <a 
-                href="#"
-                class="block py-3 px-4 pl-8 text-sm text-gray-600 hover:bg-white hover:text-blue-500 hover:pl-9 transition-all"
-              >
-                {{ subcategory.name }}
-              </a>
-            </li>
-          </ul>
-        </transition>
+        <ul v-if="openCategories.has(category.id) && category.children_recursive?.length" class="absolute left-0 top-full flex-col bg-white border shadow-md min-w-[200px] group-hover:flex">
+          <SubCategory v-for="subCat in category.children_recursive"
+            :key="subCat.id"
+            :category="subCat"
+            :open-categories="openCategories"
+            @open="openCategory"
+            @close="closeCategory"
+          />
+        </ul>
       </li>
     </ul>
   </nav>

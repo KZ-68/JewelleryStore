@@ -42,6 +42,11 @@ class Category extends Model
         });
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
     /**
      * Get the sub categories.
      */
@@ -50,7 +55,12 @@ class Category extends Model
         return $this->hasMany(Category::class, 'parent_id');
     }
 
-     /**
+    public function childrenRecursive()
+    {
+        return $this->subCategories()->with('childrenRecursive');
+    }
+
+    /**
      * The products that belong to the category.
      */
     public function products(): BelongsToMany

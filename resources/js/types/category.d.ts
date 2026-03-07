@@ -8,5 +8,5 @@ export interface Category {
     index: boolean
     created_at: string
     updated_at: string
-    subCategories: Category[]
+    children_recursive: Category[]
 }

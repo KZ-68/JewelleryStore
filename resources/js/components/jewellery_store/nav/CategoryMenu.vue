@@ -51,7 +51,7 @@ function closeCategory(id: number) {
               <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
           </svg>
         </div>
-        <ul v-if="openCategories.has(category.id) && category.children_recursive?.length" class="absolute left-0 top-full flex-col bg-white border shadow-md min-w-[200px] group-hover:flex">
+        <ul v-if="openCategories.has(category.id) && category.children_recursive?.length" class="absolute left-0 top-full z-10 flex-col bg-white border shadow-md min-w-[200px] group-hover:flex">
           <SubCategory v-for="subCat in category.children_recursive"
             :key="subCat.id"
             :category="subCat"

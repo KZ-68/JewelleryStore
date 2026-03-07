@@ -54,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'customer' => Auth::guard('web')->check() ? Auth::guard('web')->user() : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'frontCategories' => Category::all(),
+            'frontCategories' => Category::with('childrenRecursive')->whereNull('parent_id')->get(),
             'cartProductsCount' => $cartProductsCount,
         ];
     }

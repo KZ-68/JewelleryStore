@@ -53,6 +53,17 @@ const activeIndex = ref(0)
 function onSlideChange(swiper: any) {
   activeIndex.value = swiper.activeIndex
 }
+
+const descriptionSelected = ref(true)
+const featuresSelected = ref(false)
+function selectDescription() {
+    descriptionSelected.value = true
+}
+
+function selectFeatures() {
+    featuresSelected.value = true
+    descriptionSelected.value = false
+}
 </script>
 
 <template>
@@ -132,10 +143,19 @@ function onSlideChange(swiper: any) {
                 </div>
             </div>
         </section>
-        <section id="shop-product-page-description-wrapper" class="my-3">
-            <h2 id="title-product" class="text-2xl font-bold">Description</h2>
-            <div class="product-description">
-                {{ product.description }}
+        <section id="shop-product-page-description-wrapper" class="mx-4 lg:mx-32 my-3">
+            <div class="flex flex-row gap-4">
+                <h2 @click="selectDescription" id="title-product-description" class="text-2xl font-bold">Description</h2>
+                <h2 @click="selectFeatures" id="title-product-feature" class="text-2xl font-bold">Features</h2>
+            </div>
+            <div v-if="props.product.description != null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+                <p class="text-lg px-6 py-6">{{ props.product.description }}</p>
+            </div>
+            <div v-else-if="props.product.description == null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+                <p class="text-lg px-6 py-6">Product description is empty</p>
+            </div>
+            <div v-else-if="featuresSelected == true" id="product-features" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+                <p class="text-lg px-6 py-6"></p>
             </div>
         </section>
         <section id="shop-product-page-footer" class="my-4"></section>

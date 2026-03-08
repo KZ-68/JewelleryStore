@@ -82,6 +82,14 @@ class Product extends Model
     }
 
     /**
+    * The features that belong to the product.
+    */
+    public function features(): BelongsToMany
+    {
+        return $this->belongsToMany(Feature::class, 'feature_values', 'product_id', 'feature_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

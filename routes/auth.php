@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredCustomerController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Web\SellerFrontController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web.session', 'guest:web'])->group(function () {
@@ -39,6 +40,12 @@ Route::middleware(['web.session', 'guest:web'])->group(function () {
 
     Route::post('register', [RegisteredCustomerController::class, 'store'])
         ->name('register.store');
+
+    Route::get('register-seller', [SellerFrontController::class, 'registerSeller'])
+        ->name('register-seller');
+
+    Route::post('register-seller', [SellerFrontController::class, 'store'])
+        ->name('register-seller.store');
 
 });
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { Product } from '@/types/product';
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';import SearchProductCard from './card/SearchProductCard.vue';
 

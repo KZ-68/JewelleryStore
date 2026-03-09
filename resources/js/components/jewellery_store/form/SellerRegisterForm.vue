@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import SearchFrontController from '@/actions/App/Http/Controllers/Web/SearchFrontController';
+import SellerFrontController from '@/actions/App/Http/Controllers/Web/SellerFrontController';
 import InputError from '@/components/InputError.vue';
-import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthBase from '@/layouts/AuthLayout.vue';
-import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 </script>
@@ -19,7 +16,7 @@ import { LoaderCircle } from 'lucide-vue-next';
         <h1 class="text-3xl">Seller Account Registration</h1>
 
         <Form
-            v-bind="SearchFrontController.store.form()"
+            v-bind="SellerFrontController.store.form()"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

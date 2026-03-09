@@ -10,6 +10,7 @@ import DiscoverCategorySection from '@/components/jewellery_store/section/Discov
 import { useWindowSize } from '@vueuse/core'
 import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
 import { ref, provide, watch } from 'vue'
+import SellerRegistrationInvitationBanner from '@/components/jewellery_store/section/SellerRegistrationInvitationBanner.vue';
 
 
 interface HomeProps {
@@ -48,6 +49,7 @@ const openNav = () => {
             <Slider></Slider>
             <TopProductCarousel :topProducts="props.topProducts"></TopProductCarousel>
             <DiscoverCategorySection :categories="frontCategories" category_name="Noir" description="Catchphrase placeholder for appealing customer to this category" :isCollection="true"></DiscoverCategorySection>
+            <SellerRegistrationInvitationBanner></SellerRegistrationInvitationBanner>
         </main>
         <div class="hidden h-14.5 lg:block"></div>
         <ShopFooter></ShopFooter>

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\Seller;
 use App\Models\SellerTaxInformation;
 use Illuminate\Auth\Events\Registered;
@@ -24,10 +25,10 @@ class SellerFrontController extends Controller
     /**
      * Show the registration page.
      */
-    public function create(): Response
+    public function registerSeller(): Response
     {
         $countries = Country::all();
-        return Inertia::render('web/RegisterSeller', [
+        return Inertia::render('web/SellerRegistration', [
             'countries' => $countries
         ]);
     }
@@ -78,5 +79,32 @@ class SellerFrontController extends Controller
         $sellerTaxInformation->save();
 
         return to_route('home');
+    }
+
+    function sellerProducts(Request $request) : Response 
+    {
+        $sortBy = $request->get('sortBy', 'id');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
+            $sortBy = 'id';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $products = Product::whereNotNull('seller_id')->orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'web/SellerProductsList', 
+            [
+                'products' => $products,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
     }
 }

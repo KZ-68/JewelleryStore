@@ -38,6 +38,7 @@ class ShopCategoryFrontController extends Controller
         return Inertia::render('web/ShopCategoryProducts', [
             'products' => $categoryProducts,
             'category_slug' => $category->slug,
+            'category_name' => $category->name,
             'filters' => [
                 'sortBy' => $sortBy,
                 'order' => $order,

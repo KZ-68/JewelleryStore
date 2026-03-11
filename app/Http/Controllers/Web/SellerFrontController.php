@@ -75,7 +75,7 @@ class SellerFrontController extends Controller
         $sellerTaxInformation->invoice_tax_label = $request->get('invoice_tax_label') ?? null;
         $sellerTaxInformation->requires_tax_invoice = true;
         $sellerTaxInformation->qualified_invoice_number = $request->get('qualified_invoice_number') ?? null;
-        $sellerTaxInformation->attach($seller);
+        $sellerTaxInformation->seller()->associate($seller);
         $sellerTaxInformation->save();
 
         return to_route('home');

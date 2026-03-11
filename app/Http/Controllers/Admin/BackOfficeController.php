@@ -9,7 +9,6 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Tax;
 use App\Models\User;
 use Inertia\Inertia;
-
 use Inertia\Response;
 use App\Models\Carrier;
 use App\Models\Product;

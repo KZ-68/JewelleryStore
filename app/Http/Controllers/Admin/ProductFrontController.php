@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Tax\TaxCalculatorService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
+
 class ProductFrontController extends Controller
 {
     /**

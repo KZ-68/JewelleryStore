@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers');
             $table->string('seller_code')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('seller_tax_information', function (Blueprint $table) {
@@ -34,6 +35,7 @@ return new class extends Migration
             $table->timestamp('valid_to')->nullable();
             $table->string('validation_status', 20)->nullable();
             $table->timestamp('verified_at')->nullable();
+            $table->softDeletes();
         });
     }
 

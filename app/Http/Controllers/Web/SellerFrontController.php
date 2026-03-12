@@ -81,8 +81,15 @@ class SellerFrontController extends Controller
         return to_route('home');
     }
 
-    function sellerProducts(Request $request) : Response 
+    function sellerPage(Request $request) : RedirectResponse|Response 
     {
+        $customer = Auth::guard('web')->user();
+        $seller = Seller::where('customer_id', $customer->id)->firstOrFail();
+        $sellerTaxInformation = $seller->sellerTaxInfo;
+        if ($sellerTaxInformation->validation_status == 'Waiting approval') {
+            return redirect('/settings');
+        }
+
         $sortBy = $request->get('sortBy', 'id');
         $order = $request->get('order', 'asc');
 
@@ -94,10 +101,10 @@ class SellerFrontController extends Controller
             $order = 'asc';
         }
 
-        $products = Product::whereNotNull('seller_id')->orderBy($sortBy, $order)->get();
+        $products = Product::where('seller_id', $seller->id)->orderBy($sortBy, $order)->get();
 
         return Inertia::render(
-            'web/SellerProductsList', 
+            'settings/SellerPage', 
             [
                 'products' => $products,
                 'filters' => [

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('seller_tax_informations', function (Blueprint $table) {
+        Schema::create('seller_tax_information', function (Blueprint $table) {
             $table->id();
             $table->foreignId('seller_id')->nullable()->constrained('sellers');
             $table->string('tax_country', 2);

@@ -11,6 +11,7 @@ import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { showInvoices } from '@/routes/invoices';
+import { sellerPage } from '@/routes/seller';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -36,6 +37,10 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Invoices',
         href: showInvoices(),
+    },
+    {
+        title: 'Seller Page',
+        href: sellerPage(),
     },
 ];
 

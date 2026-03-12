@@ -7,8 +7,9 @@ use App\Http\Controllers\Web\AddressFrontController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\InvoiceFrontController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
+use App\Http\Controllers\Web\SellerFrontController;
 
-Route::middleware(['web.session','role:basic', 'role:seller', 'auth:web'])->group(function () {
+Route::middleware(['web.session','role:basic', 'auth:web'])->group(function () {
     Route::redirect('settings', '/settings/profile');
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -32,5 +33,5 @@ Route::middleware(['web.session','role:basic', 'role:seller', 'auth:web'])->grou
 });
 
 Route::middleware(['web.session', 'role:seller', 'auth:web'])->group(function () {
-
+    Route::get('settings/seller', [SellerFrontController::class, 'sellerPage'])->name('seller.sellerPage');
 });

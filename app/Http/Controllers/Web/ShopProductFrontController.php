@@ -6,16 +6,23 @@
 namespace App\Http\Controllers\Web;
 
 use App\Contracts\ProductImageServiceInterface;
+use App\Http\Controllers\Controller;
+use App\Mails\CustomerSellerMessage;
+use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Message;
+use App\Models\Product;
+use App\Models\Seller;
+use App\Models\TaxRule;
+use App\Services\Tax\TaxCalculatorService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Product;
-use App\Models\TaxRule;
-use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use App\Services\Tax\TaxCalculatorService;
 
 class ShopProductFrontController extends Controller
 {
@@ -76,11 +83,90 @@ class ShopProductFrontController extends Controller
         $calculator = new TaxCalculatorService;
         $priceWithTax = $calculator->withTax($product->price_ht, $tax->rate);
         $productImages = $image->getProductImages($product->id);
-
+        $sellerId = null;
+        if (isset($product->seller_id) && $product->seller_id !== null) {
+            $sellerId = $product->seller_id;
+        }
+        
         return Inertia::render('web/ShopProductPage', [
             'product' => $product,
             'price' => $priceWithTax,
-            'productImages' => $productImages
+            'productImages' => $productImages,
+            'seller_id' => $sellerId
         ]);
+    }
+
+    /**
+    * Render the view assigned to the contact seller page
+    * @param Request Get the request, via GET method
+    * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function contactSeller(Request $request): Response
+    {
+        $sellerId = $request->get('seller_id');
+        $seller = Seller::where('id', $sellerId)->firstOrFail();
+        $productSlug = $request;
+        $user = Auth::guard('web')->user();
+        if ($user) {
+            $customer = Customer::where('id', $user->id)->firstOrFail();
+        }
+        
+        return Inertia::render('web/ContactSeller', [
+            'seller' => $seller,
+            'customer' => $customer ?? null,
+            'slug' => $productSlug
+        ]);
+    }
+
+    /**
+    * This method validate every fields used in the contact seller form.
+    * @param Request Get the POST method body from the form
+    * @return RedirectResponse Send a response with a redirection
+    */
+    public function validateContactSeller(Request $request): RedirectResponse
+    {
+        $user = Auth::guard('web')->user();
+        $validator = Validator::make($request->all(), [
+            'subject' => 'required|string|max:200',
+            'seller_id' => 'required|integer',
+            'customer_id' => $user ? 'required|integer': 'nullable|integer',
+            'from_email' => $user ? 'nullable|string|email|lowercase|max:200': 'required|string|email|lowercase|max:200',
+            'from_name' => $user ? 'nullable|string|max:100': 'required|string|max:100',
+            'content' => 'required|textarea|string|min:3|max:500'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/contact/seller')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $this->sendMailSeller($request);
+
+        return redirect('/contact/seller')
+            ->with(['confirmation' => 'Message has been send to the seller']);
+    }
+
+    private function sendMailSeller(Request $request): void
+    {
+        $seller = Seller::where('seller_id', $request->get('seller_id'))->firstOrFail();
+        $sellerCustomerRelation = Customer::whereBelongsTo($seller)->get();
+        if ($request->get('customer_id') !== null) {
+            $customer = Customer::where('customer_id', $request->get('customer_id'))->firstOrFail();
+        } else {
+            $fromEmail = $request->get('from_email');
+            $fromName = $request->get('from_name');
+        }
+
+        $message = Message::create([
+            'from_email' => $customer->email ?? $fromEmail,
+            'to_email' => $sellerCustomerRelation->email,
+            'from_name' => $customer->name ?? $fromName,
+            'to_name' => $sellerCustomerRelation->name,
+            'subject' => $request->get('subject'),
+            'content' => $request->get('content')
+        ]);
+
+        Mail::to($request->user())->send(new CustomerSellerMessage($message));
     }
 }

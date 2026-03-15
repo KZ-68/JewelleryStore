@@ -60,7 +60,7 @@ class Customer extends Authenticatable
 
     public function seller(): HasOne
     {
-        return $this->hasOne(Seller::class, 'customer_id');
+        return $this->hasOne(Seller::class);
     }
 
     /**

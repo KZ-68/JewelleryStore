@@ -23,6 +23,7 @@ interface ProductsListProps {
     price:number
     productImages: string[]
     seller_id: null|number
+    seller_name: null|string
 }
 
 // const emit = defineEmits<{
@@ -104,7 +105,7 @@ function selectFeatures() {
 
                         <div class="px-4">
                             <h2 class="mb-2 leading-tight tracking-tight font-bold text-gray-800 text-2xl md:text-3xl">{{ product.name }}</h2>
-                            <p class="text-gray-500 text-sm">By <a href="#" class="text-red-900 hover:underline"></a></p>
+                            <p v-if="props.seller_name !== null" class="text-gray-500 text-sm">Solded by {{ props.seller_name }}</p>
 
                             <div class="flex items-center space-x-4 my-4">
                                 <div>

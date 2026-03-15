@@ -86,13 +86,17 @@ class ShopProductFrontController extends Controller
         $sellerId = null;
         if (isset($product->seller_id) && $product->seller_id !== null) {
             $sellerId = $product->seller_id;
+            $seller = Seller::with('customer')->where('id', $sellerId)->firstOrFail();
+            $customer = $seller->customer()->firstOrFail();
+            $sellerName = $customer->name;
         }
         
         return Inertia::render('web/ShopProductPage', [
             'product' => $product,
             'price' => $priceWithTax,
             'productImages' => $productImages,
-            'seller_id' => $sellerId
+            'seller_id' => $sellerId,
+            'seller_name' => $sellerName ?? null
         ]);
     }
 

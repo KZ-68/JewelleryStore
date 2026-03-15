@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import axios from 'axios'
 import type { Product } from '@/types/product'
 import { Category } from '@/types/category';
@@ -21,6 +22,7 @@ interface ProductsListProps {
     cartProductsCount: number
     price:number
     productImages: string[]
+    seller_id: null|number
 }
 
 // const emit = defineEmits<{
@@ -116,7 +118,6 @@ function selectFeatures() {
                                 </div>
                             </div>
 
-                            <p class="text-gray-500">{{ product.description }}</p>
 
                             <div class="flex py-4 space-x-4">
                                 <div class="relative">
@@ -136,8 +137,16 @@ function selectFeatures() {
 
                                 <button @click="addToCart(props.product, 1, retailPrice)" type="button" class="h-14 px-6 py-2 font-semibold rounded-xl bg-red-900 hover:bg-red-700 text-white">
                                     Add to Cart
-                                </button>
+                                </button>                            
+                                
                             </div>
+                            <Link
+                                v-if="props.seller_id !== null"
+                                :href="route('contactSeller', {slug: props.product.slug, seller_id: props.seller_id}, false, Ziggy)"
+                                class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                            >
+                                Want to contact the seller ? Click here !
+                            </Link>
                         </div>
                     </div>
                 </div>

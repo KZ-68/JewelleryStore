@@ -47,6 +47,8 @@ Route::get('/order/confirmation', [OrderFrontController::class, 'orderConfirmati
 Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
 Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
 Route::post('/search/{text}', [SearchFrontController::class, 'searchProducts'])->name('searchProducts');
+Route::get('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'contactSeller'])->name('contactSeller');
+Route::post('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'validateContactSeller'])->name('contactSeller.validateContactSeller');
 
 Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');

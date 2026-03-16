@@ -34,4 +34,5 @@ Route::middleware(['web.session','role:basic', 'auth:web'])->group(function () {
 
 Route::middleware(['web.session', 'role:seller', 'auth:web'])->group(function () {
     Route::get('settings/seller', [SellerFrontController::class, 'sellerPage'])->name('seller.sellerPage');
+    Route::get('settings/seller/message-box', [SellerFrontController::class, 'messagesBox'])->name('seller.messagesBox');
 });

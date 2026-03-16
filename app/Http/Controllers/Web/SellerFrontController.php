@@ -6,11 +6,11 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Message;
 use App\Models\Product;
 use App\Models\Seller;
 use App\Models\SellerTaxInformation;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,7 +81,7 @@ class SellerFrontController extends Controller
         return to_route('home');
     }
 
-    function sellerPage(Request $request) : RedirectResponse|Response 
+    public function sellerPage(Request $request) : RedirectResponse|Response 
     {
         $customer = Auth::guard('web')->user();
         $seller = Seller::where('customer_id', $customer->id)->firstOrFail();
@@ -111,6 +111,26 @@ class SellerFrontController extends Controller
                     'sortBy' => $sortBy,
                     'order' => $order,
                 ],
+            ]
+        );
+    }
+
+    public function messagesBox(Request $request): RedirectResponse|Response
+    {
+        $customer = Auth::guard('web')->user();
+        $seller = Seller::where('customer_id', $customer->id)->firstOrFail();
+        $sellerTaxInformation = $seller->sellerTaxInfo;
+        if (!$seller || $sellerTaxInformation->validation_status == 'Waiting approval') {
+            return redirect('/settings');
+        }
+
+        $messagesReceived = Message::where('to_email', $customer->email);
+        $messagesSended = Message::where('from_email', $customer->email);
+        return Inertia::render(
+            'settings/MessagesBox', 
+            [
+                'messagesReceived' => $messagesReceived,
+                'messagesSended' => $messagesSended
             ]
         );
     }

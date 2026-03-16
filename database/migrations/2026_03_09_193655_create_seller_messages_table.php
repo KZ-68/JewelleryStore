@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('from_name', 100);
             $table->string('to_email', 200);
             $table->string('to_name', 100);
-            $table->string('subject', 500);
-            $table->text('content');
+            $table->string('subject', 200);
+            $table->text('content', 500);
+            $table->boolean('isReaded')->default(false);
             $table->timestamp('created_at')->useCurrent();
             $table->dateTime('read_at')->nullable();
         });

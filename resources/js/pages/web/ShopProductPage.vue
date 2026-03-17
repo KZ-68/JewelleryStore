@@ -87,12 +87,15 @@ function selectFeatures() {
                     <div class="flex flex-row flex-nowrap justify-evenly mx-4">
                         <div id="shop-product-page-images-wrapper" class="relative w-xl flex flex-col gap-8 pl-16 pr-8">
                             <div class="w-[450px] h-[450px] mb-4">
-                                <figure class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
+                                <figure v-if="props.productImages.length > 0" class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
                                     <img :src="props.productImages[activeIndex]" alt="">
+                                </figure>
+                                <figure v-else class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
+                                    <img src="/storage/img/p/not-found.jpg" alt="">
                                 </figure>
                             </div>
                             
-                            <div id="shop-product-page-images-swipper-wrapper" class="flex flex-row justify-around">
+                            <div v-if="productImages.length > 0" id="shop-product-page-images-swipper-wrapper" class="flex flex-row justify-around">
                                 <swiper :navigation="true" :modules="[Navigation]" @slideChange="onSlideChange" :slides-per-view="3" :space-between="1" id="mySwiper">
                                     <swiper-slide v-for="image in productImages" :key=image>
                                         <figure class="w-[128px] lg:h-[128px] rounded-lg bg-white mb-4 flex items-center justify-center">
@@ -100,6 +103,17 @@ function selectFeatures() {
                                         </figure>
                                     </swiper-slide>
                                 </swiper>
+                            </div>
+                            <div v-else id="shop-product-page-images-swipper-wrapper" class="flex flex-row justify-around">
+                                <figure class="w-[128px] lg:h-[128px] rounded-lg bg-white mb-4 flex items-center justify-center">
+                                    <img src="/storage/img/p/not-found.jpg" class="w-[128px] lg:h-[128px] rounded-lg" />
+                                </figure>
+                                <figure class="w-[128px] lg:h-[128px] rounded-lg bg-white mb-4 flex items-center justify-center">
+                                    <img src="/storage/img/p/not-found.jpg" class="w-[128px] lg:h-[128px] rounded-lg" />
+                                </figure>
+                                <figure class="w-[128px] lg:h-[128px] rounded-lg bg-white mb-4 flex items-center justify-center">
+                                    <img src="/storage/img/p/not-found.jpg" class="w-[128px] lg:h-[128px] rounded-lg" />
+                                </figure>
                             </div>
                         </div>
 
@@ -166,6 +180,9 @@ function selectFeatures() {
             </div>
             <div v-else-if="featuresSelected == true" id="product-features" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
                 <p class="text-lg px-6 py-6"></p>
+            </div>
+            <div v-else-if="props.product == null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+                <p class="text-lg px-6 py-6">Product description is empty</p>
             </div>
         </section>
         <section id="shop-product-page-footer" class="my-4"></section>

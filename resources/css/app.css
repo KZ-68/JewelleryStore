@@ -173,10 +173,12 @@
 #mySwiper .swiper-button-next {
     top: 230px;
     right: 10px;
+    color: #84070F;
 }
 
 #mySwiper .swiper-button-prev {
     top: 230px;
+    color: #84070F;
 }
 
 

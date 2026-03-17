@@ -22,13 +22,20 @@ const props = defineProps<ShopHeaderProps>()
             <CategoryMenu :frontCategories=props.frontCategories></CategoryMenu>
             <SearchBar />
             <Link
-                
+                v-if="$page.props.auth.user"
                 :href="showBO()"
                 class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             >
                 Dashboard
             </Link>
-            
+            <Link
+                v-if="$page.props.auth.customer"
+                href="#"
+                class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+            >
+                Settings
+            </Link>
+
             <LogoutButton v-if="$page.props.auth.user">Logout</LogoutButton>
             <LogoutButton v-else-if="$page.props.auth.customer">Logout</LogoutButton>
             <template v-else>

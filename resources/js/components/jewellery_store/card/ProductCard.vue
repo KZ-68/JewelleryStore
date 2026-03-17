@@ -62,7 +62,7 @@ onMounted(async () => {
                         </figure>
                     </div>
                 </div>
-                <div id="product-card-footer" class="relative inline-flex flex-row items-center gap-3 mx-2">
+                <div id="product-card-footer" class="relative inline-flex flex-row justify-around items-center gap-3 mx-2">
                     <div class="relative w-fit p-3">
                         <span class="text-gray-800 max-h-[38px] text-sm font-semibold">
                             {{ props.product.name }}

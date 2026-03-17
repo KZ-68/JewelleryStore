@@ -24,12 +24,12 @@ const { width } = useWindowSize()
             <div class="py-2 lg:pl-6">
                 <swiper v-if="width > 430" :navigation="true" :modules="[Navigation]" :slides-per-view="4" :space-between="10" class="mySwiper">
                     <swiper-slide v-for="topProduct in props.topProducts" :key="topProduct.id">
-                        <ProductCard classname="" :product="topProduct" :image="topProduct.image"></ProductCard>
+                        <ProductCard classname="" :product="topProduct" :image="topProduct.image" sortBy="name" order="asc"></ProductCard>
                     </swiper-slide>
                 </swiper>
                 <swiper v-else :navigation="true" :modules="[Navigation]" :slides-per-view="2" :space-between="10" class="mySwiper">
                     <swiper-slide v-for="topProduct in props.topProducts" :key="topProduct.id">
-                        <ProductCard classname="" :product="topProduct" :image="topProduct.image"></ProductCard>
+                        <ProductCard classname="" :product="topProduct" :image="topProduct.image" sortBy="name" order="asc"></ProductCard>
                     </swiper-slide>
                 </swiper>
             </div>

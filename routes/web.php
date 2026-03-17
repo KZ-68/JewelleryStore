@@ -42,6 +42,7 @@ Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('orde
 Route::post('/order/select-address', [OrderFrontController::class, 'selectAddress'])->name('order.selectAddress');
 Route::post('/order/select-carrier', [OrderFrontController::class, 'selectCarrier'])->name('order.selectCarrier');
 Route::post('/order/select-payment', [OrderFrontController::class, 'selectPayment'])->name('order.selectPayment');
+Route::post('/order/shipping-rate', [OrderFrontController::class, 'getShippingRatePrice'])->name('order.getShippingRatePrice');
 Route::post('/stripe/payment/create-intent', [PaymentController::class, 'createIntent'])->name('payment.createIntent');
 Route::get('/order/confirmation', [OrderFrontController::class, 'orderConfirmation'])->name('order.confirmation');
 Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');

@@ -48,3 +48,14 @@ echo "Lancer Laravel Octane avec FrankenPHP (via Laravel Octane)"
 php artisan octane:start --server=frankenphp --host=0.0.0.0 --port=8000
 
 php artisan sail:install   # mysql + redis./vendor/bin/sail up -d
+
+setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var
+setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
+
+if [ ! -f /var/log/frankenphp/access.log]; then
+	touch /var/log/frankenphp/access.log
+	chmod 644 /var/log/frankenphp/access.log
+fi
+
+	echo 'PHP app ready!'
+fi

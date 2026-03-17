@@ -1,6 +1,7 @@
-FROM php:8.3-cli
+FROM dunglas/frankenphp:builder AS builder
 
-WORKDIR /var/www
+WORKDIR /app
+SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -24,13 +25,24 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip sockets
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN CGO_ENABLED=1 \
+    XCADDY_SETCAP=1 \
+    XCADDY_GO_BUILD_FLAGS="-ldflags='-w -s' -tags=nobadger,nomysql,nopgx" \
+    CGO_CFLAGS=$(php-config --includes) \
+    CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
+    xcaddy build \
+        --output /usr/local/bin/frankenphp \
+        --with github.com/dunglas/frankenphp=./ \
+        --with github.com/dunglas/frankenphp/caddy=./caddy/ \
+        --with github.com/dunglas/caddy-cbrotli \
+        --with github.com/dunglas/mercure/caddy \
+        --with github.com/dunglas/vulcain/caddy
 
-COPY . /var/www
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
-RUN composer require laravel/breeze
+RUN composer require laravel/breeze --dev
 RUN composer require laravel/sanctum
 RUN composer require laravel/octane
 RUN composer require laravel/sail
@@ -52,8 +64,8 @@ RUN composer require phpstan/phpstan --dev
 RUN npm install && npm audit fix
 RUN npm run build
 
-RUN chown -R www-data:www-data /var/www
+RUN chown -R www-data:www-data /app
 
 EXPOSE 8000
 
-ENTRYPOINT ["/var/www/docker/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]

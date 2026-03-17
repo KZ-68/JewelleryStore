@@ -13,6 +13,7 @@ use App\Models\Country;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\ShippingRate;
 use App\Models\Status;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -100,6 +101,25 @@ class OrderFrontController extends Controller
 
         return response()->json([
             'isCarrierSelected' => true,
+        ]);
+    }
+
+    public function getShippingRatePrice(CartHelper $cart): JsonResponse
+    {
+        $cartData = $cart->get();
+        $total = $cartData['total_price'];
+        $carrierId = $cartData['carrier']['id'];
+        $shippingRates = ShippingRate::where('carrier_id', $carrierId)->get();
+        foreach($shippingRates as $shippingRate) {
+            if ($shippingRate->min_total > $total || $shippingRate->max_total < $total) {
+                continue;
+            } else {
+                $total = $total += $shippingRate->price;
+            }
+        }
+
+        return response()->json([
+            'totalWithShipping' => $total,
         ]);
     }
 

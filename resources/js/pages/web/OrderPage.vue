@@ -11,7 +11,6 @@ import { Customer } from '@/types/customer'
 import { Payment } from '@/types/payment'
 import OrderSummary from '@/components/jewellery_store/OrderSummary.vue'
 import { Address } from '@/types/address'
-import products from '../../routes/products/index';
  
 interface CartProduct {
     product_id: number

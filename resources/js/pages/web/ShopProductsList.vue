@@ -6,6 +6,7 @@ import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
 import { useWindowSize } from '@vueuse/core';
 import { provide, ref } from 'vue';
+import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 
 interface ProductsListProps {
     classname:string

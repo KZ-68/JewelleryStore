@@ -210,4 +210,11 @@ class CartHelper
         $cart['payment']['slug'] = $payment->slug;
         $this->set($cart);
     }
+
+    public function updateTotalPrice($total): void
+    {
+        $cart = $this->get();
+        $cart['total_price'] = $total;
+        $this->set($cart);
+    }
 }

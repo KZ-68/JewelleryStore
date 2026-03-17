@@ -6,7 +6,10 @@ export interface Product {
     reference: string
     ean13: string
     quantity: number
-    retailPrice: number
+    price_ht: number
+    retail_price: number
+    cost_price: number
+    image: string
     active: boolean
     created_at: string
     updated_at: string

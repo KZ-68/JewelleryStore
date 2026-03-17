@@ -4,7 +4,6 @@ import InputError from '@/components/InputError.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
-
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

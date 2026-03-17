@@ -30,25 +30,27 @@ COPY . /var/www
 
 RUN composer install --no-interaction --optimize-autoloader --no-scripts
 
-RUN composer require laravel/breeze --dev \
-    && composer require laravel/sanctum \
-    && composer require laravel/octane \
-    && composer require laravel/sail --dev \
-    && composer require laravel/cashier \
-    && composer require barryvdh/laravel-dompdf \
-    && composer require spatie/laravel-permission \
+RUN composer require laravel/breeze
+RUN composer require laravel/sanctum
+RUN composer require laravel/octane
+RUN composer require laravel/sail
+RUN composer require laravel/cashier
+RUN composer require barryvdh/laravel-dompdf
+RUN composer require spatie/laravel-permission
+RUN composer require tightenco/ziggy
 
-RUN php artisan breeze:install \
-    && php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider" \
-    && php artisan octane:install
+RUN php artisan breeze:install vue --no-interaction
+RUN php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+RUN php artisan octane:install
 
 RUN php artisan octane:install --server=frankenphp --no-interaction
 
 # Test package
-RUN composer require laravel/pint --dev \
-    composer require phpstan/phpstan --dev
+RUN composer require laravel/pint --dev
+RUN composer require phpstan/phpstan --dev
 
-RUN npm install && npm run build
+RUN npm install && npm audit fix
+RUN npm run build
 
 RUN chown -R www-data:www-data /var/www
 

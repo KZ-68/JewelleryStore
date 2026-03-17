@@ -6,13 +6,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Tax;
+use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Carrier;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\Manufacturer;
+use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -168,6 +172,41 @@ class BackOfficeController extends Controller
     }
 
     /**
+     * Render the view assigned to the customers list page
+     * @var mixed $sortBy Get customers sorted by name by default
+     * @var mixed $order Get customers order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showCustomers(Request $request): Response
+    {
+        // Create filters for dynamic change on the customers list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $customers = Customer::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Customers', 
+            [
+                'customers' => $customers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    /**
      * Render the view assigned to the carriers list page
      * @var mixed $sortBy Get carriers sorted by name by default
      * @var mixed $order Get carriers order
@@ -176,12 +215,11 @@ class BackOfficeController extends Controller
     */
     public function showCarriers(Request $request): Response
     {
-
         // Create filters for dynamic change on the carriers list
         $sortBy = $request->get('sortBy', 'name');
         $order = $request->get('order', 'asc');
 
-        if (!in_array($sortBy, ['name', 'created_at'])) {
+        if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'name';
         }
 
@@ -195,6 +233,78 @@ class BackOfficeController extends Controller
             'admin/Carriers', 
             [
                 'carriers' => $carriers,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the taxes and tax rules list page
+     * @var mixed $sortBy Get taxes sorted by name by default
+     * @var mixed $order Get taxes order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showTaxes(Request $request): Response
+    {
+        // Create filters for dynamic change on the taxes list
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $taxes = Tax::orderBy($sortBy, $order)->get();
+        // Tax Rule Groups data
+        $taxRuleGroups = TaxRuleGroup::orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Taxes', 
+            [
+                'taxes' => $taxes,
+                'taxRuleGroups' => $taxRuleGroups,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Render the view assigned to the team users list page
+     * @var mixed $sortBy Get users sorted by name by default
+     * @var mixed $order Get users order
+     * @param Request $request Get the request
+     * @return Response Return an Inertia Object response with the rendered view
+    */
+    public function showTeam(Request $request): Response
+    {
+        $sortBy = $request->get('sortBy', 'name');
+        $order = $request->get('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $usersWithRoles = User::with('roles')->orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Users', 
+            [
+                'users' => $usersWithRoles,
                 'filters' => [
                     'sortBy' => $sortBy,
                     'order' => $order,

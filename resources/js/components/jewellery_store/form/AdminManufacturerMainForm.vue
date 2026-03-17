@@ -14,7 +14,7 @@ const props = defineProps<AdminManufacturerMainFormProps>();
 </script>
 
 <template>
-    <section id="admin-manufacturer-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="admin-manufacturer-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="ManufacturerFrontController.update.form({ slug: props.manufacturer.slug })"
             :reset-on-success="['manufacturer-details']"

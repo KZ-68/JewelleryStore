@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { Product } from '@/types/product'
+import { Link } from '@inertiajs/vue3'
+import { route } from '../../../../../../vendor/tightenco/ziggy';
+import { Ziggy } from '../../../../ziggy.js';
+import { FileEditIcon } from 'lucide-vue-next';
 
 interface ProductsListProps {
     classname:string
     products: Product[]
     sortBy: string
-    order: 'asc' | 'desc'
+    order: "asc" | "desc"
 }
 
 // const emit = defineEmits<{
@@ -23,8 +27,9 @@ defineProps<ProductsListProps>()
                     <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Id</th>
                     <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Name</th>
                     <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Reference</th>
-                    <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">ean13</th>
-                    <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">active</th>
+                    <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Ean13</th>
+                    <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Active</th>
+                    <th scope="col" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">Edit</th>
                 </tr>
             </thead>
             <tbody v-if="products.length > 0" id="products-list">
@@ -34,10 +39,13 @@ defineProps<ProductsListProps>()
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.reference }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.ean13 }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.active }}</td>
+                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('product-details', {slug: product.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
                 </tr>
             </tbody>
             <tbody v-else id="products-list">
-                <th scope="row">No Product registered</th>
+                <tr>
+                    <th scope="row">No Product registered</th>
+                </tr>
             </tbody>
         </table>
     </section>

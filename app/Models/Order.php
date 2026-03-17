@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Status;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
@@ -34,7 +36,9 @@ class Order extends Model
         static::creating(function ($order) {
             do {
                 $ref = 'CMD-' . strtoupper(Str::random(10));
+                $order->reference = $ref;
             } while (self::where('reference', $ref)->exists());
+
         });
     }
 
@@ -46,6 +50,31 @@ class Order extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /**
+    * The statuses that belong to the order.
+    */
+    public function statuses(): BelongsToMany
+    {
+        return $this->belongsToMany(Status::class, 'order_status', 'order_id', 'status_id')->withTimestamps();
+    }
+
+    
+    /**
+    * The products that belong to the order.
+    */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id')->withTimestamps();
+    }
+
+    /**
+    * The invoices that belong to the order.
+    */
+    public function invoices(): BelongsToMany
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_order', 'order_id', 'invoice_id')->withTimestamps();
     }
 
     /**

@@ -19,16 +19,26 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
-        $middleware->web(append: [
-            HandleAppearance::class,
-            HandleInertiaRequests::class,
-            AddLinkHeadersForPreloadedAssets::class,
-        ]);
+        $middleware->web(
+            prepend: [
+                \App\Http\Middleware\AdminSession::class,
+                \App\Http\Middleware\WebSession::class,
+                \Illuminate\Session\Middleware\StartSession::class,
+            ],
+            append: [
+                HandleAppearance::class,
+                HandleInertiaRequests::class,
+                AddLinkHeadersForPreloadedAssets::class,
+            ]    
+        );
 
         $middleware->alias([
+            \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'admin.session' => \App\Http\Middleware\AdminSession::class,
+            'web.session'   => \App\Http\Middleware\WebSession::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

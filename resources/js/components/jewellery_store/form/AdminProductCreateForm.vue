@@ -52,7 +52,7 @@ function log(s: string): void {
 </script>
 
 <template>
-    <section id="new-admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="ProductFrontController.create.form()"
             :reset-on-success="['product-details']"
@@ -138,17 +138,31 @@ function log(s: string): void {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="retailPrice" class="text-lg">Retail Price</Label>
+                    <Label for="price_ht" class="text-lg">Price without Tax</Label>
                     <Input
-                        id="retail-price"
+                        id="price_ht"
                         type="number" 
-                        name="retailPrice"
-                        step="0.0"
+                        name="price_ht"
+                        step=".01"
                         required
                         :tabindex="5"
                         class="bg-gray-100 p-1 rounded-md"
                     />
-                    <InputError :message="errors.retailPrice" />
+                    <InputError :message="errors.price_ht" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="cost_price" class="text-lg">Cost price</Label>
+                    <Input
+                        id="retail-price"
+                        type="number" 
+                        name="cost_price"
+                        step=".01"
+                        required
+                        :tabindex="6"
+                        class="bg-gray-100 p-1 rounded-md"
+                    />
+                    <InputError :message="errors.cost_price" />
                 </div>
 
                 <div class="grid gap-2">
@@ -190,7 +204,7 @@ function log(s: string): void {
                     <Button
                     type="submit"
                     class="w-20 bg-black text-white"
-                    :tabindex="5"
+                    :tabindex="7"
                     :disabled="processing"
                     >
                         <LoaderCircle

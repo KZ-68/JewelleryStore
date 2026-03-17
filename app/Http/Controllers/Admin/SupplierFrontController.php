@@ -15,7 +15,7 @@ use App\Http\Controllers\Controller;
 
 class SupplierFrontController extends Controller
 {
-        /**
+    /**
     * Show supplier details view
     * @param Request Get the request, via GET method
     * @return Response|RedirectResponse Return an Inertia Object response with the rendered view or a redirection

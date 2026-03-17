@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class AdminSession
+{
+    public function handle(Request $request, Closure $next)
+    {
+        config([
+            'session.cookie' => 'admin_session',
+            'session.path' => '/admin',
+        ]);
+        auth()->setDefaultDriver('admin');
+        return $next($request);
+    }
+}

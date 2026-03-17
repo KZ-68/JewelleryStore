@@ -30,11 +30,6 @@ class Carrier extends Model
         static::creating(function ($carrier) {
             $slug = Str::slug($carrier->name);
 
-            $count = Carrier::where('slug', $slug)->count();
-            if ($count) {
-                $slug .= '-' . ($count + 1);
-            }
-
             $carrier->slug = $slug;
         });
     }
@@ -42,6 +37,11 @@ class Carrier extends Model
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function shippingRates(): HasMany
+    {
+        return $this->hasMany(ShippingRate::class);
     }
 
     /**

@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\ProfileController;
-use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
-use App\Http\Controllers\Web\AddressFrontController;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Web\AddressFrontController;
+use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\InvoiceFrontController;
+use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
+use App\Http\Controllers\Web\SellerFrontController;
 
-Route::middleware(['role:basic', 'auth:web'])->group(function () {
+Route::middleware(['web.session','role:basic', 'auth:web'])->group(function () {
     Route::redirect('settings', '/settings/profile');
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -22,7 +24,15 @@ Route::middleware(['role:basic', 'auth:web'])->group(function () {
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
     Route::get('settings/addresses', [AddressFrontController::class, 'showAddresses'])->name('addresses.showAddresses');
-    Route::delete('settings/addresses', [AddressFrontController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('settings/addresses', [AddressFrontController::class, 'deleteAddress'])->name('addresses.deleteAddress');
     Route::get('settings/addresses/new', [AddressFrontController::class, 'newAddress'])->name('addresses.newAddress');
     Route::post('settings/addresses/new', [AddressFrontController::class, 'create'])->name('addresses.create');
+    Route::get('settings/invoices', [InvoiceFrontController::class, 'showInvoices'])->name('invoices.showInvoices');
+    Route::post('settings/invoices/download', [InvoiceFrontController::class, 'downloadPdf'])->name('invoices.downloadPdf');
+    Route::get('settings/invoices/display', [InvoiceFrontController::class, 'displayPdf'])->name('invoices.displayPdf');
+});
+
+Route::middleware(['web.session', 'role:seller', 'auth:web'])->group(function () {
+    Route::get('settings/seller', [SellerFrontController::class, 'sellerPage'])->name('seller.sellerPage');
+    Route::get('settings/seller/message-box', [SellerFrontController::class, 'messagesBox'])->name('seller.messagesBox');
 });

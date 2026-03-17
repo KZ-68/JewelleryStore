@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('customer_id')->nullable()->constrained('customers');
             $table->foreignId('manufacturer_id')->nullable()->constrained('manufacturers');
             $table->foreignId('supplier_id')->nullable()->constrained('suppliers');
+            $table->string('name');
             $table->string('address_line_1', 255)->nullable();
             $table->string('address_line_2', 255)->nullable();
             $table->string('city', 200)->nullable();            

@@ -2,10 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Http\Helpers\CartHelper;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,6 +41,10 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+        $cart = new CartHelper;
+        $cartProducts = $cart->get();
+        $cartProductsCount = count($cartProducts['products']);
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -48,6 +54,8 @@ class HandleInertiaRequests extends Middleware
                 'customer' => Auth::guard('web')->check() ? Auth::guard('web')->user() : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'frontCategories' => Category::with('childrenRecursive')->whereNull('parent_id')->get(),
+            'cartProductsCount' => $cartProductsCount,
         ];
     }
 }

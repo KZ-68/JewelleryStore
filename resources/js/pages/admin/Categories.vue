@@ -35,12 +35,12 @@ const url = route('admin.back-office.showCategories', {}, false, Ziggy);
         </section>
 
         <CategoriesList
-          v-if="props.categories !== undefined"
+          v-if="props.categories"
           classname=""
           :categories=props.categories
         />
         <SubCategoriesList 
-          v-else-if="props.subCategories !== undefined"
+          v-else-if="props.subCategories && props.subCategories.length"
           classname=""
           :subCategories=props.subCategories
         />

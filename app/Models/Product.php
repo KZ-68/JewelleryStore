@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
@@ -20,8 +21,13 @@ class Product extends Model
         'reference',
         'ean13',
         'quantity',
-        'retailPrice',
+        'cost_price',
+        'retail_price',
+        'price_ht',
         'active',
+        'product_condition',
+        'short_description',
+        'meta_description'
     ];
 
     // Create a slug automaticaly after the creation of the product
@@ -50,6 +56,40 @@ class Product extends Model
     }
 
     /**
+    * The suppliers that belong to the product.
+    */
+    public function suppliers(): BelongsToMany
+    {
+        return $this->belongsToMany(Supplier::class, 'supplier_product', 'product_id', 'supplier_id')->withTimestamps();
+    }
+
+    /**
+    * The orders that belong to the product.
+    */
+    public function orders(): BelongsToMany
+    {
+        return $this->belongsToMany(Order::class, 'order_product', 'product_id', 'order_id')->withTimestamps();
+    }
+
+    public function taxRuleGroup(): BelongsTo
+    {
+        return $this->belongsTo(TaxRuleGroup::class);
+    }
+
+    public function seller(): BelongsTo
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
+    /**
+    * The features that belong to the product.
+    */
+    public function features(): BelongsToMany
+    {
+        return $this->belongsToMany(Feature::class, 'feature_values', 'product_id', 'feature_id');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -57,7 +97,8 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'retailPrice' => 'float',
+            'cost_price' => 'float',
+            'price_ht' => 'float',
             'created_at' => 'datetime:Y-m-d H:i:s',
             'updated_at' => 'datetime:Y-m-d H:i:s',
         ];

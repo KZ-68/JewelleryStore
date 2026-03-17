@@ -1,30 +1,43 @@
 <script setup lang="ts">
 import AddressFrontController from '@/actions/App/Http/Controllers/Web/AddressFrontController';
+import Button from '@/components/ui/button/Button.vue';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Country } from '@/types/country';
 import { Form } from '@inertiajs/vue3';
 import { ref } from "vue";
 
-interface AdminAddressCreateFormProps {
+interface AddressCreateFormProps {
     classname:string;
     countries: Country[]
+    isOrder: boolean
 }   
 
 const countrySelected = ref('')
 
-const props = defineProps<AdminAddressCreateFormProps>();
+const props = defineProps<AddressCreateFormProps>();
 </script>
 
 <template>
-    <section id="new-admin-address-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-address-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="AddressFrontController.create.form()"
+            v-bind="AddressFrontController.create.form({query: { isOrder: props.isOrder }})"
             :reset-on-success="['addresses.edit']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
         >
             <div class="grid gap-6">
+                <div class="grid gap-2">
+                    <Label for="name" class="text-md">Name</Label>
+                    <Input
+                        id="name"
+                        name="name"
+                        required
+                        placeholder="Add a name..."
+                        class="bg-gray-100 p-1 rounded-md"
+                    />
+                    <InputError :message="errors.name" />
+                </div>
                 <div class="grid gap-2">
                     <Label for="address_line_1" class="text-md">Address Line 1</Label>
                     <textarea
@@ -33,7 +46,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                         rows="5" 
                         cols="100"
                         min="3"
-                        max="500"
+                        max="255"
                         required
                         autofocus
                         :tabindex="2"
@@ -50,8 +63,8 @@ const props = defineProps<AdminAddressCreateFormProps>();
                         name="address_line_2"
                         rows="5" 
                         cols="100"
-                        min="3"
-                        max="500"
+                        min="0"
+                        max="255"
                         autofocus
                         :tabindex="2"
                         placeholder="..."
@@ -66,7 +79,6 @@ const props = defineProps<AdminAddressCreateFormProps>();
                         id="city"
                         type="text"
                         name="city"
-                        required
                         autofocus
                         :tabindex="1"
                         autocomplete="city"
@@ -171,7 +183,7 @@ const props = defineProps<AdminAddressCreateFormProps>();
                 <section id="new-admin-address-footer" class="flex flex-row gap-4 py-8">
                     <Button
                     type="submit"
-                    class="w-20 bg-black text-white"
+                    class="py-4 px-6 bg-[#84070F] text-white font-bold hover:cursor-pointer"
                     :tabindex="5"
                     :disabled="processing"
                     >

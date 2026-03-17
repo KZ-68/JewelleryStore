@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('carrier_id')->nullable()->constrained('carriers');
-            $table->foreignId('customer_id')->nullable()->constrained('customers');
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('set null');
             $table->string('reference')->unique();
             $table->boolean('gift')->default(false);
             $table->string('gift_message')->nullable();

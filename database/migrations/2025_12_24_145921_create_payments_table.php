@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::dropIfExists('invoices');
+
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('payment_id')->nullable()->constrained('payments');

@@ -27,6 +27,8 @@ FROM dunglas/frankenphp:1-php8.4 AS frankenphp_upstream
 
 FROM frankenphp_upstream AS frankenphp_base
 
+ENV SERVER_ROOT=root/JewelleryStore
+
 COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 
 WORKDIR /root/JewelleryStore
@@ -80,7 +82,6 @@ COPY --link frankenphp/Caddyfile /etc/caddy/Caddyfile
 ENTRYPOINT ["/root/JewelleryStore/entrypoint.sh"]
 
 HEALTHCHECK --start-period=120s CMD curl -f http://localhost:2019/metrics || exit 1
-CMD [ "frankenphp", "run", "--config", "/etc/caddy/Caddyfile" ]
 
 FROM frankenphp_base AS frankenphp_dev
 
@@ -105,6 +106,8 @@ RUN apt-get update && apt-get install -y chromium chromium-driver fonts-liberati
 FROM frankenphp_base AS frankenphp_prod
 
 ENV APP_ENV=prod
+ENV SERVER_NAME=joaillerie-orient.tech
+ENV SERVER_NAME=:80
 ENV FRANKENPHP_CONFIG="import worker.Caddyfile"
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -136,8 +139,6 @@ RUN php artisan breeze:install vue --no-interaction
 RUN php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 RUN php artisan octane:install --server=frankenphp --no-interaction
 
-RUN chown -R www-data:www-data /root/JewelleryStore
-
 EXPOSE 80 443
 
-RUN ls -la resources/js
+CMD [ "frankenphp", "run", "--config", "/etc/caddy/Caddyfile" ]

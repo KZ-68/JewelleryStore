@@ -74,7 +74,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
 
 COPY --link frankenphp/conf.d/10-app.ini $PHP_INI_DIR/app.conf.d/
-COPY --link --chmod=755 /root/JewelleryStore/entrypoint.sh /usr/local/bin/entrypoint
+COPY --link --chmod=755 /entrypoint.sh /usr/local/bin/entrypoint
 COPY --link frankenphp/Caddyfile /etc/caddy/Caddyfile
 
 ENTRYPOINT ["/root/JewelleryStore/entrypoint.sh"]
@@ -136,7 +136,7 @@ RUN php artisan breeze:install vue --no-interaction
 RUN php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 RUN php artisan octane:install --server=frankenphp --no-interaction
 
-RUN chown -R www-data:www-data /app
+RUN chown -R www-data:www-data /root/JewelleryStore
 
 EXPOSE 80 443
 

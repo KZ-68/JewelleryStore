@@ -24,7 +24,7 @@ services:
           protocol: udp
         - ${VITE_PORT:-5173}:${VITE_PORT:-5173}
       volumes:
-        - /root/JewelleryStore:/root/JewelleryStore
+        - /root/JewelleryStore:/root/JewelleryStore:rw
         - ./vendor:/vendor
         - caddy_data:/data
         - caddy_config:/config
@@ -47,7 +47,7 @@ services:
       image: 'mysql:8.0'
       container_name: laravel_db
       environment:
-        MYSQL_ROOT_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
         DB_HOST: '${DB_HOST}'
         DB_PORT: '${DB_PORT}'
         DB_DATABASE: '${DB_DATABASE}'

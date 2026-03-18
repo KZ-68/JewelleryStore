@@ -42,35 +42,59 @@ services:
           APP_URL: 'http://localhost:8000'
           SANCTUM_STATEFUL_DOMAINS: localhost
           SESSION_DOMAIN: localhost
+          DB_HOST: ${DB_HOST}
+          DB_PORT: ${DB_PORT}
+          DB_DATABASE: ${DB_DATABASE}
+          DB_USERNAME: ${DB_USERNAME}
+          DB_PASSWORD: ${DB_PASSWORD}
     mysql:
       image: 'mysql:8.0'
-      container_name: laravel_db
-      environment:
-        MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-        DB_HOST: '${DB_HOST}'
-        DB_PORT: '${DB_PORT}'
-        DB_DATABASE: '${DB_DATABASE}'
-        DB_USERNAME: '${DB_USERNAME}'
-        DB_PASSWORD: '${DB_PASSWORD}'
+      restart: always
       ports:
-        - 3307:3306
+        - 3306:3306
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_USER: ${DB_USERNAME}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+        MYSQL_ROOT_HOST: '%'
       healthcheck:
         test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
         timeout: 40s
         retries: 5
         start_period: 120s
       volumes:
-        - ./docker/db/data:/var/lib/mysql:rw
+        - db_data:/var/lib/mysql
       networks:
         - laravel_app
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      restart: always
+      depend_on:
+        - mysql
+      ports:
+        - "8081:80"
+      environment:
+        PMA_HOST: mysql
+        PMA_ARBITRARY: 0
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      networks:
+          - laravel_app
     rabbitmq:
       image: rabbitmq:3.9-management
+      depends_on:
+        - app
       ports:
       - '5672:5672'
       - '15672:15672'
+      networks:
+        - laravel_app
 networks:
     laravel_app:
         driver: bridge
 volumes:
+    db_data:
     caddy_data:
     caddy_config:
+    sail-mysql:
+      driver: local

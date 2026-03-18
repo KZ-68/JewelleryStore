@@ -29,7 +29,7 @@ FROM frankenphp_upstream AS frankenphp_base
 
 COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 
-WORKDIR /
+WORKDIR /root/JewelleryStore
 
 VOLUME /var/
 
@@ -74,7 +74,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV PHP_INI_SCAN_DIR=":$PHP_INI_DIR/app.conf.d"
 
 COPY --link frankenphp/conf.d/10-app.ini $PHP_INI_DIR/app.conf.d/
-COPY --link --chmod=755 entrypoint.sh /usr/local/bin/entrypoint
+COPY --link --chmod=755 /root/JewelleryStore/entrypoint.sh /usr/local/bin/entrypoint
 COPY --link frankenphp/Caddyfile /etc/caddy/Caddyfile
 
 ENTRYPOINT ["/root/JewelleryStore/entrypoint.sh"]

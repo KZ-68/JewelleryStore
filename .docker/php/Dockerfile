@@ -84,7 +84,6 @@ FROM frankenphp_base AS frankenphp_prod
 
 ENV APP_ENV=production
 ENV SERVER_NAME=joaillerie-orient.tech
-ENV FRANKENPHP_CONFIG="import worker.Caddyfile"
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 

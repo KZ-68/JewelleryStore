@@ -1,56 +1,42 @@
 #!/bin/sh
 set -e
 
-if [ -z "$(ls -A 'vendor/' 2>/dev/null)" ]; then
-	composer install --prefer-dist --no-progress --no-interaction
+echo "Démarrage de l'application..."
+
+# Installer les dépendances si besoin
+if [ ! -d "vendor" ]; then
+    composer install --no-interaction --prefer-dist --optimize-autoloader
 fi
 
-MAX_ATTEMPTS=30
-SLEEP_SECONDS=2
-
-echo "Vérification de la disponibilité de la base de données..."
-
-attempt=1
-until php -r '
+# Attente DB
+echo "Attente base de données..."
+until php -r "
 try {
-    $db = new PDO("mysql:host=" . getenv("DB_HOST") . ";port=" . getenv("DB_PORT") . ";dbname=" . getenv("DB_DATABASE"),
-                  getenv("DB_USERNAME"),
-                  getenv("DB_PASSWORD"));
+    new PDO('mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
     exit(0);
-} catch (PDOException $e) {
+} catch (Exception \$e) {
     exit(1);
 }
-'; do
-    if [ $attempt -ge $MAX_ATTEMPTS ]; then
-        echo "La base de données est toujours indisponible après $((MAX_ATTEMPTS * SLEEP_SECONDS)) secondes. Arrêt."
-        exit 1
-    fi
-
-    echo "Tentative $attempt/$MAX_ATTEMPTS : Base de données indisponible. Nouvelle tentative dans $SLEEP_SECONDS secondes..."
-    attempt=$((attempt + 1))
-    sleep $SLEEP_SECONDS
+"; do
+    sleep 2
 done
 
-echo "Base de données disponible."
+echo "DB OK"
 
-echo "Migration DB"
-php artisan migrate --force
+# Migrations
+php artisan migrate --force || true
 
-echo "Nettoyage caches"
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
+# Cache Laravel
+php artisan config:cache || true
+php artisan route:cache || true
+php artisan view:cache || true
 
-echo "Génération clé app Laravel"
-php artisan key:generate
+# Permissions
+chmod -R 775 storage bootstrap/cache || true
 
-echo "Lancer Laravel Octane avec FrankenPHP (via Laravel Octane)"
-php artisan octane:start --server=frankenphp --host=0.0.0.0 --port=8000
+echo "Lancement FrankenPHP..."
 
-php artisan sail:install   # mysql + redis./vendor/bin/sail up -d
-
-setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var
-setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var
+exec frankenphp run --config /etc/caddy/Caddyfile
 
 if [ ! -f /var/log/frankenphp/access.log]; then
 	touch /var/log/frankenphp/access.log

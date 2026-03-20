@@ -33,3 +33,4 @@ frankenphp-worker.php
 /cypress
 /tests/cypress/downloads/*
 /tests/cypress/screenshots/*
+/certs

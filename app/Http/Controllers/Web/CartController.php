@@ -56,7 +56,7 @@ class CartController extends Controller
     {
         $productCart = $request->product;
         $product = Product::where('id', $productCart['product_id'])->first();
-        $cart->remove($product->id, $product->retail_price);
+        $cart->remove($product->id, $productCart['retail_price']);
 
         return true;
     }

@@ -133,6 +133,10 @@ class CartHelper
                 'slug' => null,
                 'description' => null,
                 'carrier_position' => 0
+            ],
+            'payment' => [
+                'id' => null,
+                'name' => null,
             ]
         ];
     }

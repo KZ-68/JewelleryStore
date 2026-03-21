@@ -43,39 +43,39 @@ onMounted(async () => {
 
 <template>
     <div class="relative grow max-w-[16rem] bg-white inline-flex flex-col px-2 pb-2 min-w-[9rem] lg:min-w-[16rem] box-border shadow-md rounded-lg">
-        <a :href="route('products.showShopProduct', {slug: props.product.slug}, false, Ziggy)" class="relative inline-flex items-stretch w-full h-full p-0">
-            <div class="absolute top-[4px] right-[4px] w-[28px] h-[28px] text-center z-10 rounded-full">
-                <div>
-                    <span class="absolute top-[4px] right-[4px] w-[24px] h-[24px] text-center z-10 rounded-full bg-gray-200">
-                        <div class="absolute top-0 left-0 right-0 bottom-0 m-auto">
-                        
-                        </div>
-                    </span>
-                </div>
+        <div class="absolute top-[4px] right-[4px] w-[28px] h-[28px] text-center z-10 rounded-full">
+            <div>
+                <span class="absolute top-[4px] right-[4px] w-[24px] h-[24px] text-center z-10 rounded-full bg-gray-200">
+                    <div class="absolute top-0 left-0 right-0 bottom-0 m-auto">
+                    
+                    </div>
+                </span>
             </div>
+        </div>
 
-            <div class="relative min-w-[9rem] lg:min-w-full min-h-60 flex flex-col">
-                <div class="relative rounded-t-lg w-full h-full bg-white text-ellipsis overflow-hidden"> 
-                    <div class="flex flex-row justify-center my-0 mx-auto text-center w-full h-full">
+        <div class="relative min-w-[9rem] lg:min-w-full min-h-60 flex flex-col">
+            <div class="relative rounded-t-lg w-full h-full bg-white overflow-hidden"> 
+                <a :href="route('products.showShopProduct', {slug: props.product.slug}, false, Ziggy)" class="relative inline-flex items-stretch w-full h-full p-0">
+                    <div class="flex flex-row justify-center my-0 mx-auto w-full h-full">
                         <figure class="flex justify-center py-2 items-center w-3/4 lg:w-full">
                             <img :src="props.image ? props.image : '/storage/img/p/not-found.jpg'" alt="Jewellery Product Image">
                         </figure>
                     </div>
+                </a>
+            </div>
+            <div id="product-card-footer" class="relative inline-flex flex-row justify-around items-center gap-3 mx-2">
+                <div class="relative w-fit p-3">
+                    <a :href="route('products.showShopProduct', {slug: props.product.slug}, false, Ziggy)" class="text-gray-800 max-h-[38px] text-sm font-semibold">
+                        {{ props.product.name }}
+                    </a>
+                    <div class="text-sm w-fit font-bold text-amber-700">
+                        {{ retailPrice }}
+                    </div>
                 </div>
-                <div id="product-card-footer" class="relative inline-flex flex-row justify-around items-center gap-3 mx-2">
-                    <div class="relative w-fit p-3">
-                        <span class="text-gray-800 max-h-[38px] text-sm font-semibold">
-                            {{ props.product.name }}
-                        </span>
-                        <div class="text-sm w-fit font-bold text-amber-700">
-                            {{ retailPrice }}
-                        </div>
-                    </div>
-                    <div id="add-cart-button" class="w-[42px] bg-[#84070F] z-10 rounded-full py-0.5 px-0.5">
-                        <button @click="addToCart(props.product, 1, retailPrice)" class="text-white m-1.5 cursor-pointer"><ShoppingCart /></button>
-                    </div>
+                <div id="add-cart-button" class="w-[42px] bg-[#84070F] z-10 rounded-full py-0.5 px-0.5">
+                    <button @click="addToCart(props.product, 1, retailPrice)" class="text-white m-1.5 cursor-pointer"><ShoppingCart /></button>
                 </div>
             </div>
-        </a>
+        </div>
     </div>
 </template>

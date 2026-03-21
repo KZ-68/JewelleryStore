@@ -2,12 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use Inertia\Middleware;
-use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Http\Helpers\CartHelper;
+use App\Models\Carrier;
+use App\Models\Category;
+use App\Models\ShippingRate;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -44,6 +46,8 @@ class HandleInertiaRequests extends Middleware
         $cart = new CartHelper;
         $cartProducts = $cart->get();
         $cartProductsCount = count($cartProducts['products']);
+        $defaultCarrier = Carrier::where('id', 1)->firstOrFail();
+        $defaultShippingRate = ShippingRate::where('carrier_id', $defaultCarrier->id)->first();
 
         return [
             ...parent::share($request),
@@ -56,6 +60,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'frontCategories' => Category::with('childrenRecursive')->whereNull('parent_id')->get(),
             'cartProductsCount' => $cartProductsCount,
+            'defaultShippingRatePrice' => $defaultShippingRate->price
         ];
     }
 }

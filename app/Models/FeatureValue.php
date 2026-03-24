@@ -3,26 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Feature extends Model
+class FeatureValue extends Model
 {
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'value',
     ];
-
-    /**
-    * The products that belong to the feature.
-    */
-    public function values(): HasMany
-    {
-        return $this->hasMany(FeatureValue::class);
-    }
 
     /**
      * Get the attributes that should be cast.
@@ -35,5 +29,15 @@ class Feature extends Model
             'created_at' => 'datetime:Y-m-d H:i:s',
             'updated_at' => 'datetime:Y-m-d H:i:s',
         ];
+    }
+
+    public function feature(): BelongsTo
+    {
+        return $this->belongsTo(Feature::class);
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_feature_values', 'feature_value_id', 'product_id');
     }
 }

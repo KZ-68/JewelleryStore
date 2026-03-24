@@ -17,6 +17,7 @@ interface CartProps {
     products: Array<CartProduct>
     total_price: number
     cartProductsCount: number
+    defaultShippingRatePrice: number
 }
 
 const props = defineProps<CartProps>();
@@ -28,7 +29,7 @@ const props = defineProps<CartProps>();
         <div id="cart-wrapper" class="min-h-screen p-6 text-[#1b1b18] lg:p-8 bg-gray-100 dark:bg-[#0a0a0a]">
             <div class="flex flex-row lg:justify-center gap-40">
                 <CartLeftColumn :products="props.products"/>
-                <CartSummary :products="props.products" :total_price="props.total_price"></CartSummary>
+                <CartSummary :products="props.products" :sub_total_price="props.total_price" :defaultShippingRatePrice></CartSummary>
             </div>
         </div>
     </main>

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\CustomerFrontController;
 use App\Http\Controllers\Admin\SupplierFrontController;
 use App\Http\Controllers\Web\ShopProductFrontController;
 use App\Http\Controllers\Admin\CarrierDataFrontController;
+use App\Http\Controllers\Admin\FeatureFrontController;
 use App\Http\Controllers\Admin\ManufacturerFrontController;
 use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
 use App\Http\Controllers\Web\PaymentController;
@@ -61,6 +62,7 @@ Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], fu
     Route::get('/admin/back-office/customers', [BackOfficeController::class, 'showCustomers'])->name('admin.back-office.showCustomers');
     Route::get('/admin/back-office/taxes', [BackOfficeController::class, 'showTaxes'])->name('admin.back-office.showTaxes');
     Route::get('/admin/back-office/users', [BackOfficeController::class, 'showTeam'])->name('admin.back-office.showTeam');
+    Route::get('/admin/back-office/features', [BackOfficeController::class, 'featuresList'])->name('admin.back-office.featuresList');
     Route::get('/admin/back-office/products/new', [ProductFrontController::class, 'newProduct'])->name('new-product');
     Route::post('/admin/back-office/products/new', [ProductFrontController::class, 'create'])->name('new-product.create');
     Route::get('/admin/back-office/products/{slug}', [ProductFrontController::class, 'show'])->name('product-details');
@@ -100,6 +102,9 @@ Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], fu
     Route::post('/admin/back-office/taxes/rule-groups/new', [TaxRuleGroupFrontController::class, 'createRuleGroup'])->name('new-tax-rule-group.create');
     Route::get('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'showRuleGroup'])->name('tax-rule-group-details');
     Route::post('/admin/back-office/taxes/rule-groups/{slug}', [TaxRuleGroupFrontController::class, 'updateRuleGroup'])->name('tax-rule-group-details.update');
+    Route::get('/admin/back-office/features/new', [FeatureFrontController::class, 'newFeature'])->name('new-feature');
+    Route::post('/admin/back-office/features/new', [FeatureFrontController::class, 'create'])->name('new-feature.create');
+    Route::get('/admin/back-office/features/{slug}', [FeatureFrontController::class, 'featureDetail'])->name('feature-detail');
 });
 
 require __DIR__.'/auth.php';

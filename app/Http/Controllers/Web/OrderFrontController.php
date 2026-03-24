@@ -69,10 +69,10 @@ class OrderFrontController extends Controller
             $addressId = $request->get('addressId');
             $address = Address::where('id', $addressId)->first();
             $cart->insertDeliveryAddress($user, $address);
-        } catch (\Throwable $th) {
-            var_dump($th->getMessage());
+        } catch (\Exception $e) {
             return response()->json([
                 'isAddressSelected' => false,
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -88,14 +88,23 @@ class OrderFrontController extends Controller
     */
     public function selectCarrier(Request $request, CartHelper $cart): JsonResponse
     {
+        $cartData = $cart->get();
+        if (!$cartData['delivery_address'])
+        {
+            return response()->json([
+                'isCarrierSelected' => false,
+                'error' => 'Delivery Address is not selected'
+            ]);
+        }
+
         try {
             $carrierId = $request->get('carrierId');
             $carrier = Carrier::where('id', $carrierId)->first();
             $cart->insertCarrier($carrier);
-        } catch (\Throwable $th) {
-            var_dump($th->getMessage());
+        } catch (\Exception $e) {
             return response()->json([
-                'isCarrierSelected' => false
+                'isCarrierSelected' => false,
+                'erros' => $e->getMessage()
             ]);
         }
 
@@ -130,14 +139,22 @@ class OrderFrontController extends Controller
     */
     public function selectPayment(Request $request, CartHelper $cart): JsonResponse
     {
+        $cartData = $cart->get();
+        if (!$cartData['carrier']) {
+            return response()->json([
+                'isPaymentSelected' => false,
+                'error' => 'Carrier is not selected'
+            ]);
+        }
+
         try {
             $paymentId = $request->get('paymentId');
             $payment = Payment::where('id', $paymentId)->first();
             $cart->insertPayment($payment);
-        } catch (\Throwable $th) {
-            var_dump($th->getMessage());
+        } catch (\Exception $e) {
             return response()->json([
-                'isPaymentSelected' => false
+                'isPaymentSelected' => false,
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -146,14 +163,15 @@ class OrderFrontController extends Controller
         ]);
     }
 
-    public function orderConfirmation(): Response
+    public function orderConfirmation(CartHelper $cart): Response
     {
         $orderSession = Session::get("order");
         $order = Order::where('reference', $orderSession['reference'])->first();
         $status = Status::where('name', 'like', '%'.'Payment Confirmed'.'%')->first();
         $order->statuses()->attach($status);
         $order->save();
-        Session::put('order', []);
+        Session::forget("order");
+        $cart->clear();
 
         return Inertia::render(
             'web/OrderConfirmation', 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Delivery extends Model
@@ -45,5 +46,10 @@ class Delivery extends Model
             ->withTimestamps()
             ->orderByPivot('created_at', 'desc')
             ->limit(1);
+    }
+
+    public function carrier(): BelongsTo
+    {
+        return $this->belongsTo(Carrier::class);
     }
 }

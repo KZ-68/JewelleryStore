@@ -45,6 +45,14 @@ class Carrier extends Model
     }
 
     /**
+     * The products that belong to the category.
+     */
+    public function deliveries(): HasMany
+    {
+        return $this->hasMany(Delivery::class);
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

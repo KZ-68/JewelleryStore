@@ -10,13 +10,14 @@ interface ProductsListProps {
     products: Product[]
     sortBy: string
     order: "asc" | "desc"
+    locale: string
 }
 
 // const emit = defineEmits<{
 //   (e: 'navigate', url: string): void
 // }>() 
 
-defineProps<ProductsListProps>()
+const props = defineProps<ProductsListProps>()
 </script>
 
 <template>
@@ -39,7 +40,7 @@ defineProps<ProductsListProps>()
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.reference }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.ean13 }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ product.active }}</td>
-                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('product-details', {slug: product.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
+                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('product-details', {locale: props.locale,slug: product.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
                 </tr>
             </tbody>
             <tbody v-else id="products-list">

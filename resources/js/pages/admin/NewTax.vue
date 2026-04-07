@@ -5,6 +5,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { showTaxes } from '@/routes/admin/back-office';
 
 interface NewTaxProps {
+  locale: string
 }  
 
 const props = defineProps<NewTaxProps>()
@@ -13,13 +14,13 @@ const props = defineProps<NewTaxProps>()
 
 <template>
   <Head title='New Tax'/>
-  <AppLayout>
+  <AppLayout :locale="props.locale">
     <section id="new-product-page-wrapper" class="flex flex-col mx-2">
       <hgroup id="new-tax-page-top" class="mx-4 mt-8 mb-4">
         <h1 id="new-tax-page-heading" class="text-xl">Add a new tax</h1>
       </hgroup>
-      <AdminTaxCreateForm classname=""></AdminTaxCreateForm>
-      <Link :href="showTaxes()" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+      <AdminTaxCreateForm classname="" :locale="props.locale"></AdminTaxCreateForm>
+      <Link :href="showTaxes({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
         Back to taxes list
       </Link>
     </section>

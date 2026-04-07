@@ -16,6 +16,7 @@ interface AdminTaxRuleGroupMainFormProps {
     taxRuleGroup: TaxRuleGroup
     taxRules: TaxRule[]
     taxes: Tax[]
+    locale: string
 }   
 
 const props = defineProps<AdminTaxRuleGroupMainFormProps>();
@@ -25,7 +26,7 @@ const isActivated = ref(props.taxRuleGroup.active);
 <template>
     <section id="new-admin-tax-rule-group-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
         <Form
-            v-bind="TaxRuleGroupFrontController.updateRuleGroup.form({ slug: taxRuleGroup.slug })"
+            v-bind="TaxRuleGroupFrontController.updateRuleGroup.form({locale: props.locale, slug: taxRuleGroup.slug })"
             :reset-on-success="['tax-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

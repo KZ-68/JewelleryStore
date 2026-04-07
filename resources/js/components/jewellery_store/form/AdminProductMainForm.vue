@@ -13,6 +13,7 @@ interface AdminProductMainFormProps {
     taxRuleGroups: TaxRuleGroup[]
     priceWithTax: number|null
     taxRuleGroupId: number|string
+    locale: string
 }   
 
 const props = defineProps<AdminProductMainFormProps>();
@@ -22,7 +23,7 @@ const selectedTaxRuleGroup = ref(props.taxRuleGroupId !== '' ? props.taxRuleGrou
 <template>
     <section id="admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="ProductFrontController.update.form({ slug: props.product.slug })"
+            v-bind="ProductFrontController.update.form({locale: props.locale, slug: props.product.slug })"
             :reset-on-success="['product-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

@@ -13,34 +13,38 @@ import { Link } from '@inertiajs/vue3';
 import { showInvoices } from '@/routes/invoices';
 import { sellerPage } from '@/routes/seller';
 
+const props = defineProps<{
+    locale: string
+}>();
+
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Profile',
-        href: editProfile(),
+        href: editProfile({locale: props.locale}),
     },
     {
         title: 'Password',
-        href: editPassword(),
+        href: editPassword({locale: props.locale}),
     },
     {
         title: 'Two-Factor Auth',
-        href: show(),
+        href: show({locale: props.locale}),
     },
     {
         title: 'Appearance',
-        href: editAppearance(),
+        href: editAppearance({locale: props.locale}),
     },
     {
         title: 'Addresses',
-        href: showAddresses(),
+        href: showAddresses({locale: props.locale}),
     },
     {
         title: 'Invoices',
-        href: showInvoices(),
+        href: showInvoices({locale: props.locale}),
     },
     {
         title: 'Seller Page',
-        href: sellerPage(),
+        href: sellerPage({locale: props.locale}),
     },
 ];
 
@@ -48,7 +52,7 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
 </script>
 
 <template>
-    <div class="px-4 py-6">
+    <div class="px-4 py-24">
         <Heading
             title="Settings"
             description="Manage your profile and account settings"

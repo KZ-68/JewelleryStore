@@ -6,6 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+
+interface SellerRegisterForm {
+    locale: string
+}
+
+const props = defineProps<SellerRegisterForm>();
 </script>
 
 <template>
@@ -13,7 +19,7 @@ import { LoaderCircle } from 'lucide-vue-next';
     <h1 class="text-3xl">Seller Account Registration</h1>
 
     <Form
-        v-bind="SellerFrontController.store.form()"
+        v-bind="SellerFrontController.store.form({locale: props.locale})"
         :reset-on-success="['password', 'password_confirmation']"
         v-slot="{ errors, processing }"
         class="flex flex-col gap-2"

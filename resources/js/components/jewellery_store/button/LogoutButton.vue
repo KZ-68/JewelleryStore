@@ -11,6 +11,7 @@ interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
+  locale: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,14 +20,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 function submit(guard: string) {
     if (guard === 'web') {
-      axios.post('/logout')
-        .then((res) => {
-        console.log(res.data)
+      axios.post(route('customer-logout', {locale: props.locale}, false, Ziggy))
+        .then(() => {
       })
     } else {
-      axios.post(route('admin-logout', {}, false, Ziggy))
-        .then((res) => {
-        console.log(res.data)
+      axios.post(route('admin-logout', {locale: props.locale}, false, Ziggy))
+        .then(() => {
       })
     }
 

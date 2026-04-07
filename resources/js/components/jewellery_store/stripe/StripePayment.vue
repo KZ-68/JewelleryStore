@@ -11,6 +11,7 @@ import {
 
 interface StripePaymentProps {
     amount: number
+    locale: string
 }   
 const publishableKey = import.meta.env.VITE_APP_STRIPE_KEY
 const props = defineProps<StripePaymentProps>()
@@ -38,7 +39,7 @@ onMounted(async () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-      body: JSON.stringify({amount: props.amount, gift:false, valid:false, returned:false})
+      body: JSON.stringify({locale: props.locale, amount: props.amount, gift:false, valid:false, returned:false})
     })
     const data = await response.json()
     clientSecret.value = data.clientSecret

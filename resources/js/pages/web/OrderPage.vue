@@ -27,6 +27,7 @@ interface OrderPageProps {
     products: Array<CartProduct>
     total_price: number
     addresses: Address[]
+    locale: string
 } 
 
 const props = defineProps<OrderPageProps>()
@@ -86,6 +87,7 @@ onMounted(async () => {
     <div id="order-page-steps-wrapper">
       <component
         :is="currentComponent"
+        :locale="props.locale"
         :countries="countries"
         :addresses="addresses"
         :products="products"

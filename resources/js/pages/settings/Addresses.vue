@@ -7,6 +7,7 @@ import { newAddress } from '@/actions/App/Http/Controllers/Web/AddressFrontContr
 
 interface AddressesProps {
   addresses: Address[]
+  locale: string
 }
 
 const props = defineProps<AddressesProps>()
@@ -14,13 +15,13 @@ const props = defineProps<AddressesProps>()
 
 <template>
     <Head title="Your Addresses" />
-    <SettingsLayout>
+    <SettingsLayout :locale="props.locale">
       <div id="addresses-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Your Addresses</h2>
         <section id="addresses-top-wrapper" class="flex flex-row justify-between items-center">
           <nav id="addresses-top-nav" class="flex flex-row">
             <Link
-                :href="newAddress()"
+                :href="newAddress({locale: props.locale})"
                 class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             >
                 Add a new address
@@ -31,6 +32,8 @@ const props = defineProps<AddressesProps>()
         <AddressesList
           classname=""
           :addresses=props.addresses
+          :isOrder="false"
+          :locale="props.locale"
         />
       </div>
     </SettingsLayout>

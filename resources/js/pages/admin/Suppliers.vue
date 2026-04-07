@@ -8,6 +8,7 @@ import { router } from '@inertiajs/vue3'
 import { ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy';
 import { Ziggy } from '../../ziggy.js';
+import { local } from '@/routes/storage';
 
 interface SuppliersProps {
   suppliers: Supplier[]
@@ -15,6 +16,7 @@ interface SuppliersProps {
     sortBy: string
     order: string
   }
+  locale: string
 }  
 
 const props = defineProps<SuppliersProps>()
@@ -22,7 +24,7 @@ const props = defineProps<SuppliersProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'asc')
 
-const url = route('admin.back-office.showSuppliers', {}, false, Ziggy);
+const url = route('admin.back-office.showSuppliers', {locale: props.locale}, false, Ziggy);
 
 const updateFilters = () => {
   router.get(url, {
@@ -38,7 +40,7 @@ const navigate = (url: string) => {
 
 <template>
     <Head title="Suppliers" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="suppliers-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Suppliers</h2>
         <section id="suppliers-top-wrapper" class="flex flex-row justify-between items-center">
@@ -55,7 +57,7 @@ const navigate = (url: string) => {
           </div>
           <nav id="suppliers-top-nav" class="flex flex-row">
             <Link
-                :href="newSupplier()"
+                :href="newSupplier({locale: props.locale})"
                 class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             >
                 Add a supplier
@@ -68,6 +70,7 @@ const navigate = (url: string) => {
           :suppliers=props.suppliers
           :sort-by="sortBy"
           :order="order"
+          :locale="locale"
         />
       </div>
     </AppLayout>

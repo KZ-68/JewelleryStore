@@ -4,6 +4,7 @@ import SellerRegisterForm from '@/components/jewellery_store/form/SellerRegister
 interface SellerRegistrationProps {
     classname:string
     status?: string;
+    locale: string
 }   
 
 const props = defineProps<SellerRegistrationProps>();
@@ -12,7 +13,7 @@ const props = defineProps<SellerRegistrationProps>();
 <template>
     <main class="flex flex-row bg-gray-100 rounded-xl border-t-[1px] border-gray-100">
         <section id="seller-registration-section" class="lg:ml-10 lg:my-10 lg:px-10 lg:py-10 rounded-l-xl lg:w-50/50 bg-white">
-            <SellerRegisterForm></SellerRegisterForm>
+            <SellerRegisterForm :locale="props.locale"></SellerRegisterForm>
         </section>
         <aside id="seller-form-background" class="lg:mr-10 lg:my-10 lg:w-50/50 lg:h-5xl">
             <figure id="seller-form-figure" class="lg:h-full">

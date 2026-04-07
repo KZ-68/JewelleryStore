@@ -9,6 +9,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 
 defineProps<{
     status?: string;
+    locale: string;
 }>();
 </script>
 
@@ -16,6 +17,7 @@ defineProps<{
     <AuthLayout
         title="Verify email"
         description="Please verify your email address by clicking on the link we just emailed to you."
+        :locale="locale"
     >
         <Head title="Email verification" />
 

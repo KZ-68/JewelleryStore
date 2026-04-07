@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { route } from '../../../../vendor/tightenco/ziggy/src/js';
+import { Ziggy } from '@/ziggy';
 
 defineProps<{
     status?: string;
+    locale: string;
 }>();
 </script>
 
@@ -19,6 +21,7 @@ defineProps<{
     <AuthLayout
         title="Forgot password"
         description="Enter your email to receive a password reset link"
+        :locale="locale"
     >
         <Head title="Forgot password" />
 
@@ -31,7 +34,7 @@ defineProps<{
 
         <div class="space-y-6">
             <Form
-                v-bind="PasswordResetLinkController.store['/forgot-password'].form()"
+                v-bind="PasswordResetLinkController.store.form({locale: locale})"
                 v-slot="{ errors, processing }"
             >
                 <div class="grid gap-2">
@@ -64,7 +67,7 @@ defineProps<{
 
             <div class="space-x-1 text-center text-sm text-muted-foreground">
                 <span>Or, return to</span>
-                <TextLink :href="login()">log in</TextLink>
+                <TextLink :href="route('login', {locale: locale,}, false, Ziggy)">log in</TextLink>
             </div>
         </div>
     </AuthLayout>

@@ -23,7 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             prepend: [
                 \App\Http\Middleware\AdminSession::class,
                 \App\Http\Middleware\WebSession::class,
-                \Illuminate\Session\Middleware\StartSession::class,
+                \App\Http\Middleware\SetLocaleMiddleware::class
             ],
             append: [
                 HandleAppearance::class,

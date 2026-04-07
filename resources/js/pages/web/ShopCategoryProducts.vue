@@ -3,12 +3,13 @@ import type { Product } from '@/types/product'
 import ProductCard from '@/components/jewellery_store/card/ProductCard.vue';
 import { Category } from '@/types/category';
 import { router } from '@inertiajs/vue3'
-import { provide, ref } from "vue";
+import { provide, ref, watch } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
 import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
 import { useWindowSize } from '@vueuse/core';
+import BlockCartModal from '@/components/jewellery_store/cart/modal/BlockCartModal.vue';
 
 interface ProductsListProps {
     classname:string
@@ -21,6 +22,8 @@ interface ProductsListProps {
         order: string
     }
     cartProductsCount: number
+    defaultShippingRatePrice: number
+    locale: string
 }
 
 // const emit = defineEmits<{
@@ -31,8 +34,7 @@ const props = defineProps<ProductsListProps>()
 
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'desc')
-
-const url = route('showCategoryProducts', {category_slug: props.category_slug}, false, Ziggy);
+const url = route('showCategoryProducts', {locale: props.locale, category_slug: props.category_slug}, false, Ziggy);
 
 const updateCustomersFilters = () => {
   router.get(url, {
@@ -43,11 +45,29 @@ const updateCustomersFilters = () => {
 
 const { width } = useWindowSize()
 const active = ref<boolean>(false)
+const productsAdded = ref<Product[]>([])
+const productsQuantity = ref<number>(0);
+const productsPrice = ref<number>(0);
 provide('active', active)
 
 const openNav = () => {
   active.value = true
 }
+
+const openCartModalValue = ref<boolean>(false);
+provide('openCartModalValue', openCartModalValue)
+
+const addProduct = (key: Product) => {
+    productsAdded.value.push(key)
+}
+const addProductQuantity = (key: number) => {
+    productsQuantity.value += key
+}
+
+const addProductPrice = (key: number) => {
+    productsPrice.value += key
+}
+
 </script>
 
 <template>
@@ -56,9 +76,10 @@ const openNav = () => {
         <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
         <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
     </button>
-    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
+    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
+    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active" :locale="props.locale"></BurgerMenu>
     <main class="flex flex-col h-fit gap-8 px-24 py-8 bg-gray-100">
+
         <h1 class="my-4 text-3xl">Products for {{ category_name }} Category</h1>
         <div id="products-category-body" class="flex flex-row gap-48">
             <section class="flex flex-col flex-wrap gap-3 px-3 py-2 rounded-xl bg-white">
@@ -84,9 +105,22 @@ const openNav = () => {
             </section>
             <div class="flex flex-col w-full h-auto mt-[3%]">
                 <div class="flex flex-wrap gap-10">
-                    <ProductCard v-for="product in props.products" classname="" :product="product" :image="null" :key="product.id" :sort-by="sortBy" :order="order"></ProductCard>
+                    <ProductCard 
+                        v-for="product in props.products" classname="" 
+                        :product="product" 
+                        :image="null" 
+                        :key="product.id" 
+                        :sort-by="sortBy" 
+                        :order="order"
+                        :locale="props.locale"
+                        :openCartModalValue="openCartModalValue"
+                        @addProduct="addProduct" 
+                        @addProductQuantity="addProductQuantity" 
+                        @addProductPrice="addProductPrice">
+                    </ProductCard>
                 </div>
             </div>
         </div>
+        <BlockCartModal :is-open-value="openCartModalValue" :locale="props.locale" :products="productsAdded" :productsPrice="productsPrice" :productsQuantity="productsQuantity" :cartProductsCount="props.cartProductsCount" :defaultShippingRatePrice="props.defaultShippingRatePrice"></BlockCartModal>
     </main>
 </template>

@@ -7,6 +7,7 @@ import { showManufacturers } from '@/routes/admin/back-office';
 
 interface ManufacturerDetailsProps {
   manufacturer: Manufacturer
+  locale: string
 }  
 
 const props = defineProps<ManufacturerDetailsProps>()
@@ -15,9 +16,9 @@ const props = defineProps<ManufacturerDetailsProps>()
 
 <template>
     <Head :title=props.manufacturer.name />
-    <AppLayout>
-      <AdminManufacturerMainForm classname="" :manufacturer=props.manufacturer></AdminManufacturerMainForm>
-      <Link :href="showManufacturers()" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+    <AppLayout :locale="locale">
+      <AdminManufacturerMainForm classname="" :manufacturer=props.manufacturer :locale="props.locale"></AdminManufacturerMainForm>
+      <Link :href="showManufacturers({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
           Back to manufacturers list
       </Link>
     </AppLayout>

@@ -11,12 +11,13 @@ import { useWindowSize } from '@vueuse/core'
 import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
 import { ref, provide, watch } from 'vue'
 import SellerRegistrationInvitationBanner from '@/components/jewellery_store/section/SellerRegistrationInvitationBanner.vue';
-
+import TopCategoryCarousel from '@/components/jewellery_store/carousel/TopCategoryCarousel.vue';
 
 interface HomeProps {
     frontCategories: Category[]
     topProducts: Product[]
     cartProductsCount: number
+    locale: string
 }
 
 const props = defineProps<HomeProps>()
@@ -41,17 +42,19 @@ const openNav = () => {
             <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
             <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
         </button>
-        <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-        <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
+        <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
+        <BurgerMenu v-else :locale="props.locale" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
         <main
             class="flex flex-col w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"
         >
             <Slider></Slider>
-            <TopProductCarousel :topProducts="props.topProducts"></TopProductCarousel>
-            <DiscoverCategorySection :categories="frontCategories" category_name="Noir" description="Catchphrase placeholder for appealing customer to this category" :isCollection="true"></DiscoverCategorySection>
-            <SellerRegistrationInvitationBanner></SellerRegistrationInvitationBanner>
+            <TopProductCarousel :topProducts="props.topProducts" :locale="props.locale"></TopProductCarousel>
+            <DiscoverCategorySection :categories="frontCategories" category_name="Noir" description="Catchphrase placeholder for appealing customer to this category" :isCollection="true" :locale="props.locale"></DiscoverCategorySection>
+            <hr class="text-2xl my-3 mx-4" />
+            <TopCategoryCarousel></TopCategoryCarousel>
+            <SellerRegistrationInvitationBanner :locale="props.locale"></SellerRegistrationInvitationBanner>
         </main>
         <div class="hidden h-14.5 lg:block"></div>
-        <ShopFooter></ShopFooter>
+        <ShopFooter :locale="props.locale"></ShopFooter>
     </div>
 </template>

@@ -30,7 +30,7 @@ class Country extends Model
         static::creating(function ($zone) {
             $slug = Str::slug($zone->name);
 
-            $count = Zone::where('slug', $slug)->count();
+            $count = Country::where('slug', $slug)->count();
             if ($count) {
                 $slug .= '-' . ($count + 1);
             }

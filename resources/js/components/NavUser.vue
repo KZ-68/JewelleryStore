@@ -18,6 +18,9 @@ import UserMenuContent from './UserMenuContent.vue';
 const page = usePage();
 const user = page.props.auth.user;
 const { isMobile, state } = useSidebar();
+const props = defineProps<{
+    locale: string
+}>();
 </script>
 
 <template>
@@ -46,7 +49,7 @@ const { isMobile, state } = useSidebar();
                     align="end"
                     :side-offset="4"
                 >
-                    <UserMenuContent :user="user" />
+                    <UserMenuContent :locale="props.locale" :user="user" />
                 </DropdownMenuContent>
             </DropdownMenu>
         </SidebarMenuItem>

@@ -15,6 +15,7 @@ interface ContactPageProps {
     seller: Seller
     customer: null|Customer
     slug: string
+    locale: string
 }
 
 const props =  defineProps<ContactPageProps>();
@@ -32,11 +33,11 @@ const openNav = () => {
         <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
         <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
     </button>
-    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
+    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
+    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active" :locale="props.locale"></BurgerMenu>
     <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6 mx-15">Contact the seller</h2>
-        <ContactSellerForm classname="" :seller="props.seller" :customer="props.customer" :slug="props.slug"></ContactSellerForm>
+        <ContactSellerForm classname="" :seller="props.seller" :customer="props.customer" :slug="props.slug" :locale="props.locale"></ContactSellerForm>
     </main>
-    <ShopFooter></ShopFooter>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

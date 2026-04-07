@@ -9,6 +9,8 @@ use App\Models\ShippingRate;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -48,11 +50,15 @@ class HandleInertiaRequests extends Middleware
         $cartProductsCount = count($cartProducts['products']);
         $defaultCarrier = Carrier::where('id', 1)->firstOrFail();
         $defaultShippingRate = ShippingRate::where('carrier_id', $defaultCarrier->id)->first();
+        $langFile = lang_path( App::currentLocale() . ".json" );
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
+            'locale' => App::currentLocale(),
+            'locales' => config( 'app.available_locales' ),
+            'translations' => File::exists( $langFile ) ? File::json( $langFile ) : [],
             'auth' => [
                 'user' => Auth::guard('admin')->check() ? Auth::guard('admin')->user() : null,
                 'customer' => Auth::guard('web')->check() ? Auth::guard('web')->user() : null,

@@ -14,13 +14,14 @@ import { LogOut, Settings } from 'lucide-vue-next';
 
 interface Props {
     user: User;
+    locale: string
 }
 
 const handleLogout = () => {
     router.flushAll();
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -32,7 +33,7 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="edit()" prefetch as="button">
+            <Link class="block w-full" :href="edit({locale: props.locale})" prefetch as="button">
                 <Settings class="mr-2 h-4 w-4" />
                 Settings
             </Link>
@@ -42,7 +43,7 @@ defineProps<Props>();
     <DropdownMenuItem :as-child="true">
         <Link
             class="block w-full"
-            :href="adminLogout()"
+            :href="adminLogout({locale: props.locale})"
             @click="handleLogout"
             as="button"
             data-test="logout-button"

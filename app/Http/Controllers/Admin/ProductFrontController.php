@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Tax\TaxCalculatorService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 
 class ProductFrontController extends Controller
@@ -108,8 +109,11 @@ class ProductFrontController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/admin/back-office/products')
-                ->withErrors($validator)
+            return redirect('{locale}/admin/back-office/products')
+                ->withErrors(
+                    $validator, 
+                    ['error' => 'This product is invalid, please register correctly every required fields']
+                )
                 ->withInput();
         }
 

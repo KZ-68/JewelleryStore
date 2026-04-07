@@ -9,6 +9,7 @@ import { showCustomers } from '@/routes/admin/back-office';
 interface CustomerAdminSettings {
   customer: Customer
   groups: Group[]
+  locale: string
 }  
 
 const props = defineProps<CustomerAdminSettings>()
@@ -17,9 +18,9 @@ const props = defineProps<CustomerAdminSettings>()
 
 <template>
     <Head :title=props.customer.name />
-    <AppLayout>
-      <AdminCustomerMainForm classname="" :customer=props.customer :groups=props.groups></AdminCustomerMainForm>
-      <Link :href="showCustomers()" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+    <AppLayout :locale="props.locale">
+      <AdminCustomerMainForm classname="" :customer=props.customer :groups=props.groups :locale="props.locale"></AdminCustomerMainForm>
+      <Link :href="showCustomers({locale : props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
           Back to customers list
       </Link>
     </AppLayout>

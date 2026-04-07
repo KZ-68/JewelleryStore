@@ -2,8 +2,10 @@
 import { Category } from '@/types/category';
 import { route } from '../../../../../vendor/tightenco/ziggy';
 import { Ziggy } from '../../../ziggy.js';
+import { useRoute } from '@/composables/trans';
 
 interface SubCategoryMenuProps {
+    locale: string
     category: Category
     openCategories: Set<number>
 }
@@ -19,7 +21,7 @@ const emit = defineEmits<{
 <template>
     <li @mouseenter="emit('open', props.category.id)" @touchstart="emit('open', props.category.id)" @click="emit('close', props.category.id)" class="relative group/item border-b-2 border-b-gray-100 hover:bg-gray-50 min-h-fitt min-w-[200px]">
         <div class="flex items-center justify-between px-4 py-3 transition-colors">
-            <a :href="route('showCategoryProducts', {category_slug: props.category.slug, name: props.category.name}, false, Ziggy)" class="flex-1 font-medium text-gray-800 hover:text-[#84070F] **:transition-colors">
+            <a :href="route('showCategoryProducts', {locale: props.locale, category_slug: props.category.slug, name: props.category.name}, false, Ziggy)" class="flex-1 font-medium text-gray-800 hover:text-[#84070F] **:transition-colors">
                 {{ props.category.name }}
             </a>
             <svg
@@ -34,6 +36,7 @@ const emit = defineEmits<{
         <ul v-if="props.openCategories.has(category.id) && props.category.children_recursive?.length" class="absolute top-0 left-full z-10 flex-col bg-white border shadow-md h-fit min-w-[200px] group-hover:flex">
             <SubCategory
                 v-for="child in props.category.children_recursive"
+                :locale="props.locale"
                 :key="child.id"
                 :category="child"
                 :open-categories="props.openCategories"

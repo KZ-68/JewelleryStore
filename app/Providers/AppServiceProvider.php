@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Contracts\ProductImageServiceInterface;
+use App\Contracts\ProductListRepositoryInterface;
 use App\Models\Customer;
+use App\Repositories\ProductRepository;
 use App\Services\Image\ProductImageService;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
 
@@ -15,9 +18,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(
+        $this->app->singletonIf(
             ProductImageServiceInterface::class,
             ProductImageService::class
+        );
+
+        $this->app->bind(
+            ProductListRepositoryInterface::class,
+            ProductRepository::class
         );
     }
 

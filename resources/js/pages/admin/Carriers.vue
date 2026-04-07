@@ -15,6 +15,7 @@ interface CarriersProps {
     sortBy: string
     order: string
   }
+  locale: string
 }  
 
 const props = defineProps<CarriersProps>()
@@ -22,7 +23,7 @@ const props = defineProps<CarriersProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'asc')
 
-const url = route('admin.back-office.showCarriers', {}, false, Ziggy);
+const url = route('admin.back-office.showCarriers', {locale: props.locale}, false, Ziggy);
 
 const updateFilters = () => {
   router.get(url, {
@@ -38,7 +39,7 @@ const navigate = (url: string) => {
 
 <template>
     <Head title="Carriers" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="carriers-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Carriers</h2>
         <section id="carriers-top-wrapper" class="flex flex-row justify-between items-center">
@@ -55,7 +56,7 @@ const navigate = (url: string) => {
           </div>
           <nav id="carriers-top-nav" class="flex flex-row">
             <Link
-                :href="newCarrier()"
+                :href="newCarrier({locale: props.locale})"
                 class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             >
                 Add a new carrier
@@ -68,6 +69,7 @@ const navigate = (url: string) => {
           :carriers=props.carriers
           :sort-by="sortBy"
           :order="order"
+          :locale="props.locale"
         />
       </div>
     </AppLayout>

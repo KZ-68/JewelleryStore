@@ -9,9 +9,10 @@ interface FeaturesListProps {
     features: Feature[]
     sortBy: string
     order: "asc" | "desc"
+    locale: string
 }
 
-defineProps<FeaturesListProps>()
+const props = defineProps<FeaturesListProps>()
 </script>
 
 <template>
@@ -28,7 +29,7 @@ defineProps<FeaturesListProps>()
                 <tr v-for="feature in features" v-bind:key="feature.id" class="flex flex-row gap-[5%] items-center justify-around bg-gray-200 py-2 px-3 my-4 rounded-md h-[5rem]">
                     <th scope="row" class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ feature.id }}</th>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ feature.name }}</td>
-                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('feature-details', {slug: feature.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
+                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('feature-details', {locale: props.locale, slug: feature.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
                 </tr>
             </tbody>
             <tbody v-else id="features-list">

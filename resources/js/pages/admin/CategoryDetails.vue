@@ -9,6 +9,7 @@ import { TreeNode } from '@/types/treenode';
 interface CategoryDetailsProps {
   category: Category
   categories: Array<TreeNode[]>
+  locale: string
 }  
 
 const props = defineProps<CategoryDetailsProps>()
@@ -17,9 +18,9 @@ const props = defineProps<CategoryDetailsProps>()
 
 <template>
     <Head :title=props.category.name />
-    <AppLayout>
-      <AdminCategoryMainForm classname="" :category=props.category :categories=props.categories></AdminCategoryMainForm>
-      <Link :href="showCategories()" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+    <AppLayout :locale="props.locale">
+      <AdminCategoryMainForm classname="" :category=props.category :categories=props.categories :locale="props.locale"></AdminCategoryMainForm>
+      <Link :href="showCategories({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
           Back to categories list
       </Link>
     </AppLayout>

@@ -24,10 +24,10 @@ class Feature extends Model
 
         static::creating(function ($feature) {
             $slug = Str::slug($feature->name);
+            $count = 1;
 
-            $count = Feature::where('slug', $slug)->count();
-            if ($count) {
-                $slug .= '-' . ($count + 1);
+            while (static::where('slug', $slug)->exists()) {
+                $slug = $slug . '-' . $count++;
             }
 
             $feature->slug = $slug;

@@ -2,6 +2,12 @@
 import { Link } from '@inertiajs/vue3';
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '@/ziggy';
+
+interface SellerRegistrationInvitationBanner {
+    locale: string
+}
+
+const props = defineProps<SellerRegistrationInvitationBanner>();
 </script>
 
 <template>
@@ -12,7 +18,7 @@ import { Ziggy } from '@/ziggy';
                 <p class="text-white">We verify each professional to offer an attractive and safe choice for your customers.</p>
             </hgroup>
             <button id="seller-btn" class="bg-[#84070F] py-2 px-3 rounded-md">
-                <Link :href="route('register-seller', {}, false, Ziggy)">
+                <Link :href="route('register-seller', {locale: props.locale,}, false, Ziggy)">
                     <h4 class="text-white font-bold text-lg">Register Now !</h4>
                 </Link>
             </button>

@@ -9,23 +9,21 @@ import { Ziggy } from '../../../../ziggy.js';
 interface SubCategoriesListProps {
     classname:string
     subCategories: Category[]
+    locale: string
 }
 
-// const emit = defineEmits<{
-//   (e: 'navigate', url: string): void
-// }>() 
+const props = defineProps<SubCategoriesListProps>()
 
 const selected = ref<string[]>([]);
 
 const deleteSubCategory = (name: string) => {
-    router.post(route('delete-category', {slug: name}, false, Ziggy), {name: name})
+    router.post(route('delete-category', {locale: props.locale, slug: name}, false, Ziggy), {locale: props.locale, name: name})
 }
 
 const getSelected = () => {
     return selected.value
 }
 
-defineProps<SubCategoriesListProps>()
 defineExpose({
     getSelected
 });

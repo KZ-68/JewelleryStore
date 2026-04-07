@@ -15,6 +15,7 @@ import { LoaderCircle } from 'lucide-vue-next';
 defineProps<{
     status?: string;
     canResetPassword: boolean;
+    locale: string
 }>();
 </script>
 
@@ -22,6 +23,7 @@ defineProps<{
     <AuthBase
         title="Log in to your admin account"
         description="Enter your email and password below to log in"
+        :locale="locale"
     >
         <Head title="Admin Log in" />
 
@@ -33,7 +35,7 @@ defineProps<{
         </div>
 
         <Form
-            v-bind="AuthenticatedSessionController.store['/admin/login'].form()"
+            v-bind="AuthenticatedSessionController.store['/{locale}/admin/login'].form({locale: locale})"
             :reset-on-success="['password']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -59,7 +61,7 @@ defineProps<{
                         <Label for="password">Password</Label>
                         <TextLink
                             v-if="canResetPassword"
-                            :href="request()"
+                            :href="request({locale: locale})"
                             class="text-sm"
                             :tabindex="5"
                         >
@@ -102,7 +104,7 @@ defineProps<{
 
             <div class="text-center text-sm text-muted-foreground">
                 Don't have an account?
-                <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+                <TextLink :href="register({locale:locale})" :tabindex="5">Sign up</TextLink>
             </div>
         </Form>
     </AuthBase>

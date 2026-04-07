@@ -19,7 +19,7 @@ interface CartBodyProps {
 async function remove(product:CartProduct) {
     try {
         await axios.post(
-            route('cart.removeToCart', {product : product}, false, Ziggy), {product: product}
+            route('cart.removeToCart', {locale: props.locale, product : product}, false, Ziggy), {product: product}
         )
     } catch (error) {
         console.error('Erreur:', error);

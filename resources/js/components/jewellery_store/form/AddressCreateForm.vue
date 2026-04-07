@@ -11,6 +11,7 @@ interface AddressCreateFormProps {
     classname:string;
     countries: Country[]
     isOrder: boolean
+    locale : string
 }   
 
 const countrySelected = ref('')
@@ -21,7 +22,7 @@ const props = defineProps<AddressCreateFormProps>();
 <template>
     <section id="new-admin-address-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="AddressFrontController.create.form({query: { isOrder: props.isOrder }})"
+            v-bind="AddressFrontController.create.form({query: { locale: props.locale, isOrder: props.isOrder }})"
             :reset-on-success="['addresses.edit']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

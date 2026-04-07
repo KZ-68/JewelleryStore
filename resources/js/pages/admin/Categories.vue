@@ -11,22 +11,23 @@ import { newCategory } from '@/actions/App/Http/Controllers/Admin/CategoryFrontC
 interface CategoriesProps {
   categories?: Category[]
   subCategories?: Category[]
+  locale: string
 }  
 
 const props = defineProps<CategoriesProps>()
 
-const url = route('admin.back-office.showCategories', {}, false, Ziggy);
+const url = route('admin.back-office.showCategories', {locale: props.locale}, false, Ziggy);
 </script>
 
 <template>
     <Head title="Categories" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="categories-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Categories</h2>
         <section id="categories-top-wrapper" class="flex lg:flex-row sm:flex-col lg:my-0 sm:my-6 justify-between items-center">
             <nav id="categories-top-nav" class="flex flex-row">
               <Link
-                  :href="newCategory()"
+                  :href="newCategory({locale: props.locale})"
                   class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
               >
                   Add a category
@@ -38,11 +39,13 @@ const url = route('admin.back-office.showCategories', {}, false, Ziggy);
           v-if="props.categories"
           classname=""
           :categories=props.categories
+          :locale="props.locale"
         />
         <SubCategoriesList 
           v-else-if="props.subCategories && props.subCategories.length"
           classname=""
           :subCategories=props.subCategories
+          :locale="props.locale"
         />
       </div>
     </AppLayout>

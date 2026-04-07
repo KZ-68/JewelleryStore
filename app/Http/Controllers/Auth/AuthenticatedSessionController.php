@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +24,17 @@ class AuthenticatedSessionController extends Controller
     public function create(Request $request): Response
     {
         return Inertia::render('auth/Login', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => $request->session()->get('status'),
+        ]);
+    }
+
+    /**
+     * Show the adminlogin page.
+     */
+    public function adminCreate(Request $request): Response
+    {
+        return Inertia::render('auth/admin/AdminLogin', [
             'canResetPassword' => Route::has('password.request'),
             'status' => $request->session()->get('status'),
         ]);
@@ -62,14 +74,14 @@ class AuthenticatedSessionController extends Controller
                 $request->session()->regenerate();
 
                 if ($guard === 'web') {
-                    return redirect()->intended(route('home', absolute: false));
+                    return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
                 } else {
-                    return redirect()->intended((route('admin.back-office.showBO', absolute: false)));
+                    return redirect()->intended((route('admin.back-office.showBO', ['locale' => App::currentLocale()], absolute: false)));
                 }
             }
         }
 
-        return redirect()->intended(route('home', absolute: false));
+        return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
     }
 
     /**
@@ -77,20 +89,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        if (Auth::guard('admin')->check()) {
-            Auth::guard('admin')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-        } else {
-            Auth::guard('web')->logout();
-            $request->session()->forget([
-                'login.id',
-                'login.remember'
-            ]);
-            $request->session()->regenerate();
-            $request->session()->regenerateToken();
-        }
+        Auth::guard('web')->logout();
+        $request->session()->forget([
+            'login.id',
+            'login.remember'
+        ]);
+        $request->session()->regenerate();
+        $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
+    }
+
+    /**
+     * Destroy an authenticated session.
+     */
+    public function adminDestroy(Request $request): RedirectResponse
+    {
+        Auth::guard('admin')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
     }
 }

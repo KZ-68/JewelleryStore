@@ -20,6 +20,7 @@ interface TaxesProps {
     sortBy: string
     order: string
   }
+  locale: string
 }  
 
 const props = defineProps<TaxesProps>()
@@ -27,7 +28,7 @@ const props = defineProps<TaxesProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'asc')
 
-const url = route('admin.back-office.showTaxes', {}, false, Ziggy);
+const url = route('admin.back-office.showTaxes', {locale: props.locale}, false, Ziggy);
 
 const updateFilters = () => {
   router.get(url, {
@@ -45,7 +46,7 @@ const activetab = ref(1);
 
 <template>
     <Head title="Taxes and Tax" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="taxes-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Taxes</h2>
         <div class="tabs">
@@ -71,7 +72,7 @@ const activetab = ref(1);
                 </div>
                 <nav id="taxes-top-nav" class="flex flex-row">
                   <Link
-                      :href="newTax()"
+                      :href="newTax({locale: props.locale})"
                       class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                   >
                       Add a tax
@@ -83,6 +84,7 @@ const activetab = ref(1);
                   :taxes=props.taxes
                   :sort-by="sortBy"
                   :order="order"
+                  :locale="props.locale"
                 />
             </div>
             <div v-else-if="activetab === 2" class="tabcontent">
@@ -101,7 +103,7 @@ const activetab = ref(1);
                 </div>
                 <nav id="taxes-top-nav" class="flex flex-row">
                   <Link
-                      :href="newTaxRuleGroup()"
+                      :href="newTaxRuleGroup({locale: props.locale})"
                       class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                   >
                       Create a new tax rule
@@ -113,6 +115,7 @@ const activetab = ref(1);
                   :taxRuleGroups=props.taxRuleGroups
                   :sort-by="sortBy"
                   :order="order"
+                  :locale="props.locale"
                 />
             </div>
           </div>

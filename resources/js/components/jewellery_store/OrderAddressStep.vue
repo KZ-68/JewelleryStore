@@ -10,6 +10,7 @@ interface OrderAddressStepProps {
     countries: Country[]
     addresses: Address[]
     isAddressSelected: boolean
+    locale: string
 }
 
 const props = defineProps<OrderAddressStepProps>();
@@ -32,7 +33,7 @@ defineEmits(['selectStep']);
                 <h2 class="text-xl px-3 py-4">2. Delivery address</h2>
             </div>
             <div v-if="props.addresses.length === 0 || isNewAddress === true">
-                <AddressCreateForm  classname="" :countries="countries" :isOrder="true"/>
+                <AddressCreateForm  classname="" :countries="countries" :isOrder="true" :locale="props.locale"/>
             </div>
             <div v-else class="bg-white w-80 lg:w-[60rem]">
                 <h3 class="text-lg px-6 mt-8 mb-4">Select an address</h3>
@@ -40,6 +41,7 @@ defineEmits(['selectStep']);
                     classname=""
                     :addresses=addresses
                     :isOrder="true"
+                    :locale="props.locale"
                 />
                 <button v-if="isNewAddress === false" @click="displayNewAddressForm" class="mb-10 mx-8 py-4 px-6 bg-[#84070F] text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32]">Add a new address</button>
             </div>

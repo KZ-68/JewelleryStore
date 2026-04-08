@@ -7,16 +7,17 @@ import { Category } from '@/types/category';
 interface ContactPageProps {
     frontCategories: Category[]
     cartProductsCount: number
+    locale: string
 }
 
 const props =  defineProps<ContactPageProps>();
 </script>
 
 <template>
-    <ShopHeader :front-categories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
+    <ShopHeader :front-categories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
     <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6 mx-15">Contact</h2>
-        <ContactForm classname=""></ContactForm>
+        <ContactForm classname="" :locale="props.locale"></ContactForm>
     </main>
-    <ShopFooter></ShopFooter>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

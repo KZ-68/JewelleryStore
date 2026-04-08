@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useTwoFactorAuth } from '@/composables/useTwoFactorAuth';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { disable, enable, show } from '@/routes/two-factor';
+import { disable, enable } from '@/routes/two-factor';
 // import { BreadcrumbItem } from '@/types';
 import { Form, Head } from '@inertiajs/vue3';
 import { ShieldBan, ShieldCheck } from 'lucide-vue-next';
@@ -15,6 +15,7 @@ import { onUnmounted, ref } from 'vue';
 interface Props {
     requiresConfirmation?: boolean;
     twoFactorEnabled?: boolean;
+    locale: string;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -39,7 +40,7 @@ onUnmounted(() => {
 
 <template>
     <Head title="Two-Factor Authentication" />
-    <SettingsLayout>
+    <SettingsLayout :locale="locale">
         <div class="space-y-6">
             <HeadingSmall
                 title="Two-Factor Authentication"

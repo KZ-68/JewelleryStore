@@ -22,10 +22,11 @@ class PaymentController extends Controller
 
     public function createIntent(Request $request, CartHelper $cart, CreateOrderRequest $orderRequest)
     {
-        $cartProduct = $cart->get();
-        $carrier = Carrier::where('id', $cartProduct['carrier']['id'])->firstOrFail();
         $user = $request->user('web');
         $customer = Customer::where('id', $user->id)->firstOrFail();
+        $cartProduct = $cart->get();
+        
+        $carrier = Carrier::where('id', $cartProduct['carrier']['id'])->firstOrFail();
         $dto = CreateOrderDTO::fromRequest($orderRequest);
         $order = $this->orderService->createOrder($dto, $carrier, $customer);
         
@@ -34,7 +35,7 @@ class PaymentController extends Controller
             'reference' => $order->reference
         ]);
 
-        $payment = $customer->payWith(
+        $payment = $request->user()->payWith(
             ($request->get('amount') * 100),
             ['card', 'bancontact'],
             [

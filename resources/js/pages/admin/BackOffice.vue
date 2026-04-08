@@ -2,12 +2,16 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../../components/PlaceholderPattern.vue';
+
+defineProps<{
+    locale: string;
+}>();
 </script>
 
 <template>
     <Head title="BackOffice" />
 
-    <AppLayout>
+    <AppLayout :locale="locale">
         <div
             class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
         >

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { Message } from '@/types/message';
-import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
-import { Ziggy } from '@/ziggy';
 
 interface MessagesSendedProps {
     messagesSended: Message[] 

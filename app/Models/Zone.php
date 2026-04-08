@@ -26,12 +26,6 @@ class Zone extends Model
 
         static::creating(function ($zone) {
             $slug = Str::slug($zone->name);
-
-            $count = Zone::where('slug', $slug)->count();
-            if ($count) {
-                $slug .= '-' . ($count + 1);
-            }
-
             $zone->slug = $slug;
         });
     }

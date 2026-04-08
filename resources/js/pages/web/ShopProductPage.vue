@@ -14,6 +14,7 @@ import { Ziggy } from '../../ziggy.js';
 import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 import { useWindowSize } from '@vueuse/core';
 import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
+import SizeSelector from '@/components/jewellery_store/select/SizeSelector.vue';
 
 interface ProductsListProps {
     classname:string
@@ -24,6 +25,8 @@ interface ProductsListProps {
     productImages: string[]
     seller_id: null|number
     seller_name: null|string
+    locale: string
+    feature_size_values: Array<string>
 }
 
 // const emit = defineEmits<{
@@ -37,7 +40,7 @@ const retailPrice = ref(0);
 async function addToCart(product:Product, quantity: number, retailPrice: number) {
     try {
         await axios.post(
-            route('cart.addToCart', {product : product, quantity: quantity, retail_price: retailPrice}, false, Ziggy)
+            route('cart.addToCart', {locale: props.locale, product : product, quantity: quantity, retail_price: retailPrice}, false, Ziggy)
         )
     } catch (error) {
         console.error('Erreur:', error);
@@ -75,8 +78,8 @@ function selectFeatures() {
         <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
         <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
     </button>
-    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
+    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
+    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active" :locale="props.locale"></BurgerMenu>
     <main id="shop-product-page-main" class="px-24 py-8 bg-gray-100">
         <section id="shop-product-page-main-wrapper">
             <div id="shop-product-page-header" class="flex flex-col gap-2 my-4 mx-2">
@@ -88,10 +91,10 @@ function selectFeatures() {
                         <div id="shop-product-page-images-wrapper" class="relative w-xl flex flex-col gap-8 pl-16 pr-8">
                             <div class="w-[450px] h-[450px] mb-4">
                                 <figure v-if="props.productImages.length > 0" class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
-                                    <img :src="props.productImages[activeIndex]" alt="">
+                                    <img class="w-[450px] h-[450px] rounded-lg" :src="props.productImages[activeIndex]" alt="">
                                 </figure>
                                 <figure v-else class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
-                                    <img src="/storage/img/p/not-found.jpg" alt="">
+                                    <img class="w-[450px] h-[450px] rounded-lg" src="/storage/img/p/not-found.jpg" alt="">
                                 </figure>
                             </div>
                             
@@ -157,35 +160,37 @@ function selectFeatures() {
                             </div>
                             <Link
                                 v-if="props.seller_id !== null"
-                                :href="route('contactSeller', {slug: props.product.slug, seller_id: props.seller_id}, false, Ziggy)"
+                                :href="route('contactSeller', {locale: props.locale, slug: props.product.slug, seller_id: props.seller_id}, false, Ziggy)"
                                 class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
                             >
                                 Want to contact the seller ? Click here !
                             </Link>
+                            <div :v-if="props.feature_size_values.length >= 1">
+                                <SizeSelector :locale="props.locale" :size-values="feature_size_values"></SizeSelector>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <section id="shop-product-page-description-wrapper" class="mx-4 lg:mx-32 my-3">
-            <div class="flex flex-row gap-4">
-                <h2 @click="selectDescription" id="title-product-description" class="text-2xl font-bold">Description</h2>
-                <h2 @click="selectFeatures" id="title-product-feature" class="text-2xl font-bold">Features</h2>
+        <section id="shop-product-page-description-wrapper" class="flex flex-col justify-center mx-4 lg:mx-32 my-3">
+            <div class="flex flex-row justify-center gap-12">
+                <h2 @click="selectDescription" id="title-product-description" class="text-2xl font-bold cursor-pointer border-b-4 hover:border-red-800">Description</h2>
+                <h2 @click="selectFeatures" id="title-product-feature" class="text-2xl font-bold cursor-pointer border-b-4 hover:border-red-800">Features</h2>
             </div>
-            <div v-if="props.product.description != null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+            <div v-if="props.product.description != null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-full min-h-96 bg-white my-6 rounded-md">
                 <p class="text-lg px-6 py-6">{{ props.product.description }}</p>
             </div>
-            <div v-else-if="props.product.description == null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+            <div v-else-if="props.product.description == null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-full min-h-96 bg-white my-6 rounded-md">
                 <p class="text-lg px-6 py-6">Product description is empty</p>
             </div>
-            <div v-else-if="featuresSelected == true" id="product-features" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+            <div v-else-if="featuresSelected == true" id="product-features" class="max-w-82 lg:max-w-full min-h-96 bg-white my-6 rounded-md">
                 <p class="text-lg px-6 py-6"></p>
             </div>
-            <div v-else-if="props.product == null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-[72rem] min-h-96 bg-white my-6 rounded-md">
+            <div v-else-if="props.product == null && descriptionSelected == true" id="product-description" class="max-w-82 lg:max-w-full min-h-96 bg-white my-6 rounded-md">
                 <p class="text-lg px-6 py-6">Product description is empty</p>
             </div>
         </section>
-        <section id="shop-product-page-footer" class="my-4"></section>
     </main>
-    <ShopFooter></ShopFooter>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

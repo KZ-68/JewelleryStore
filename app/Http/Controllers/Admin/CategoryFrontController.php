@@ -63,13 +63,15 @@ class CategoryFrontController extends Controller
     public function showSubCategories(Request $request): Response|RedirectResponse
     {
         $subCategories = Category::where('parent_id', $request->id)->get();
-
+        $parentCategoryName = Category::where('id', $request->id)->value('name'); 
+        
         if(!$subCategories) {
             redirect('not-found', 404);
         }
 
         return Inertia::render('admin/Categories', [
-            'subCategories' => $subCategories
+            'subCategories' => $subCategories,
+            'parentCategoryName' => $parentCategoryName
         ]);
     }
 
@@ -126,9 +128,9 @@ class CategoryFrontController extends Controller
         }
 
         $category = new Category;
-        $category->parent_id = $request->get('parent_id');
-        $category->name = $request->get('name');
-        $category->description = $request->get('description');
+        $category->parent_id = $request->input('parent_id');
+        $category->name = $request->input('name');
+        $category->description = $request->input('description');
         $category->save();
 
         return redirect('/admin/back-office/categories');

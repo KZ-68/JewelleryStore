@@ -16,6 +16,7 @@ interface ManufacturersProps {
     sortBy: string
     order: string
   }
+  locale: string
 }  
 
 const props = defineProps<ManufacturersProps>()
@@ -23,7 +24,7 @@ const props = defineProps<ManufacturersProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'asc')
 
-const url = route('admin.back-office.showManufacturers', {}, false, Ziggy);
+const url = route('admin.back-office.showManufacturers', {locale: props.locale}, false, Ziggy);
 
 const updateFilters = () => {
   router.get(url, {
@@ -39,7 +40,7 @@ const deleteSelected = () => {
     if (!names.length) return
 
     if (confirm("Supprimer les éléments sélectionnés ?")) {
-        router.post(route('delete-manufacturers', {}, false, Ziggy), { names })
+        router.post(route('delete-manufacturers', {names: names, locale: props.locale}, false, Ziggy), { names: names, locale: props.locale })
     }
 }
 
@@ -50,7 +51,7 @@ const navigate = (url: string) => {
 
 <template>
     <Head title="Manufacturers" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="manufacturers-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Manufacturers</h2>
         <section id="manufacturers-top-wrapper" class="flex flex-col-reverse xl:flex-row justify-between items-center">
@@ -74,7 +75,7 @@ const navigate = (url: string) => {
                   Delete selected manufacturer
             </Button>
             <Link
-                :href="newManufacturer()"
+                :href="newManufacturer({locale: props.locale})"
                 class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             >
                 Add a manufacturer

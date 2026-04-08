@@ -35,7 +35,9 @@ defineProps<UsersListProps>()
                 </tr>
             </tbody>
             <tbody v-else id="users-list">
-                <th scope="row">No User registered</th>
+                <tr>
+                    <th scope="row">No User registered</th>
+                </tr>
             </tbody>
         </table>
     </section>

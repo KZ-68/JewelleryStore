@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
+
+interface ShopFooterProps {
+    locale: string
+}
+
+const props = defineProps<ShopFooterProps>();
 </script>
 
 <template>
@@ -8,7 +14,7 @@ import { Ziggy } from '../../ziggy.js';
         <div id="shop-footer-navigations" class="flex flex-col lg:flex-row items-center lg:items-baseline gap-3 lg:gap-36">
             <nav class="flex flex-col items-start gap-4 py-6">
                 <h3 class="text-xl">About Us</h3>
-                <a :href="route('contact.create', {}, false, Ziggy)">Contact Us</a>
+                <a :href="route('contact.create', {locale: props.locale}, false, Ziggy)">Contact Us</a>
             </nav>
             <nav class="flex flex-col items-center lg:items-start gap-4 py-6">
                 <h3 class="text-xl">Customer Services</h3>
@@ -50,7 +56,7 @@ import { Ziggy } from '../../ziggy.js';
         <nav class="flex flex-col items-center lg:items-start lg:flex-row my-8 lg:my-0 gap-3">
             <a href="#">Sitemap</a>
             <a href="#">Terms and conditions</a>
-            <a :href="route('privacy', {}, false, Ziggy)">Privacy Policy</a>
+            <a :href="route('privacy', {locale: props.locale}, false, Ziggy)">Privacy Policy</a>
         </nav>
     </footer>
 </template>

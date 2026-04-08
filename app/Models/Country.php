@@ -30,7 +30,7 @@ class Country extends Model
         static::creating(function ($zone) {
             $slug = Str::slug($zone->name);
 
-            $count = Zone::where('slug', $slug)->count();
+            $count = Country::where('slug', $slug)->count();
             if ($count) {
                 $slug .= '-' . ($count + 1);
             }
@@ -71,5 +71,10 @@ class Country extends Model
     public function taxRules(): HasMany
     {
         return $this->hasMany(TaxRule::class);
+    }
+
+    public function currencies(): BelongsToMany
+    {
+        return $this->belongsToMany(Currency::class, 'country_currency', 'country_id', 'currency_id')->withTimestamps();
     }
 }

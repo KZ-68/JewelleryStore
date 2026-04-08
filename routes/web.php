@@ -22,37 +22,69 @@ use App\Http\Controllers\Web\PaymentController;
 use App\Http\Controllers\Web\SearchFrontController;
 use App\Http\Controllers\Web\ShopCategoryFrontController;
 
-Route::get('/', [HomeFrontController::class, 'show'])->name('home');
+Route::fallback(function () {
+    $segments = request()->segments();
+    $availableLocales = config('app.available_locales');
+    $locale = session('locale') ?: config('app.fallback_locale');
+    $path = \ltrim(implode('/', $segments), '/');
 
-Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.addToCart');
-Route::post('/cart/remove', [CartController::class, 'removeToCart'])->name('cart.removeToCart');
-Route::get('contact', [ContactController::class, 'create'])->name('contact.create');
-Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
+    if (
+        request()->is('api/*') ||
+        request()->is('storage/*') ||
+        request()->is('_debugbar/*') ||
+        request()->is('sanctum/*') ||
+        request()->is('up')
+    ) {
+        abort(404);
+    }
 
-Route::get('privacy', function () {
-    return Inertia::render('web/Privacy');
-})->name('privacy');
-Route::get('not-found', function() {
-    return Inertia::render('web/NotFound');
-})->name('not-found');
+    if (!empty($segments) && in_array($segments[0], $availableLocales)) {
+        abort(404);
+    }
 
-Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products');
-Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
-Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('order.showOrderPage');
-Route::post('/order/select-address', [OrderFrontController::class, 'selectAddress'])->name('order.selectAddress');
-Route::post('/order/select-carrier', [OrderFrontController::class, 'selectCarrier'])->name('order.selectCarrier');
-Route::post('/order/select-payment', [OrderFrontController::class, 'selectPayment'])->name('order.selectPayment');
-Route::post('/order/shipping-rate', [OrderFrontController::class, 'getShippingRatePrice'])->name('order.getShippingRatePrice');
-Route::post('/stripe/payment/create-intent', [PaymentController::class, 'createIntent'])->name('payment.createIntent');
-Route::get('/order/confirmation', [OrderFrontController::class, 'orderConfirmation'])->name('order.confirmation');
-Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
-Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
-Route::post('/search/{text}', [SearchFrontController::class, 'searchProducts'])->name('searchProducts');
-Route::get('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'contactSeller'])->name('contactSeller');
-Route::post('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'validateContactSeller'])->name('contactSeller.validateContactSeller');
+    if (!in_array($segments[0], $availableLocales)) {
+        $url = '/' . $locale . ($path ? '/' . $path : '');
+        return redirect($url);
+    }
+});
 
-Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], function () {
+Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(['set_locale'])->group( function() {
+
+    Route::get('/', [HomeFrontController::class, 'show'])->name('home');
+
+    Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.addToCart');
+    Route::post('/cart/remove', [CartController::class, 'removeToCart'])->name('cart.removeToCart');
+    Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+    Route::get('/privacy', function () {
+        return Inertia::render('web/Privacy');
+    })->name('privacy');
+    Route::get('/payment-info', function () {
+        return Inertia::render('web/PaymentInfo');
+    })->name('payment-info');
+    Route::get('/not-found', function() {
+        return Inertia::render('web/NotFound');
+    })->name('not-found');
+
+    Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products');
+    Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
+    Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('order.showOrderPage');
+    Route::post('/order/select-address', [OrderFrontController::class, 'selectAddress'])->name('order.selectAddress');
+    Route::post('/order/select-carrier', [OrderFrontController::class, 'selectCarrier'])->name('order.selectCarrier');
+    Route::post('/order/select-payment', [OrderFrontController::class, 'selectPayment'])->name('order.selectPayment');
+    Route::post('/order/shipping-rate', [OrderFrontController::class, 'getShippingRatePrice'])->name('order.getShippingRatePrice');
+    Route::post('/stripe/payment/create-intent', [PaymentController::class, 'createIntent'])->name('payment.createIntent');
+    Route::get('/order/confirmation', [OrderFrontController::class, 'orderConfirmation'])->name('order.confirmation');
+    Route::get('/{category_slug}/products', [ShopCategoryFrontController::class, 'showCategoryProducts'])->name('showCategoryProducts');
+    Route::get('/products/{slug}', [ShopProductFrontController::class, 'showShopProduct'])->name('products.showShopProduct');
+    Route::post('/search/{text}', [SearchFrontController::class, 'searchProducts'])->name('searchProducts');
+    Route::get('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'contactSeller'])->name('contactSeller');
+    Route::post('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'validateContactSeller'])->name('contactSeller.validateContactSeller');
+});
+
+Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(['admin.session', 'role:admin', 'auth:admin', 'set_locale'])->group(function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');
     Route::get('/admin/back-office/manufacturers', [BackOfficeController::class, 'showManufacturers'])->name('admin.back-office.showManufacturers');
     Route::get('/admin/back-office/products', [BackOfficeController::class, 'showProducts'])->name('admin.back-office.showProducts');
@@ -107,5 +139,7 @@ Route::group(['middleware' => ['admin.session', 'role:admin', 'auth:admin']], fu
     Route::get('/admin/back-office/features/{slug}', [FeatureFrontController::class, 'featureDetail'])->name('feature-detail');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__.'/settings.php';
+Route::prefix( '{locale}' )->middleware(['set_locale'])->group(function() {
+    require __DIR__.'/auth.php';
+    require __DIR__.'/settings.php';
+});

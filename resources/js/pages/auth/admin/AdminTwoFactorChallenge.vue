@@ -46,12 +46,16 @@ const toggleRecoveryMode = (clearErrors: () => void): void => {
 
 const code = ref<number[]>([]);
 const codeValue = computed<string>(() => code.value.join(''));
+defineProps<{
+    locale: string
+}>();
 </script>
 
 <template>
     <AuthLayout
         :title="authConfigContent.title"
         :description="authConfigContent.description"
+        :locale="locale"
     >
         <Head title="Two-Factor Authentication" />
 

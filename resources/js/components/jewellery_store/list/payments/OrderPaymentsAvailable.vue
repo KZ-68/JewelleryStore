@@ -11,6 +11,7 @@ interface OrderPaymentsAvailableProps {
     classname:string
     payments: Payment[]
     total_price: number
+    locale: string
 }
 
 const props = defineProps<OrderPaymentsAvailableProps>()
@@ -21,7 +22,7 @@ const selectPayment = async (payment: Payment|null) => {
     if (payment !== null) {
         try {
             await axios.post(
-                route('order.selectPayment', {paymentId: payment.id}, false, Ziggy)
+                route('order.selectPayment', {locale: props.locale, paymentId: payment.id}, false, Ziggy)
             ).then((response) => {
                 isPaymentSelected.value = response.data.isPaymentSelected
             })

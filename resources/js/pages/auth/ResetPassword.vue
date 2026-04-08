@@ -12,6 +12,7 @@ import { ref } from 'vue';
 const props = defineProps<{
     token: string;
     email: string;
+    locale: string;
 }>();
 
 const inputEmail = ref(props.email);
@@ -21,11 +22,12 @@ const inputEmail = ref(props.email);
     <AuthLayout
         title="Reset password"
         description="Please enter your new password below"
+        :locale="props.locale"
     >
         <Head title="Reset password" />
 
         <Form
-            v-bind="NewPasswordController.store['/reset-password'].form()"
+            v-bind="NewPasswordController.store.form({locale: locale})"
             :transform="(data) => ({ ...data, token, email })"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"

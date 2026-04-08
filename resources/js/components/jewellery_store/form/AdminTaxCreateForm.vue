@@ -5,16 +5,17 @@ import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/vue3';
 
 interface AdminTaxCreateFormProps {
-    classname:string;
+    classname:string
+    locale: string
 }   
 
 const props = defineProps<AdminTaxCreateFormProps>();
 </script>
 
 <template>
-    <section id="new-admin-tax-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-tax-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="TaxFrontController.create.form()"
+            v-bind="TaxFrontController.create.form({locale: props.locale})"
             :reset-on-success="['tax-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

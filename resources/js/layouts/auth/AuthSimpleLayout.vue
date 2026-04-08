@@ -6,6 +6,7 @@ import { Link } from '@inertiajs/vue3';
 defineProps<{
     title?: string;
     description?: string;
+    locale: string
 }>();
 </script>
 
@@ -17,7 +18,7 @@ defineProps<{
             <div class="flex flex-col gap-8">
                 <div class="flex flex-col items-center gap-4">
                     <Link
-                        :href="home()"
+                        :href="home({locale:locale})"
                         class="flex flex-col items-center gap-2 font-medium"
                     >
                         <div

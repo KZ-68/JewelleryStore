@@ -11,6 +11,7 @@ interface ManufacturersListProps {
     manufacturers: Manufacturer[]
     sortBy: string
     order: 'asc' | 'desc'
+    locale: string
 }
 
 // const emit = defineEmits<{
@@ -20,7 +21,7 @@ interface ManufacturersListProps {
 const selected = ref<string[]>([]);
 
 const deleteManufacturer = (name: string) => {
-    router.post(route('delete-manufacturer', {slug: name}, false, Ziggy), {name: name})
+    router.post(route('delete-manufacturer', {locale: props.locale, slug: name}, false, Ziggy), {name: name})
 }
 
 const getSelected = () => {

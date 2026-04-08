@@ -14,6 +14,7 @@ interface UsersProps {
     sortBy: string
     order: string
   }
+  locale: string
 }  
 
 const props = defineProps<UsersProps>()
@@ -21,7 +22,7 @@ const props = defineProps<UsersProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'id')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'desc')
 
-const url = route('admin.back-office.showTeam', {}, false, Ziggy);
+const url = route('admin.back-office.showTeam', {locale: props.locale}, false, Ziggy);
 
 const updateUsersFilters = () => {
   router.get(url, {
@@ -37,7 +38,7 @@ const navigate = (url: string) => {
 
 <template>
     <Head title="Users" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="customers-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Users</h2>
         <section id="customers-top-wrapper" class="flex lg:flex-row sm:flex-col lg:my-0 sm:my-6 justify-between items-center">
@@ -63,6 +64,7 @@ const navigate = (url: string) => {
           :users=props.users
           :sort-by="sortBy"
           :order="order"
+          :locale="props.locale"
         />
       </div>
     </AppLayout>

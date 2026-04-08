@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Country } from '@/types/country';
-import { Input } from '@/components/ui/input';
 import ShippingRateTable from '@/components/jewellery_store/table/ShippingRateTable.vue';
 import AppLayout from '@/layouts/AppLayout.vue'; 
 
@@ -13,7 +12,8 @@ interface ShippingRatesProps {
         max_total: number
         price: number
     }
-    isLast: boolean,
+    isLast: boolean
+    locale: string
 } 
 
 const props = defineProps<ShippingRatesProps>()
@@ -22,7 +22,7 @@ defineEmits(['prev', 'submit'])
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout :locale="props.locale">
         <div id="shipping-rates-wrapper" class="flex flex-col gap-4 py-8 px-20">
             <ShippingRateTable classname="" :countries="props.countries" :form="props.form"></ShippingRateTable>
             <div class="flex justify-between mt-4">

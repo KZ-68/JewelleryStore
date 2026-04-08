@@ -2,7 +2,6 @@
 import axios from 'axios'
 import type { Carrier } from '@/types/carrier'
 import { ref, Ref, inject } from 'vue'
-import { router } from '@inertiajs/vue3'
 import { route } from '../../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../../../ziggy.js';
 import Label from '@/components/ui/label/Label.vue';
@@ -10,6 +9,7 @@ import Label from '@/components/ui/label/Label.vue';
 interface OrderCarriersListProps {
     classname:string
     carriers: Carrier[]
+    locale: string
 }
 
 const props = defineProps<OrderCarriersListProps>()
@@ -20,7 +20,7 @@ const selectCarrier = async (carrier: Carrier|null) => {
     if (carrier !== null) {
         try {
             await axios.post(
-                route('order.selectCarrier', {carrierId: carrier.id}, false, Ziggy)
+                route('order.selectCarrier', {locale: props.locale, carrierId: carrier.id}, false, Ziggy)
             ).then((response) => {
                 isCarrierSelected.value = response.data.isCarrierSelected;
             })

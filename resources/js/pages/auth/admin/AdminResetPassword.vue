@@ -12,6 +12,7 @@ import { ref } from 'vue';
 const props = defineProps<{
     token: string;
     email: string;
+    locale: string;
 }>();
 
 const inputEmail = ref(props.email);
@@ -21,6 +22,7 @@ const inputEmail = ref(props.email);
     <AuthLayout
         title="Reset password"
         description="Please enter your new password below"
+        :locale="props.locale"
     >
         <Head title="Reset password" />
 

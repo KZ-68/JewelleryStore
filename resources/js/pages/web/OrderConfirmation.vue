@@ -10,13 +10,14 @@ interface OrderConfirmationProps {
     cartProductsCount: number
     price:number
     productImages: string[]
+    locale: string
 }
 
 const props = defineProps<OrderConfirmationProps>()
 </script>
 
 <template>
-    <ShopHeader :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
+    <ShopHeader :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
     <section class="form form-col gap-4 rounded-xl bg-white p-3">
         <hgroup class="form form-col gap-2 rounded-lg bg-green-200 px-5 py-3">
             <h2 class="text-green-800">Your order <span>{{ order.reference }}</span> is confirmed</h2>
@@ -24,5 +25,5 @@ const props = defineProps<OrderConfirmationProps>()
         </hgroup>
         <p>You can find your order resume in your account page</p>
     </section>
-    <ShopFooter></ShopFooter>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

@@ -6,6 +6,7 @@ import OrderAccountRegisterForm from '../form/OrderAccountRegisterForm.vue';
 interface OrderAccountFormProps {
     status?: string;
     isAddressSelected: boolean
+    locale: string
 }   
 const isLogin = ref(false);
 const isRegister = ref(false);
@@ -33,8 +34,8 @@ const props = defineProps<OrderAccountFormProps>();
                     <button @click="selectRegister()" class="bg-[#84070F] px-3 py-2 mx-4 text-white font-bold rounded-md hover:cursor-pointer hover:bg-[#a32a32]">Register Account</button>
                 </div>
             </div>
-            <div v-if="isLogin === true"><OrderAccountLoginForm classname="" :status="props.status"></OrderAccountLoginForm></div>
-            <div v-if="isRegister === true"><OrderAccountRegisterForm></OrderAccountRegisterForm></div>
+            <div v-if="isLogin === true"><OrderAccountLoginForm :locale="props.locale" classname="" :status="props.status"></OrderAccountLoginForm></div>
+            <div v-if="isRegister === true"><OrderAccountRegisterForm :locale="props.locale"></OrderAccountRegisterForm></div>
             <button v-if="$page.props.auth.customer" @click="$emit('selectStep', 1)" id="order-address-step-tab" class="bg-white py-6 my-2 w-[60rem] max-w-[60rem] rounded-t-md hover:cursor-pointer hover:bg-gray-50">
                 <h2 class="text-left text-xl px-3 py-4">2. Delivery address</h2>
             </button>

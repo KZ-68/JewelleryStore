@@ -18,13 +18,14 @@ interface CartProps {
     total_price: number
     cartProductsCount: number
     defaultShippingRatePrice: number
+    locale: string
 }
 
 const props = defineProps<CartProps>();
 </script>
 
 <template>
-    <ShopHeader :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
+    <ShopHeader :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
     <main>
         <div id="cart-wrapper" class="min-h-screen p-6 text-[#1b1b18] lg:p-8 bg-gray-100 dark:bg-[#0a0a0a]">
             <div class="flex flex-row lg:justify-center gap-40">
@@ -33,5 +34,5 @@ const props = defineProps<CartProps>();
             </div>
         </div>
     </main>
-    <ShopFooter></ShopFooter>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

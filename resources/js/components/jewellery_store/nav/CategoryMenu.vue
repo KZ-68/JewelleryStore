@@ -6,6 +6,7 @@ import { Ziggy } from '../../../ziggy.js';
 import SubCategory from './SubCategory.vue';
 
 interface CategoryMenuProps {
+    locale: string
     frontCategories: Category[]
 }
 
@@ -23,7 +24,7 @@ function closeCategory(id: number) {
 </script>
 
 <template>
-  <nav class="text-lg lg:w-[64rem] bg-white">
+  <nav class="text-lg lg:w-[64rem] bg-white mx-64">
     <ul class="flex flex-col lg:flex-row lg:items-start">
       <li 
         v-for="category in categories"
@@ -37,7 +38,7 @@ function closeCategory(id: number) {
           @click="closeCategory(category.id)"
           @touchstart="openCategory(category.id)"
         >
-          <a :href="route('showCategoryProducts', {category_slug: category.slug}, false, Ziggy)" class="flex-1 font-medium text-gray-800 hover:text-[#84070F] transition-colors"
+          <a :href="route('showCategoryProducts', {locale: props.locale, category_slug: category.slug}, false, Ziggy)" class="flex-1 font-medium text-gray-800 hover:text-[#84070F] transition-colors"
           >
             {{ category.name }}
           </a>
@@ -53,6 +54,7 @@ function closeCategory(id: number) {
         </div>
         <ul v-if="openCategories.has(category.id) && category.children_recursive?.length" class="absolute left-0 top-full z-10 flex-col bg-white border shadow-md min-w-fit group-hover:flex">
           <SubCategory v-for="subCat in category.children_recursive"
+            :locale="props.locale"
             :key="subCat.id"
             :category="subCat"
             :open-categories="openCategories"

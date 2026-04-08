@@ -5,6 +5,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { showSuppliers } from '@/routes/admin/back-office';
 
 interface NewSupplierProps {
+  locale: string
 }  
 
 const props = defineProps<NewSupplierProps>()
@@ -13,13 +14,13 @@ const props = defineProps<NewSupplierProps>()
 
 <template>
   <Head title='New Supplier'/>
-  <AppLayout>
+  <AppLayout :locale="props.locale">
     <section id="new-product-page-wrapper" class="flex flex-col mx-2">
       <hgroup id="new-supplier-page-top" class="mx-4 mt-8 mb-4">
         <h1 id="new-supplier-page-heading" class="text-xl">Add a new supplier</h1>
       </hgroup>
-      <AdminSupplierCreateForm classname=""></AdminSupplierCreateForm>
-      <Link :href="showSuppliers()" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+      <AdminSupplierCreateForm classname="" :locale="props.locale"></AdminSupplierCreateForm>
+      <Link :href="showSuppliers({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
         Back to suppliers list
       </Link>
     </section>

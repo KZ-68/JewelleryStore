@@ -11,6 +11,7 @@ interface CarrierInfoProps {
         max_total: number
         price: number
     }
+    locale: string
 } 
 
 const props = defineProps<CarrierInfoProps>()
@@ -19,7 +20,7 @@ defineEmits(['next'])
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout :locale="props.locale">
         <div id="carrier-info-wrapper" class="flex flex-col gap-4 py-8 px-20">
             <div class="grid gap-2">
                 <Label for="name" class="text-lg">Carrier Name</Label>

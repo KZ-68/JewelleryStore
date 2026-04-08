@@ -15,6 +15,7 @@ interface FeaturesProps {
     sortBy: string
     order: string
   }
+  locale: string
 }  
 
 const props = defineProps<FeaturesProps>()
@@ -22,7 +23,7 @@ const props = defineProps<FeaturesProps>()
 const sortBy = ref<string>(props.filters.sortBy || 'id')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'desc')
 
-const url = route('admin.back-office.featuresList', {}, false, Ziggy);
+const url = route('admin.back-office.featuresList', {locale: props.locale}, false, Ziggy);
 
 const updateFeaturesFilters = () => {
   router.get(url, {
@@ -34,7 +35,7 @@ const updateFeaturesFilters = () => {
 
 <template>
     <Head title="Features" />
-    <AppLayout>
+    <AppLayout :locale="props.locale">
       <div id="features-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
         <h2 class="text-3xl my-6">Features</h2>
         <section id="features-top-wrapper" class="flex lg:flex-row sm:flex-col lg:my-0 sm:my-6 justify-between items-center">
@@ -52,7 +53,7 @@ const updateFeaturesFilters = () => {
             </div>
             <nav id="features-top-nav" class="flex flex-row">
               <Link
-                  :href="newFeature()"
+                  :href="newFeature({locale: props.locale})"
                   class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
               >
                   Add a new feature
@@ -64,6 +65,7 @@ const updateFeaturesFilters = () => {
           :features=props.features
           :sort-by="sortBy"
           :order="order"
+          :locale="props.locale"
         />
       </div>
     </AppLayout>

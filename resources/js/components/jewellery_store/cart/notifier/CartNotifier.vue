@@ -6,6 +6,7 @@ import { toRefs, computed } from 'vue';
 
 interface CartNotifierProps {
     cartProductsCount: number
+    locale: string
 }
 
 const props = defineProps<CartNotifierProps>();
@@ -16,7 +17,7 @@ const cartNumber = computed(() => shopHeader.cartProductsCount)
 
 <template>
     <div id="cart-notifier-wrapper">
-        <Link id="cart-notifier-anchor" class="relative flex flex-row items-center gap-2" :href="show()">
+        <Link id="cart-notifier-anchor" class="relative flex flex-row items-center gap-2" :href="show({locale: props.locale})">
             <div id="cart-notifier-body">
                 <HandbagIcon width="100px"/>
             </div>

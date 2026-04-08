@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Currency extends Model
 {
@@ -18,6 +19,23 @@ class Currency extends Model
         'number',
         'symbol'
     ];
+
+        // Create a slug automaticaly after the creation of the currency
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($currency) {
+            $slug = Str::slug($currency->name);
+            $count = 1;
+
+            while (static::where('slug', $slug)->exists()) {
+                $slug = $slug . '-' . $count++;
+            }
+
+            $currency->slug = $slug;
+        });
+    }
 
     /**
     * The categories that belong to the product.

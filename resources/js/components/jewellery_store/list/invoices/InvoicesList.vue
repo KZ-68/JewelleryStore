@@ -3,12 +3,12 @@ import Button from '@/components/ui/button/Button.vue';
 import type { Invoice } from '@/types/invoice'
 import { FileTextIcon } from 'lucide-vue-next';
 import { route } from '../../../../../../vendor/tightenco/ziggy/src/js';
-import { router } from '@inertiajs/vue3'
 import { Ziggy } from '../../../../ziggy.js';
 
 interface InvoicesListProps {
     classname:string
     invoices: Invoice[]
+    locale: string
 }
 
 // const emit = defineEmits<{
@@ -16,7 +16,7 @@ interface InvoicesListProps {
 // }>() 
 
 const displayPdf = (number: string) => {
-    window.open(route('invoices.displayPdf', {number: number}, false, Ziggy), '_blank')
+    window.open(route('invoices.displayPdf', {locale: props.locale, number: number}, false, Ziggy), '_blank')
 }
 
 defineProps<InvoicesListProps>()

@@ -11,6 +11,7 @@ import {
 
 interface StripePaymentProps {
     amount: number
+    locale: string
 }   
 const publishableKey = import.meta.env.VITE_APP_STRIPE_KEY
 const props = defineProps<StripePaymentProps>()
@@ -32,13 +33,13 @@ const onElementsReady = (elements: StripeElements) => {
 
 onMounted(async () => {
   try {
-    const response = await fetch('/stripe/payment/create-intent', {
+    const response = await fetch('stripe/payment/create-intent', {
       method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-      body: JSON.stringify({amount: props.amount, gift:false, valid:false, returned:false})
+      body: JSON.stringify({locale: props.locale, amount: props.amount, gift:false, valid:false, returned:false})
     })
     const data = await response.json()
     clientSecret.value = data.clientSecret

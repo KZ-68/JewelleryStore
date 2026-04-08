@@ -6,6 +6,7 @@ use App\Contracts\ProductImageServiceInterface;
 use App\Contracts\ProductListRepositoryInterface;
 use App\Models\Customer;
 use App\Repositories\ProductRepository;
+use App\Services\Currency\LangCurrencyService;
 use App\Services\Image\ProductImageService;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
             ProductListRepositoryInterface::class,
             ProductRepository::class
         );
+        LangCurrencyService::class;
     }
 
     /**

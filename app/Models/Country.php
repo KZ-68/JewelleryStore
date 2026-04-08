@@ -72,4 +72,9 @@ class Country extends Model
     {
         return $this->hasMany(TaxRule::class);
     }
+
+    public function currencies(): BelongsToMany
+    {
+        return $this->belongsToMany(Currency::class, 'country_currency', 'country_id', 'currency_id')->withTimestamps();
+    }
 }

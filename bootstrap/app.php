@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
-            'stripe/*',
+            '*stripe/*',
         ]);
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 

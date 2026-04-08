@@ -30,7 +30,7 @@ const props = defineProps<OrderAccountLoginFormProps>();
         </div>
 
         <Form
-            v-bind="AuthenticatedSessionController.store['/{locale?}/login'].form()"
+            v-bind="AuthenticatedSessionController.store['/{locale}/login'].form({locale:locale})"
             :reset-on-success="['password']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

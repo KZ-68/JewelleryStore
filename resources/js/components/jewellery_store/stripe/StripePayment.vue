@@ -33,7 +33,7 @@ const onElementsReady = (elements: StripeElements) => {
 
 onMounted(async () => {
   try {
-    const response = await fetch('/stripe/payment/create-intent', {
+    const response = await fetch('stripe/payment/create-intent', {
       method: 'POST',
         headers: {
           'Content-Type': 'application/json',

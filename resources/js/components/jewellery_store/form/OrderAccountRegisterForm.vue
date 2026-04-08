@@ -23,7 +23,7 @@ const props = defineProps<OrderAccountRegisterFormProps>();
         <Head title="Register" />
 
         <Form
-            v-bind="RegisteredCustomerController.store.form()"
+            v-bind="RegisteredCustomerController.store.form({locale:locale})"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

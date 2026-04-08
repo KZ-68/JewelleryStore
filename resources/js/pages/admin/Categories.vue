@@ -11,6 +11,7 @@ import { newCategory } from '@/actions/App/Http/Controllers/Admin/CategoryFrontC
 interface CategoriesProps {
   categories?: Category[]
   subCategories?: Category[]
+  parentCategoryName?: string
   locale: string
 }  
 
@@ -23,7 +24,6 @@ const url = route('admin.back-office.showCategories', {locale: props.locale}, fa
     <Head title="Categories" />
     <AppLayout :locale="props.locale">
       <div id="categories-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
-        <h2 class="text-3xl my-6">Categories</h2>
         <section id="categories-top-wrapper" class="flex lg:flex-row sm:flex-col lg:my-0 sm:my-6 justify-between items-center">
             <nav id="categories-top-nav" class="flex flex-row">
               <Link
@@ -46,6 +46,7 @@ const url = route('admin.back-office.showCategories', {locale: props.locale}, fa
           classname=""
           :subCategories=props.subCategories
           :locale="props.locale"
+          :parentCategoryName="props.parentCategoryName ?? ''"
         />
       </div>
     </AppLayout>

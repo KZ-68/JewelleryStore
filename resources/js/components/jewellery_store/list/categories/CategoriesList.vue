@@ -30,6 +30,7 @@ defineExpose({
 </script>
 
 <template>
+    <h2 class="text-3xl my-6">Categories</h2>
     <section id="categories-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-8">
         <ul v-if="categories.length > 0" id="categories-list" class="flex flex-col gap-4">
             <li v-for="category in categories" v-bind:key="category.id" class="flex flex-row justify-between bg-white rounded-md py-4 px-5 my-3">
@@ -41,7 +42,7 @@ defineExpose({
                     v-model="selected"
                     :tabindex="1"
                 />
-                <Link :href="route('admin.back-office.showSubCategories', {locale: props.locale,id: category.id}, false, Ziggy)">{{ category.name }}</Link>
+                <Link :href="route('admin.back-office.showSubCategories', {locale: props.locale, id: category.id}, false, Ziggy)">{{ category.name }}</Link>
                 <Button @click="deleteCategory(category.name)">Delete</Button>
             </li>
         </ul>

@@ -14,6 +14,7 @@ import { Ziggy } from '../../ziggy.js';
 import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 import { useWindowSize } from '@vueuse/core';
 import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
+import SizeSelector from '@/components/jewellery_store/select/SizeSelector.vue';
 
 interface ProductsListProps {
     classname:string
@@ -25,6 +26,7 @@ interface ProductsListProps {
     seller_id: null|number
     seller_name: null|string
     locale: string
+    feature_size_values: Array<string>
 }
 
 // const emit = defineEmits<{
@@ -89,10 +91,10 @@ function selectFeatures() {
                         <div id="shop-product-page-images-wrapper" class="relative w-xl flex flex-col gap-8 pl-16 pr-8">
                             <div class="w-[450px] h-[450px] mb-4">
                                 <figure v-if="props.productImages.length > 0" class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
-                                    <img :src="props.productImages[activeIndex]" alt="">
+                                    <img class="w-[450px] h-[450px] rounded-lg" :src="props.productImages[activeIndex]" alt="">
                                 </figure>
                                 <figure v-else class="w-[450px] h-[450px] rounded-lg bg-white mb-4 flex items-center justify-center">
-                                    <img src="/storage/img/p/not-found.jpg" alt="">
+                                    <img class="w-[450px] h-[450px] rounded-lg" src="/storage/img/p/not-found.jpg" alt="">
                                 </figure>
                             </div>
                             
@@ -163,6 +165,9 @@ function selectFeatures() {
                             >
                                 Want to contact the seller ? Click here !
                             </Link>
+                            <div :v-if="props.feature_size_values.length >= 1">
+                                <SizeSelector :locale="props.locale" :size-values="feature_size_values"></SizeSelector>
+                            </div>
                         </div>
                     </div>
                 </div>

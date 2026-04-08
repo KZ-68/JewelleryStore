@@ -14,6 +14,7 @@ interface CartProduct {
 interface CartBodyProps {
     classname:string;
     products: Array<CartProduct>
+    locale: string
 }
 
 async function remove(product:CartProduct) {
@@ -39,7 +40,7 @@ const props = defineProps<CartBodyProps>();
                 </span>
 
                 <p>({{product.quantity}})</p>
-                <button @click="remove(product)"><TrashIcon/></button>
+                <button @click="remove(product)" class="hover:cursor-pointer hover:bg-gray-300"><TrashIcon/></button>
             </aside>
         </div>
     </div>

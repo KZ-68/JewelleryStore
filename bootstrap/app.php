@@ -23,7 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             prepend: [
                 \App\Http\Middleware\AdminSession::class,
                 \App\Http\Middleware\WebSession::class,
-                \App\Http\Middleware\SetLocaleMiddleware::class
+                \App\Http\Middleware\RedirectToLocaleMiddleware::class,
+                \App\Http\Middleware\SetLocaleMiddleware::class,
             ],
             append: [
                 HandleAppearance::class,
@@ -39,6 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'admin.session' => \App\Http\Middleware\AdminSession::class,
             'web.session'   => \App\Http\Middleware\WebSession::class,
+            'set_locale' => \App\Http\Middleware\SetLocaleMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

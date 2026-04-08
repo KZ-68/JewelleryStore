@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Mails\CustomerSellerMessage;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Feature;
 use App\Models\Message;
 use App\Models\Product;
 use App\Models\Seller;
@@ -69,7 +70,7 @@ class ShopProductFrontController extends Controller
 
     public function showShopProduct (Request $request): Response|RedirectResponse
     {
-        $product = Product::where('slug', $request->slug)->firstOrFail();
+        $product = Product::with('feature_values.feature')->where('slug', $request->slug)->firstOrFail();
         $selectedTaxRuleGroup = $product->taxRuleGroup;
         $taxRule = TaxRule::where('tax_rule_group_id', $selectedTaxRuleGroup->id)->firstOrFail();
         $tax = $taxRule->tax;
@@ -83,13 +84,16 @@ class ShopProductFrontController extends Controller
             $customer = $seller->customer()->firstOrFail();
             $sellerName = $customer->name;
         }
+
+        $featureSizeValues = $this->getSizeValues($product);
         
         return Inertia::render('web/ShopProductPage', [
             'product' => $product,
             'price' => $priceWithTax,
             'productImages' => $productImages,
             'seller_id' => $sellerId,
-            'seller_name' => $sellerName ?? null
+            'seller_name' => $sellerName ?? null,
+            'feature_size_values' => $featureSizeValues
         ]);
     }
 
@@ -179,5 +183,22 @@ class ShopProductFrontController extends Controller
             'sortBy' => in_array($sortBy, $allowedSorts) ? $sortBy : 'name',
             'order' => in_array($order, $allowedOrders) ? $order : 'asc',
         ];
+    }
+
+    private function getSizeValues(Product $product): \Illuminate\Support\Collection
+    {
+        $features = $product->feature_values->groupBy(function($fv) {
+            return $fv->feature->name;
+        })->map(function($group) {
+            return $group->pluck('value');
+        });
+
+        foreach ($features as $featureName => $featureValue) {
+            if ($featureName === 'size') {
+                $featureSizeValues = $featureValue;
+            }
+        }
+
+        return $featureSizeValues;
     }
 }

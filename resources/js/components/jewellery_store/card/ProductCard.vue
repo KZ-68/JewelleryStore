@@ -78,7 +78,7 @@ defineEmits(['addProduct', 'addProductQuantity', 'addProductPrice']);
                     </div>
                 </div>
                 <div id="add-cart-button" class="w-[42px] bg-[#84070F] z-10 rounded-full py-0.5 px-0.5">
-                    <button @click="addToCart(props.product, 1, retailPrice); $emit('addProduct', props.product); $emit('addProductQuantity', 1); $emit('addProductPrice', props.product.retail_price);" class="text-white m-1.5 cursor-pointer"><ShoppingCart /></button>
+                    <button aria-label="addToCart" :value="retailPrice" type="button" role="button" @click="addToCart(props.product, 1, retailPrice); $emit('addProduct', props.product); $emit('addProductQuantity', 1); $emit('addProductPrice', props.product.retail_price);" class="text-white m-1.5 cursor-pointer"><ShoppingCart /></button>
                 </div>
             </div>
         </div>

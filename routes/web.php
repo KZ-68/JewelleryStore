@@ -22,7 +22,33 @@ use App\Http\Controllers\Web\PaymentController;
 use App\Http\Controllers\Web\SearchFrontController;
 use App\Http\Controllers\Web\ShopCategoryFrontController;
 
-Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( function() {
+Route::fallback(function () {
+    $segments = request()->segments();
+    $availableLocales = config('app.available_locales');
+    $locale = session('locale') ?: config('app.fallback_locale');
+    $path = \ltrim(implode('/', $segments), '/');
+
+    if (
+        request()->is('api/*') ||
+        request()->is('storage/*') ||
+        request()->is('_debugbar/*') ||
+        request()->is('sanctum/*') ||
+        request()->is('up')
+    ) {
+        abort(404);
+    }
+
+    if (!empty($segments) && in_array($segments[0], $availableLocales)) {
+        abort(404);
+    }
+
+    if (!in_array($segments[0], $availableLocales)) {
+        $url = '/' . $locale . ($path ? '/' . $path : '');
+        return redirect($url);
+    }
+});
+
+Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(['set_locale'])->group( function() {
 
     Route::get('/', [HomeFrontController::class, 'show'])->name('home');
 
@@ -58,7 +84,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::post('/products/{slug}/contact-seller', [ShopProductFrontController::class, 'validateContactSeller'])->name('contactSeller.validateContactSeller');
 });
 
-Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(['admin.session', 'role:admin', 'auth:admin'])->group(function () {
+Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(['admin.session', 'role:admin', 'auth:admin', 'set_locale'])->group(function () {
     Route::get('/admin/back-office', [BackOfficeController::class, 'showBO'])->name('admin.back-office.showBO');
     Route::get('/admin/back-office/manufacturers', [BackOfficeController::class, 'showManufacturers'])->name('admin.back-office.showManufacturers');
     Route::get('/admin/back-office/products', [BackOfficeController::class, 'showProducts'])->name('admin.back-office.showProducts');
@@ -113,7 +139,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(
     Route::get('/admin/back-office/features/{slug}', [FeatureFrontController::class, 'featureDetail'])->name('feature-detail');
 });
 
-Route::prefix( '{locale}' )->group(function() {
+Route::prefix( '{locale}' )->middleware(['set_locale'])->group(function() {
     require __DIR__.'/auth.php';
     require __DIR__.'/settings.php';
 });

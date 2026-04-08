@@ -40,7 +40,7 @@ const props = defineProps<CartBodyProps>();
                 </span>
 
                 <p>({{product.quantity}})</p>
-                <button @click="remove(product)" class="hover:cursor-pointer hover:bg-gray-300"><TrashIcon/></button>
+                <button @click="remove(product)" class="hover:cursor-pointer"><TrashIcon class="text-[#84070F] hover:text-gray-500"/></button>
             </aside>
         </div>
     </div>

@@ -185,7 +185,7 @@ class ShopProductFrontController extends Controller
         ];
     }
 
-    private function getSizeValues(Product $product): \Illuminate\Support\Collection
+    private function getSizeValues(Product $product): \Illuminate\Support\Collection|array
     {
         $features = $product->feature_values->groupBy(function($fv) {
             return $fv->feature->name;
@@ -196,9 +196,10 @@ class ShopProductFrontController extends Controller
         foreach ($features as $featureName => $featureValue) {
             if ($featureName === 'size') {
                 $featureSizeValues = $featureValue;
+                return $featureSizeValues;
             }
         }
 
-        return $featureSizeValues;
+        return [];
     }
 }

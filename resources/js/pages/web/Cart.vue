@@ -29,8 +29,8 @@ const props = defineProps<CartProps>();
     <main>
         <div id="cart-wrapper" class="min-h-screen p-6 text-[#1b1b18] lg:p-8 bg-gray-100 dark:bg-[#0a0a0a]">
             <div class="flex flex-row lg:justify-center gap-40">
-                <CartLeftColumn :products="props.products"/>
-                <CartSummary :products="props.products" :sub_total_price="props.total_price" :defaultShippingRatePrice></CartSummary>
+                <CartLeftColumn :locale="props.locale" :products="props.products"/>
+                <CartSummary :products="props.products" :sub_total_price="props.total_price" :defaultShippingRatePrice :locale="props.locale"></CartSummary>
             </div>
         </div>
     </main>

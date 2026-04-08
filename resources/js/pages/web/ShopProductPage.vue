@@ -36,26 +36,31 @@ interface ProductsListProps {
 const props = defineProps<ProductsListProps>()
 
 const retailPrice = ref(0);
+const currentSelectedSize = ref<string>('');
+const currentSelectedQuantity = ref<number>(1);
 
 async function addToCart(product:Product, quantity: number, retailPrice: number) {
-    try {
-        await axios.post(
-            route('cart.addToCart', {locale: props.locale, product : product, quantity: quantity, retail_price: retailPrice}, false, Ziggy)
-        )
-    } catch (error) {
-        console.error('Erreur:', error);
+    if (currentSelectedSize.value !== '') {
+        try {
+            await axios.post(
+                route('cart.addToCart', {locale: props.locale, product : product, quantity: quantity, retail_price: retailPrice, selected_size: currentSelectedSize.value}, false, Ziggy)
+            )
+        } catch (error) {
+            console.error('Erreur:', error);
+        }
+    } else {
+        
     }
 }
+
 const { width } = useWindowSize()
 const active = ref<boolean>(false)
 provide('active', active)
-
 const openNav = () => {
   active.value = true
 }
 
 const activeIndex = ref(0)
-
 function onSlideChange(swiper: any) {
   activeIndex.value = swiper.activeIndex
 }
@@ -69,6 +74,10 @@ function selectDescription() {
 function selectFeatures() {
     featuresSelected.value = true
     descriptionSelected.value = false
+}
+
+const selectSize = (key: string) => {
+  currentSelectedSize.value = key
 }
 </script>
 
@@ -140,7 +149,7 @@ function selectFeatures() {
                             <div class="flex py-4 space-x-4">
                                 <div class="relative">
                                     <div class="text-center left-0 pt-2 right-0 absolute block text-xs uppercase text-gray-400 tracking-wide font-semibold">Qty</div>
-                                    <select class="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1">
+                                    <select v-model="currentSelectedQuantity" class="cursor-pointer appearance-none rounded-xl border border-gray-200 pl-4 pr-8 h-14 flex items-end pb-1">
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -153,7 +162,7 @@ function selectFeatures() {
                                     </svg>
                                 </div>
 
-                                <button @click="addToCart(props.product, 1, retailPrice)" type="button" class="h-14 px-6 py-2 font-semibold rounded-xl bg-red-900 hover:bg-red-700 text-white">
+                                <button @click="addToCart(props.product, currentSelectedQuantity, retailPrice)" type="button" class="h-14 px-6 py-2 font-semibold rounded-xl bg-red-900 hover:bg-red-700 text-white">
                                     Add to Cart
                                 </button>                            
                                 
@@ -165,8 +174,8 @@ function selectFeatures() {
                             >
                                 Want to contact the seller ? Click here !
                             </Link>
-                            <div :v-if="props.feature_size_values.length >= 1">
-                                <SizeSelector :locale="props.locale" :size-values="feature_size_values"></SizeSelector>
+                            <div v-if="props.feature_size_values.length >= 1">
+                                <SizeSelector :locale="props.locale" :size-values="feature_size_values" @selectSize="selectSize"></SizeSelector>
                             </div>
                         </div>
                     </div>

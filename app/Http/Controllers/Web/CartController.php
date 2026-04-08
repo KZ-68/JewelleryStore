@@ -37,8 +37,8 @@ class CartController extends Controller
     {
         $product = $request->product;
         $productId = $request->product['id'];
-        $retailPrice = $request->retail_price;
         $quantity = $request->quantity;
+        $retailPrice = $request->retail_price * $quantity;
         $cart->add($product, $productId, $quantity, $retailPrice);
 
         if($request->user('web')) {

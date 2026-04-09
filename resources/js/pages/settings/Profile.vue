@@ -37,9 +37,9 @@ const openNav = () => {
 <template>
     <Head title="Profile settings" />
     <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
     </button>
     <SettingsLayout :locale="props.locale">
         <div class="flex flex-col space-y-6">

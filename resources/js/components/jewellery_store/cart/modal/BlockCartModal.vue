@@ -70,7 +70,7 @@ const baseImagePath = 'storage/img/p/';
                         <span>{{ defaultShippingRatePrice }} €</span>
                     </p>
                 </div>
-                <a :href="show({locale: props.locale})" class="block w-full text-center bg-[#84070F] text-white py-3 rounded-lg font-semibold hover:bg-red-800 transition">
+                <a :href="show({locale: props.locale})" class="block w-full text-center bg-shop-primary text-white py-3 rounded-lg font-semibold hover:bg-red-800 transition">
                     Commander
                 </a>
                 <button class="w-full border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition" @click="close">

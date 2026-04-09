@@ -30,8 +30,8 @@ const props = defineProps<OrderAccountFormProps>();
             <div id="account-choice-tab-button" class="bg-white flex flex-col justify-center px-3 py-6 rounded-md">
                 <h2 class="text-xl  mx-3 my-2">1. Connecting an account</h2>
                 <div v-if="!$page.props.auth.customer" class="flex flex-row justify-center my-4">
-                    <button @click="selectLogin()" class="bg-[#84070F] px-3 py-2 mx-4 text-white font-bold rounded-md hover:cursor-pointer hover:bg-[#a32a32]">Login Account</button>
-                    <button @click="selectRegister()" class="bg-[#84070F] px-3 py-2 mx-4 text-white font-bold rounded-md hover:cursor-pointer hover:bg-[#a32a32]">Register Account</button>
+                    <button @click="selectLogin()" class="bg-shop-primary px-3 py-2 mx-4 text-white font-bold rounded-md hover:cursor-pointer hover:bg-[#a32a32]">Login Account</button>
+                    <button @click="selectRegister()" class="bg-shop-primary px-3 py-2 mx-4 text-white font-bold rounded-md hover:cursor-pointer hover:bg-[#a32a32]">Register Account</button>
                 </div>
             </div>
             <div v-if="isLogin === true"><OrderAccountLoginForm :locale="props.locale" classname="" :status="props.status"></OrderAccountLoginForm></div>

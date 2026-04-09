@@ -12,6 +12,7 @@ import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
 import { ref, provide, watch } from 'vue'
 import SellerRegistrationInvitationBanner from '@/components/jewellery_store/section/SellerRegistrationInvitationBanner.vue';
 import TopCategoryCarousel from '@/components/jewellery_store/carousel/TopCategoryCarousel.vue';
+import AppShopLayout from '@/layouts/AppShopLayout.vue';
 
 interface HomeProps {
     frontCategories: Category[]
@@ -36,15 +37,8 @@ const openNav = () => {
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div class="relative flex min-h-screen flex-col bg-[#FDFDFC] text-[#1b1b18] dark:bg-[#0a0a0a]">
-        <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-            <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-            <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-            <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        </button>
-        <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
-        <BurgerMenu v-else :locale="props.locale" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
-        <main
+    <AppShopLayout :isHome="true" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
+        <div
             class="flex flex-col w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"
         >
             <Slider></Slider>
@@ -53,8 +47,7 @@ const openNav = () => {
             <hr class="text-2xl my-3 mx-4" />
             <TopCategoryCarousel></TopCategoryCarousel>
             <SellerRegistrationInvitationBanner :locale="props.locale"></SellerRegistrationInvitationBanner>
-        </main>
+        </div>
         <div class="hidden h-14.5 lg:block"></div>
-        <ShopFooter :locale="props.locale"></ShopFooter>
-    </div>
+    </AppShopLayout>
 </template>

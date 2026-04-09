@@ -57,7 +57,7 @@ const selectPayment = async (payment: Payment|null) => {
                 </div>
                 <input type="radio" name="payment" id="payment" :value="payment" v-model="selectedPayment" class="w-5 h-5">
             </li>
-            <button @click="selectPayment(selectedPayment)" id="validate-select-payment-btn" class="bg-[#84070F] text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32] py-4 px-6 my-6 mx-8">Choose this payment</button>
+            <button @click="selectPayment(selectedPayment)" id="validate-select-payment-btn" class="bg-shop-primary text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32] py-4 px-6 my-6 mx-8">Choose this payment</button>
             <StripePayment v-if="selectedPayment?.name === 'Stripe' && isPaymentSelected == true" :amount="props.total_price"></StripePayment>
         </ul>
         <ul v-else id="payments-list" class="flex flex-col gap-4">

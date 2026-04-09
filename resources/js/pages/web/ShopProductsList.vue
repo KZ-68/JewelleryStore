@@ -7,6 +7,7 @@ import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
 import { useWindowSize } from '@vueuse/core';
 import { provide, ref } from 'vue';
 import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
+import AppShopLayout from '@/layouts/AppShopLayout.vue';
 
 interface ProductsListProps {
     classname:string
@@ -33,14 +34,7 @@ const openNav = () => {
 </script>
 
 <template>
-    <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-    </button>
-    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
-    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active" :locale="props.locale"></BurgerMenu>
-    <main>
+    <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
         <div class="w-[1190px] mx-auto my-auto">
             <div class="flex flex-col w-full h-auto mt-[3%]">
                 <div class="flex flex-wrap">
@@ -48,6 +42,5 @@ const openNav = () => {
                 </div>
             </div>
         </div>
-    </main>
-    <ShopFooter :locale="props.locale"></ShopFooter>
+    </AppShopLayout>
 </template>

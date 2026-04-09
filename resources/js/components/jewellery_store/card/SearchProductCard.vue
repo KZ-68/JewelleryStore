@@ -6,6 +6,7 @@ import { onMounted, ref } from "vue";
 import { showShopProduct } from '@/routes/products'
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../../ziggy.js';
+import { useTrans } from '@/composables/trans';
 
 interface SearchProductCardProps {
     product: Product
@@ -34,9 +35,9 @@ onMounted(async () => {
     <Link :href="showShopProduct({slug: product.slug})">
         <div class="flex flex-row gap-3 items-center px-4 py-3 bg-white border-gray-100 border-b-2">
             <figure class="flex justify-center py-2 items-center min-w-20 max-w-20 lg:w-full">
-                <img :src="props.image ? props.image : '/storage/img/p/not-found.jpg'" alt="Jewellery Product Image" class="min-w-20 max-w-20">
+                <img :src="props.image ? props.image : '/storage/img/p/not-found.jpg'" :alt="useTrans('Jewellery Product Image')" class="min-w-20 max-w-20">
             </figure>
-            <p>{{ product.name }}</p>
+            <p>{{ useTrans(product.name) }}</p>
             <b>{{ retailPrice}}</b>
         </div>
     </Link>

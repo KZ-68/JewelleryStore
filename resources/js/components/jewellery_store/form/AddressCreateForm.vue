@@ -184,7 +184,7 @@ const props = defineProps<AddressCreateFormProps>();
                 <section id="new-admin-address-footer" class="flex flex-row gap-4 py-8">
                     <Button
                     type="submit"
-                    class="py-4 px-6 bg-[#84070F] text-white font-bold hover:cursor-pointer"
+                    class="py-4 px-6 bg-shop-primary text-white font-bold hover:cursor-pointer"
                     :tabindex="5"
                     :disabled="processing"
                     >

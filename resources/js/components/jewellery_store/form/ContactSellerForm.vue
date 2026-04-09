@@ -112,7 +112,7 @@ const props = defineProps<ContactSellerFormProps>();
 
                 <Button
                     type="submit"
-                    class="mt-4 w-20 py-2 bg-[#84070F] hover:bg-red-800 hover:cursor-pointer font-bold text-white rounded-sm"
+                    class="mt-4 w-20 py-2 bg-shop-primary hover:bg-red-800 hover:cursor-pointer font-bold text-white rounded-sm"
                     :tabindex="5"
                     :disabled="processing"
                     data-test="login-button"

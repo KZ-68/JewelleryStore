@@ -43,7 +43,7 @@ defineEmits(['selectStep']);
                     :isOrder="true"
                     :locale="props.locale"
                 />
-                <button v-if="isNewAddress === false" @click="displayNewAddressForm" class="mb-10 mx-8 py-4 px-6 bg-[#84070F] text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32]">Add a new address</button>
+                <button v-if="isNewAddress === false" @click="displayNewAddressForm" class="mb-10 mx-8 py-4 px-6 bg-shop-primary text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32]">Add a new address</button>
             </div>
             <button v-if="isAddressSelected === true" @click="$emit('selectStep', 2)" id="order-address-step-tab" class="bg-white py-6 my-2 w-80 lg:w-[60rem] lg:max-w-[60rem] rounded-t-md hover:cursor-pointer hover:bg-gray-50">
                 <h2 class="text-left text-xl px-3 py-4">3. Select a carrier</h2>

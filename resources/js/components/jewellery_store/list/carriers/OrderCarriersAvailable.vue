@@ -53,7 +53,7 @@ const selectCarrier = async (carrier: Carrier|null) => {
                 </div>
                 <input type="radio" name="carrier" id="carrier" :value="carrier" v-model="selectedCarrier" class="w-5 h-5">
             </li>
-            <button @click="selectCarrier(selectedCarrier)" id="validate-select-carrier-btn" class="bg-[#84070F] text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32] py-4 px-6 my-6 mx-8">Choose this carrier</button>
+            <button @click="selectCarrier(selectedCarrier)" id="validate-select-carrier-btn" class="bg-shop-primary text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32] py-4 px-6 my-6 mx-8">Choose this carrier</button>
         </ul>
         <ul v-else id="carriers-list" class="flex flex-col gap-4">
             <li class="text-center bg-white rounded-md py-4 px-5 my-3 min-h-[5rem]">

@@ -42,9 +42,9 @@ function deselectSellerProducts() {
 
 <template>
     <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
     </button>
     <main>
         <SettingsLayout :locale="props.locale">
@@ -63,7 +63,7 @@ function deselectSellerProducts() {
                         <ProductsList classname="" :products="props.products" :sort-by="sortBy" :order="props.order" :locale="props.locale"></ProductsList>
                     </div>
                 </section>
-                <button v-if="sellerProductsSelected === true" @click="deselectSellerProducts()" class="py-2 px-6 text-white bg-[#84070F] rounded-md cursor-pointer hover:bg-red-800">Back</button>
+                <button v-if="sellerProductsSelected === true" @click="deselectSellerProducts()" class="py-2 px-6 text-white bg-shop-primary rounded-md cursor-pointer hover:bg-red-800">Back</button>
             </div>
         </SettingsLayout>
     </main>

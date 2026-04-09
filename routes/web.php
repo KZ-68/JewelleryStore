@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
 use App\Http\Controllers\Web\PaymentController;
 use App\Http\Controllers\Web\SearchFrontController;
 use App\Http\Controllers\Web\ShopCategoryFrontController;
+use App\Http\Controllers\Web\SitemapController;
+
 
 Route::fallback(function () {
     $segments = request()->segments();
@@ -51,7 +53,7 @@ Route::fallback(function () {
 Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(['set_locale'])->group( function() {
 
     Route::get('/', [HomeFrontController::class, 'show'])->name('home');
-
+    Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
     Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.addToCart');
     Route::post('/cart/remove', [CartController::class, 'removeToCart'])->name('cart.removeToCart');

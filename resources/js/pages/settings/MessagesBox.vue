@@ -67,9 +67,9 @@ watch(
 
 <template>
     <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
     </button>
     <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
     <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active" :locale="props.locale"></BurgerMenu>

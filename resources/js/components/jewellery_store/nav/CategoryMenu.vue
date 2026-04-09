@@ -16,53 +16,74 @@ const categories = ref<Category[]>(props.frontCategories)
 const openCategories = ref(new Set<number>())
 
 function openCategory(id: number) {
-  openCategories.value.add(id)
+    openCategories.value.add(id)
 }
+
 function closeCategory(id: number) {
-  openCategories.value.delete(id)
+    openCategories.value.delete(id)
+}
+
+function toggleCategory(id: number) {
+    openCategories.value.has(id) ? closeCategory(id) : openCategory(id)
 }
 </script>
 
 <template>
-  <nav class="text-lg lg:w-[64rem] bg-white mx-64">
-    <ul class="flex flex-col lg:flex-row lg:items-start">
-      <li 
-        v-for="category in categories"
-        :key="category.id"
-        class="relative group"
-      >
-        <div 
-          v-if="category.name != 'home'"
-          class="flex justify-between px-4 py-3 hover:bg-gray-50 transition-colors items-center w-fit"
-          @mouseenter="openCategory(category.id)" 
-          @click="closeCategory(category.id)"
-          @touchstart="openCategory(category.id)"
-        >
-          <a :href="route('showCategoryProducts', {locale: props.locale, category_slug: category.slug}, false, Ziggy)" class="flex-1 font-medium text-gray-800 hover:text-[#84070F] transition-colors"
-          >
-            {{ category.name }}
-          </a>
-
-          <svg
-              class="w-5 h-5 transition-transform duration-300 hover:text-[#84070F]"
-              :class="{ 'rotate-270': openCategories.has(category.id) }"
-              viewBox="0 0 20 20"
-              fill="currentColor"
+    <nav aria-label="Catégories" class="bg-white w-full mx-64">
+        <ul class="flex flex-col lg:flex-row lg:items-center">
+            <li
+                v-for="category in categories"
+                :key="category.id"
+                class="relative"
+                @mouseenter="openCategory(category.id)"
+                @mouseleave="closeCategory(category.id)"
             >
-              <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
-        </div>
-        <ul v-if="openCategories.has(category.id) && category.children_recursive?.length" class="absolute left-0 top-full z-10 flex-col bg-white border shadow-md min-w-fit group-hover:flex">
-          <SubCategory v-for="subCat in category.children_recursive"
-            :locale="props.locale"
-            :key="subCat.id"
-            :category="subCat"
-            :open-categories="openCategories"
-            @open="openCategory"
-            @close="closeCategory"
-          />
+                <div
+                    v-if="category.name !== 'home'"
+                    class="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors"
+                >
+                    <a
+                        :href="route('showCategoryProducts', {locale: props.locale, category_slug: category.slug}, false, Ziggy)"
+                        class="flex-1 font-medium text-sm text-gray-800 hover:text-[#84070F] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] rounded-sm"
+                    >
+                        {{ category.name }}
+                    </a>
+
+                    <button
+                        v-if="category.children_recursive?.length"
+                        @click="toggleCategory(category.id)"
+                        :aria-expanded="openCategories.has(category.id).toString()"
+                        :aria-label="`Sous-catégories de ${category.name}`"
+                        class="ml-2 p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#84070F] transition-colors cursor-pointer"
+                    >
+                        <svg
+                            aria-hidden="true"
+                            class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                            :class="{ 'rotate-180': openCategories.has(category.id) }"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                        >
+                            <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <ul
+                    v-if="openCategories.has(category.id) && category.children_recursive?.length"
+                    role="list"
+                    class="absolute left-0 top-full z-20 flex flex-col bg-white border border-gray-100 shadow-lg rounded-md overflow-hidden min-w-[200px]"
+                >
+                    <SubCategory
+                        v-for="subCat in category.children_recursive"
+                        :locale="props.locale"
+                        :key="subCat.id"
+                        :category="subCat"
+                        :open-categories="openCategories"
+                        @open="openCategory"
+                        @close="closeCategory"
+                    />
+                </ul>
+            </li>
         </ul>
-      </li>
-    </ul>
-  </nav>
+    </nav>
 </template>

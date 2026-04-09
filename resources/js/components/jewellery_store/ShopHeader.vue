@@ -10,6 +10,7 @@ import SearchBar from './SearchBar.vue';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '@/ziggy';
 import { edit } from '@/routes/profile';
+import { useTrans } from '@/composables/trans';
 
 interface ShopHeaderProps {
     frontCategories: Category[]
@@ -18,53 +19,68 @@ interface ShopHeaderProps {
 }
 
 const props = defineProps<ShopHeaderProps>()
+
+const linkClass = 'rounded-sm border border-[#19140035] px-4 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]'
 </script>
 
 <template>
-    <header class="flex flex-col w-full text-sm not-has-[nav]:hidden">
-        <nav class="flex items-center justify-around gap-4 px-4 py-6">
-            <SearchBar />
-            <div id="nav-center" class="flex flex-row items-center gap-6">
-                <figure>
-                    <img src="/storage/img/home/logo_128x128.png" alt="">
-                </figure>
-                <h1 class="text-2xl">
-                    <a :href="route('home', {locale:props.locale}, false, Ziggy)">Joaillerie Orient</a>
-                </h1>
+    <header class="sticky top-0 z-40 flex flex-col w-full bg-white shadow-sm text-sm">
+        <nav aria-label="Navigation principale" class="flex items-center justify-between gap-4 px-6 py-4 max-w-screen-2xl mx-auto w-full">
+            <div class="flex-1 max-w-xs">
+                <SearchBar />
             </div>
-            <Link
-                v-if="$page.props.auth.user"
-                :href="showBO({locale: props.locale})"
-                class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-            >
-                Dashboard
-            </Link>
-            <Link
-                v-if="$page.props.auth.customer"
-                :href="edit({locale: props.locale})"
-                class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-            >
-                Settings
-            </Link>
 
-            <LogoutButton :locale="props.locale" v-if="$page.props.auth.user">Logout</LogoutButton>
-            <LogoutButton :locale="props.locale" v-else-if="$page.props.auth.customer">Logout</LogoutButton>
-            <template v-else>
+            <a
+                :href="route('home', {locale: props.locale}, false, Ziggy)"
+                class="flex items-center gap-3 shrink-0 group focus:outline-none focus:ring-2 focus:ring-[#84070F] rounded-sm"
+                aria-label="Joaillerie Orient"
+            >
+                <figure aria-hidden="true" class="shrink-0">
+                    <img src="/storage/img/home/logo_128x128.png" alt="" class="h-10 w-10 object-contain">
+                </figure>
+                <span class="text-xl font-semibold text-gray-900 group-hover:text-[#84070F] transition-colors">
+                    Joaillerie Orient
+                </span>
+            </a>
+
+            <div class="flex items-center gap-3 shrink-0">
                 <Link
-                    :href="route('customer-login', {locale: props.locale}, false, Ziggy)"
-                    class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A] min-w-fit"
+                    v-if="$page.props.auth.user"
+                    :href="showBO({locale: props.locale})"
+                    :class="linkClass"
                 >
-                    Log in
+                    {{ useTrans('Dashboard') }}
                 </Link>
                 <Link
-                    :href="register({locale: props.locale})"
-                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                    v-if="$page.props.auth.customer"
+                    :href="edit({locale: props.locale})"
+                    :class="linkClass"
                 >
-                    Register
+                    {{ useTrans('Settings') }}
                 </Link>
-            </template>
-            <CartNotifier :cartProductsCount="props.cartProductsCount" :locale="props.locale"></CartNotifier>
+                <LogoutButton :locale="props.locale" v-if="$page.props.auth.user">{{ useTrans('Logout') }}</LogoutButton>
+                <LogoutButton :locale="props.locale" v-else-if="$page.props.auth.customer">{{ useTrans('Logout') }}</LogoutButton>
+                <template v-else>
+                    <Link
+                        :href="route('customer-login', {locale: props.locale}, false, Ziggy)"
+                        class="rounded-sm border border-transparent px-4 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                    >
+                        {{ useTrans('Log in') }}
+                    </Link>
+                    <Link
+                        :href="register({locale: props.locale})"
+                        :class="linkClass"
+                    >
+                        {{ useTrans('Register') }}
+                    </Link>
+                </template>
+
+                <CartNotifier :cartProductsCount="props.cartProductsCount" :locale="props.locale" />
+            </div>
         </nav>
-        <CategoryMenu :locale="props.locale" :frontCategories=props.frontCategories></CategoryMenu>
+
+        <div class="border-t border-gray-100">
+            <CategoryMenu :locale="props.locale" :frontCategories="props.frontCategories" />
+        </div>
     </header>
 </template>

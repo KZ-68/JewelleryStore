@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ContactForm from '@/components/jewellery_store/form/ContactForm.vue';
-import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
-import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
+import AppShopLayout from '@/layouts/AppShopLayout.vue';
 import { Category } from '@/types/category';
 
 interface ContactPageProps {
@@ -14,10 +13,8 @@ const props =  defineProps<ContactPageProps>();
 </script>
 
 <template>
-    <ShopHeader :front-categories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
-    <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-neutral-200 dark:bg-[#0a0a0a]">
+    <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
         <h2 class="text-3xl my-6 mx-15">Contact</h2>
         <ContactForm classname="" :locale="props.locale"></ContactForm>
-    </main>
-    <ShopFooter :locale="props.locale"></ShopFooter>
+    </AppShopLayout>
 </template>

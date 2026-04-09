@@ -32,6 +32,9 @@
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
 
+    --color-shop-primary: var(--color-shop-primary);
+    --color-shop-secondary: var(--color-shop-secondary);
+
     --color-muted: var(--muted);
     --color-muted-foreground: var(--muted-foreground);
 
@@ -96,6 +99,8 @@
     --card-foreground: hsl(0 0% 3.9%);
     --popover: hsl(0 0% 100%);
     --popover-foreground: hsl(0 0% 3.9%);
+    --color-shop-primary: hsl(356, 90%, 27%);
+    --color-shop-secondary: hsl(42, 98%, 82%);
     --primary: hsl(0 0% 9%);
     --primary-foreground: hsl(0 0% 98%);
     --secondary: hsl(0 0% 92.1%);

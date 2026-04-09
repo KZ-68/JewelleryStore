@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { Ziggy } from '@/ziggy'
+import { route } from '../../../../vendor/tightenco/ziggy/src/js'
+
 
 interface CartProduct {
     product_id: number
@@ -11,6 +14,7 @@ interface CartSummaryProps {
     products: Array<CartProduct>
     sub_total_price: number
     defaultShippingRatePrice: number
+    locale: string
 }
 
 const props = defineProps<CartSummaryProps>()
@@ -46,6 +50,6 @@ const total_price = props.sub_total_price + props.defaultShippingRatePrice
           </div>
         </div>
 
-        <button id="checkout-button" class="bg-indigo-600 text-white font-bold my-4 py-4 px-8">Checkout</button>
+        <a :class="props.sub_total_price === 0 ? 'opacity-50 cursor-not-allowed' : ''" id="checkout-access" class="bg-indigo-600 text-white font-bold my-4 py-4 px-8" :href=" props.sub_total_price === 0 ? '#' : route('order.showOrderPage', {locale: props.locale}, false, Ziggy)">Checkout</a>
     </section>
 </template>

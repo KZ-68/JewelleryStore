@@ -26,13 +26,15 @@ echo "DB OK"
 # Migrations
 php artisan migrate --force || true
 
+# Permissions
+chown -R www-data:www-data /app/storage
+chown -R www-data:www-data /app/bootstrap/cache
+php artisan storage:link
+
 # Cache Laravel
 php artisan config:cache || true
 php artisan route:cache || true
 php artisan view:cache || true
-
-# Permissions
-chmod -R 775 storage bootstrap/cache || true
 
 echo "Lancement FrankenPHP..."
 

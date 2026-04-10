@@ -6,6 +6,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\OrderListRepositoryInterface;
 use App\Models\Tax;
 use App\Models\User;
 use Inertia\Inertia;
@@ -23,6 +24,10 @@ use App\Models\Feature;
 
 class BackOfficeController extends Controller
 {
+    public function __construct(
+        private OrderListRepositoryInterface $orderListRepository
+    ) {}
+
     /**
     * Render the view assigned to the Back Office page
     * @param Request Get the request, via GET method
@@ -339,5 +344,33 @@ class BackOfficeController extends Controller
                 ],
             ]
         );
+    }
+
+    public function ordersList(Request $request) : Response
+    {
+        $filters = $this->extractFilters($request);
+        $orders = $this->orderListRepository->getAllOrders($filters);
+
+        return Inertia::render(
+            'admin/Orders', 
+            [
+                'orders' => $orders,
+                'filters' => $filters
+            ]
+        );
+    }
+
+    private function extractFilters(Request $request): array
+    {
+        $allowedSorts = ['reference', 'created_at'];
+        $allowedOrders = ['asc', 'desc'];
+
+        $sortBy = $request->input('sortBy', 'reference');
+        $orderBy = strtolower($request->input('orderBy', 'asc'));
+
+        return [
+            'sortBy' => in_array($sortBy, $allowedSorts) ? $sortBy : 'reference',
+            'orderBy' => in_array($orderBy, $allowedOrders) ? $orderBy : 'asc',
+        ];
     }
 }

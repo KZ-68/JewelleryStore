@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
-import "swiper/css";
-import "swiper/css/navigation";
 import { Navigation } from 'swiper/modules';
 import { Product } from "@/types/product";
 import ProductCard from "../card/ProductCard.vue";
@@ -30,7 +28,7 @@ const swiperBreakpoints = {
             <div class="py-2">
                 <swiper :navigation="true" :modules="[Navigation]" :breakpoints="swiperBreakpoints" class="mySwiper">
                     <swiper-slide v-for="topProduct in props.topProducts" :key="topProduct.id">
-                        <ProductCard classname="" :product="topProduct" :image="topProduct.image" sortBy="name" order="asc" :locale="props.locale"></ProductCard>
+                        <ProductCard classname="" :product="topProduct" :image="topProduct.image" sortBy="name" orderBy="asc" :locale="props.locale"></ProductCard>
                     </swiper-slide>
                 </swiper>
             </div>

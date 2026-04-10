@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Contracts\OrderListRepositoryInterface;
 use App\Contracts\ProductImageServiceInterface;
 use App\Contracts\ProductListRepositoryInterface;
 use App\Models\Customer;
+use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
 use App\Services\Currency\LangCurrencyService;
 use App\Services\Image\ProductImageService;
@@ -26,7 +28,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(
             ProductListRepositoryInterface::class,
-            ProductRepository::class
+            ProductRepository::class,
+            OrderListRepositoryInterface::class,
+            OrderRepository::class
         );
         LangCurrencyService::class;
     }

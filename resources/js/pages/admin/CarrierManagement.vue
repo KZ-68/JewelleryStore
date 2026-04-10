@@ -61,6 +61,7 @@ const submit = () => {
       :form="form"
       :countries="countries"
       :is-last="currentStep === steps.length - 1"
+      :locale="props.locale"
       @next="next"
       @prev="prev"
       @submit="submit"

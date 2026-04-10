@@ -30,6 +30,17 @@ provide('active', active)
 const openNav = () => {
   active.value = true
 }
+
+const openCartModalValue = ref<boolean>(false)
+provide('openCartModalValue', openCartModalValue)
+
+const productsAdded = ref<Product[]>([])
+const productsQuantity = ref<number>(0)
+const productsPrice = ref<number>(0)
+
+const addProduct = (key: Product) => { productsAdded.value.push(key) }
+const addProductQuantity = (key: number) => { productsQuantity.value += key }
+const addProductPrice = (key: number) => { productsPrice.value += key }
 </script>
 
 <template>
@@ -48,6 +59,14 @@ const openNav = () => {
             <TopCategoryCarousel></TopCategoryCarousel>
             <SellerRegistrationInvitationBanner :locale="props.locale"></SellerRegistrationInvitationBanner>
         </div>
-        <div class="hidden h-14.5 lg:block"></div>
+        <BlockCartModal
+            v-model:is-open-value="openCartModalValue"
+            :locale="props.locale"
+            :products="productsAdded"
+            :productsPrice="productsPrice"
+            :productsQuantity="productsQuantity"
+            :cartProductsCount="props.cartProductsCount"
+            :defaultShippingRatePrice="props.defaultShippingRatePrice"
+        />
     </AppShopLayout>
 </template>

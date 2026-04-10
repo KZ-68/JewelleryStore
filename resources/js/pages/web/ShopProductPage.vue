@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import axios from 'axios'
 import type { Product } from '@/types/product'
+import type { BreadcrumbItemType } from '@/types';
 import { Category } from '@/types/category';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -14,6 +15,11 @@ import SizeSelector from '@/components/jewellery_store/select/SizeSelector.vue';
 import AppShopLayout from '@/layouts/AppShopLayout.vue';
 import { useTrans } from '../../composables/trans';
 
+interface BreadcrumbCategory {
+    name: string
+    slug: string
+}
+
 interface ProductsListProps {
     classname: string
     product: Product
@@ -25,9 +31,30 @@ interface ProductsListProps {
     seller_name: null | string
     locale: string
     feature_size_values: Array<string>
+    breadcrumb_category: BreadcrumbCategory | null
 }
 
 const props = defineProps<ProductsListProps>()
+
+const breadcrumbs = computed<BreadcrumbItemType[]>(() => {
+    const items: BreadcrumbItemType[] = [
+        {
+            title: useTrans('Home'),
+            href: route('home', { locale: props.locale }, false, Ziggy),
+        },
+    ]
+
+    if (props.breadcrumb_category) {
+        items.push({
+            title: props.breadcrumb_category.name,
+            href: route('showCategoryProducts', { locale: props.locale, category_slug: props.breadcrumb_category.slug }, false, Ziggy),
+        })
+    }
+
+    items.push({ title: props.product.name, href: '' })
+
+    return items
+})
 
 const retailPrice = ref(0);
 const currentSelectedSize = ref<string>('');
@@ -79,6 +106,7 @@ const selectSize = (key: string) => {
         :frontCategories="props.frontCategories"
         :cartProductsCount="props.cartProductsCount"
         :locale="props.locale"
+        :breadcrumbs="breadcrumbs"
     >
         <div class="bg-gray-100 min-h-screen">
             <div class="max-w-screen-xl mx-auto px-4 md:px-8 lg:px-12 py-8">

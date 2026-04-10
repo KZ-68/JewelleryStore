@@ -27,17 +27,17 @@ console.log('slide change');
         >
             <swiper-slide>
                 <figure class="h-[37.5rem]">
-                    <img src="/storage/img/hero/Hero_Chinese_New_Year_2026.png" alt="Chinese New Year Horse Hero Image" class="h-[37.5rem]">
+                    <img src="/storage/img/hero/Hero_Chinese_New_Year_2026.png" alt="Chinese New Year Horse Hero Image" class="h-[37.5rem]" fetchPriority="high">
                 </figure>
             </swiper-slide>
             <swiper-slide>
                 <figure class="h-[37.5rem]">
-                    <img src="/storage/img/hero/Hero_Test_Image_1.png" alt="Hero Test Image" class="h-[37.5rem]">
+                    <img src="/storage/img/hero/Hero_Test_Image_1.png" alt="Hero Test Image" class="h-[37.5rem]" fetchPriority="high">
                 </figure>
             </swiper-slide>
             <swiper-slide>
                 <figure class="h-[37.5rem]">
-                    <img src="/storage/img/hero/Hero_Test_Image_2.png" alt="Hero Test Image" class="h-[37.5rem]">
+                    <img src="/storage/img/hero/Hero_Test_Image_2.png" alt="Hero Test Image" class="h-[37.5rem]" fetchPriority="high">
                 </figure>
             </swiper-slide>
         </swiper>

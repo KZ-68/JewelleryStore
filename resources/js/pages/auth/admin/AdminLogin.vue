@@ -35,7 +35,7 @@ defineProps<{
         </div>
 
         <Form
-            v-bind="AuthenticatedSessionController.store['/{locale}/admin/login'].form({locale: locale})"
+            v-bind="AuthenticatedSessionController.store['/{locale?}/admin/login'].form({locale: locale})"
             :reset-on-success="['password']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

@@ -70,7 +70,7 @@ class ShopProductFrontController extends Controller
 
     public function showShopProduct (Request $request): Response|RedirectResponse
     {
-        $product = Product::with('feature_values.feature')->where('slug', $request->slug)->firstOrFail();
+        $product = Product::with(['feature_values.feature', 'categories'])->where('slug', $request->slug)->firstOrFail();
         $selectedTaxRuleGroup = $product->taxRuleGroup;
         $taxRule = TaxRule::where('tax_rule_group_id', $selectedTaxRuleGroup->id)->firstOrFail();
         $tax = $taxRule->tax;
@@ -86,14 +86,16 @@ class ShopProductFrontController extends Controller
         }
 
         $featureSizeValues = $this->getSizeValues($product);
+        $breadcrumbCategory = $product->categories->first()?->only(['name', 'slug']);
 
         return Inertia::render('web/ShopProductPage', [
-            'product' => $product,
-            'price' => $priceWithTax,
-            'productImages' => $productImages,
-            'seller_id' => $sellerId,
-            'seller_name' => $sellerName ?? null,
-            'feature_size_values' => $featureSizeValues
+            'product'             => $product,
+            'price'               => $priceWithTax,
+            'productImages'       => $productImages,
+            'seller_id'           => $sellerId,
+            'seller_name'         => $sellerName ?? null,
+            'feature_size_values' => $featureSizeValues,
+            'breadcrumb_category' => $breadcrumbCategory,
         ]);
     }
 

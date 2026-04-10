@@ -21,8 +21,12 @@ use App\Http\Controllers\Admin\TaxRuleGroupFrontController;
 use App\Http\Controllers\Web\PaymentController;
 use App\Http\Controllers\Web\SearchFrontController;
 use App\Http\Controllers\Web\ShopCategoryFrontController;
+use App\Http\Controllers\Web\LanguageController;
 use App\Http\Controllers\Web\SitemapController;
 
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])
+    ->where('locale', '[a-zA-Z]{2}')
+    ->name('language.switch');
 
 Route::fallback(function () {
     $segments = request()->segments();

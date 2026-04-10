@@ -7,6 +7,7 @@ import { Category } from '@/types/category';
 import CartNotifier from '@/components/jewellery_store/cart/notifier/CartNotifier.vue';
 import CategoryMenu from './nav/CategoryMenu.vue';
 import SearchBar from './SearchBar.vue';
+import LanguageSwitcher from '@/components/jewellery_store/LanguageSwitcher.vue';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '@/ziggy';
 import { edit } from '@/routes/profile';
@@ -75,6 +76,7 @@ const linkClass = 'rounded-sm border border-[#19140035] px-4 py-1.5 text-sm lead
                     </Link>
                 </template>
 
+                <LanguageSwitcher :locale="props.locale" />
                 <CartNotifier :cartProductsCount="props.cartProductsCount" :locale="props.locale" />
             </div>
         </nav>

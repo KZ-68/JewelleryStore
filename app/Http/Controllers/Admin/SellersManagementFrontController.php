@@ -26,8 +26,8 @@ class SellersManagementFrontController extends Controller
 {
     public function showSellerList(Request $request) : Response
     {
-        $sortBy = $request->get('sortBy', 'seller_code');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'seller_code');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'seller_code', 'created_at'])) {
             $sortBy = 'seller_code';
@@ -56,8 +56,8 @@ class SellersManagementFrontController extends Controller
      */
     public function showWaitingApproval(Request $request) : Response
     {
-        $sortBy = $request->get('sortBy', 'seller_code');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'seller_code');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'seller_code', 'created_at'])) {
             $sortBy = 'seller_code';
@@ -85,8 +85,8 @@ class SellersManagementFrontController extends Controller
 
     public function validateSeller(Request $request) : JsonResponse
     {
-        $validationRequest = $request->get('validation_request');
-        $sellerId = $request->get('seller_id');
+        $validationRequest = $request->input('validation_request');
+        $sellerId = $request->input('seller_id');
         $sellerTaxInfo = SellerTaxInformation::where('seller_id', $sellerId)->firstOrFail();
 
         if (isset($validationRequest) && $validationRequest == true) {

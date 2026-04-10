@@ -63,7 +63,7 @@ class FeatureFrontController extends Controller
         }
 
         $feature = new Feature;
-        $feature->name = $request->get('name');
+        $feature->name = $request->input('name');
         $feature->save();
 
         return redirect('/admin/back-office/features');
@@ -86,8 +86,8 @@ class FeatureFrontController extends Controller
                 ->withInput();
         }
 
-        $feature = Feature::where('name', $request->get('name'))->first();
-        $feature->name = $request->get('name');
+        $feature = Feature::where('name', $request->input('name'))->first();
+        $feature->name = $request->input('name');
         $feature->save();
 
         return redirect('/admin/back-office/features');

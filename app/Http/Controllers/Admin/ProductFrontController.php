@@ -91,10 +91,10 @@ class ProductFrontController extends Controller
     */
     public function create(Request $request): RedirectResponse
     {
-        if($request->get('categories_selected') !== null) {
-            $categories = json_decode($request->get('categories_selected'), true);
+        if($request->input('categories_selected') !== null) {
+            $categories = json_decode($request->input('categories_selected'), true);
         } else {
-            $categories = $request->get('category_id');
+            $categories = $request->input('category_id');
         }
 
         $validator = Validator::make($request->all(), [
@@ -118,14 +118,14 @@ class ProductFrontController extends Controller
         }
 
         $product = new Product;
-        $product->name = $request->get('name');
-        $product->description = $request->get('description');
-        $product->reference = $request->get('reference');
-        $product->ean13 = $request->get('ean13');
-        $product->quantity = $request->get('quantity');
-        $product->price_ht = $request->get('price_ht');
-        $product->cost_price = $request->get('cost_price');
-        $product->active = $request->get('active');
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->reference = $request->input('reference');
+        $product->ean13 = $request->input('ean13');
+        $product->quantity = $request->input('quantity');
+        $product->price_ht = $request->input('price_ht');
+        $product->cost_price = $request->input('cost_price');
+        $product->active = $request->input('active');
         $product->save();
         $product->categories()->attach($categories);
         $product->save();
@@ -156,19 +156,19 @@ class ProductFrontController extends Controller
                 ->withInput();
         }
 
-        $product = Product::where('name', $request->get('name'))->first();
-        $product->name = $request->get('name');
-        $product->description = $request->get('description');
-        $product->reference = $request->get('reference');
-        $product->ean13 = $request->get('ean13');
-        $product->quantity = $request->get('quantity');
-        $product->price_ht = $request->get('price_ht');
-        $product->cost_price = $request->get('cost_price');
-        if($request->get('tax_rule_group_id') !== null) {
+        $product = Product::where('name', $request->input('name'))->first();
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->reference = $request->input('reference');
+        $product->ean13 = $request->input('ean13');
+        $product->quantity = $request->input('quantity');
+        $product->price_ht = $request->input('price_ht');
+        $product->cost_price = $request->input('cost_price');
+        if($request->input('tax_rule_group_id') !== null) {
             $taxCalculator = new TaxCalculatorService;
-            $taxRule = TaxRule::where('id', $request->get('tax_rule_group_id'))->first();
-            $product->retail_price = $taxCalculator->withTax($request->get('price_ht'), $taxRule->tax->rate);
-            $product->taxRuleGroup()->associate($request->get('tax_rule_group_id'));
+            $taxRule = TaxRule::where('id', $request->input('tax_rule_group_id'))->first();
+            $product->retail_price = $taxCalculator->withTax($request->input('price_ht'), $taxRule->tax->rate);
+            $product->taxRuleGroup()->associate($request->input('tax_rule_group_id'));
         }
         $product->save();
 

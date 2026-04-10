@@ -12,7 +12,7 @@ class SearchFrontController extends Controller
 {
     public function searchProducts(Request $request, ProductImageServiceInterface $image): JsonResponse
     {
-        $products = Product::where('active', 1)->where('name', 'like', $request->get('text') . '%')->get();
+        $products = Product::where('active', 1)->where('name', 'like', $request->input('text') . '%')->get();
 
         if(count($products) === 0) {
             $products = null;

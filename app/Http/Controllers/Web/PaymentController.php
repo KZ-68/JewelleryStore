@@ -36,7 +36,7 @@ class PaymentController extends Controller
         ]);
 
         $payment = $request->user()->payWith(
-            ($request->get('amount') * 100),
+            ($request->input('amount') * 100),
             ['card', 'bancontact'],
             [
                 'currency' => 'eur',

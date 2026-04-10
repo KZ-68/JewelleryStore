@@ -44,7 +44,7 @@ class InvoiceFrontController extends Controller
 
     public function downloadPdf(Request $request, PdfService $pdfService) {
 
-        $invoice = $request->get('invoice');
+        $invoice = $request->input('invoice');
         $orders = $invoice->orders;
 
         foreach($orders as $order) {
@@ -66,7 +66,7 @@ class InvoiceFrontController extends Controller
 
     public function displayPdf(Request $request, PdfService $pdfService) {
 
-        $invoice = Invoice::where('number', $request->get('number'))->first();
+        $invoice = Invoice::where('number', $request->input('number'))->first();
         $orders = $invoice->orders;
         foreach($orders as $order) {
             $customer = Customer::where('id', $order->customer_id)->first();

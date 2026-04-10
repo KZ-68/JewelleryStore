@@ -155,10 +155,10 @@ class CategoryFrontController extends Controller
                 ->withInput();
         }
 
-        $category = Category::where('name', $request->get('name'))->first();
-        $category->parent_id = $request->get('parent_id');
-        $category->name = $request->get('name');
-        $category->description = $request->get('description');
+        $category = Category::where('name', $request->input('name'))->first();
+        $category->parent_id = $request->input('parent_id');
+        $category->name = $request->input('name');
+        $category->description = $request->input('description');
         $category->save();
 
         return redirect('/admin/back-office/categories');
@@ -171,7 +171,7 @@ class CategoryFrontController extends Controller
     */
     public function destroy(Request $request): RedirectResponse
     {
-        $category = Category::where('name', $request->get('name'))->first();
+        $category = Category::where('name', $request->input('name'))->first();
         $category->delete();
 
         return redirect('/admin/back-office/categories');
@@ -184,7 +184,7 @@ class CategoryFrontController extends Controller
     */
     public function destroyBulk(Request $request): RedirectResponse
     {
-        $categories = Category::whereIn('name', $request->get('names'))->get();
+        $categories = Category::whereIn('name', $request->input('names'))->get();
         foreach($categories as $category) {
             $category->delete();
         }

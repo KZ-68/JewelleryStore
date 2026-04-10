@@ -62,7 +62,7 @@ class SupplierFrontController extends Controller
         }
 
         $supplier = new Supplier;
-        $supplier->name = $request->get('name');
+        $supplier->name = $request->input('name');
         $supplier->save();
 
         return redirect('/admin/back-office/suppliers');
@@ -85,8 +85,8 @@ class SupplierFrontController extends Controller
                 ->withInput();
         }
 
-        $supplier = Supplier::where('name', $request->get('name'))->first();
-        $supplier->name = $request->get('name');
+        $supplier = Supplier::where('name', $request->input('name'))->first();
+        $supplier->name = $request->input('name');
         $supplier->save();
 
         return redirect('/admin/back-office/suppliers');

@@ -66,7 +66,7 @@ class OrderFrontController extends Controller
     {
         try {
             $user = $request->user();
-            $addressId = $request->get('addressId');
+            $addressId = $request->input('addressId');
             $address = Address::where('id', $addressId)->first();
             $cart->insertDeliveryAddress($user, $address);
         } catch (\Exception $e) {
@@ -98,7 +98,7 @@ class OrderFrontController extends Controller
         }
 
         try {
-            $carrierId = $request->get('carrierId');
+            $carrierId = $request->input('carrierId');
             $carrier = Carrier::where('id', $carrierId)->first();
             $cart->insertCarrier($carrier);
         } catch (\Exception $e) {
@@ -148,7 +148,7 @@ class OrderFrontController extends Controller
         }
 
         try {
-            $paymentId = $request->get('paymentId');
+            $paymentId = $request->input('paymentId');
             $payment = Payment::where('id', $paymentId)->first();
             $cart->insertPayment($payment);
         } catch (\Exception $e) {

@@ -65,13 +65,13 @@ class TaxFrontController extends Controller
         }
 
         $tax = new Tax;
-        $taxRatePercent = $request->get('rate') * 100;
-        $tax->name = "{$request->get('type')} {$taxRatePercent} %";
-        $tax->rate = $request->get('rate');
-        $tax->applicable = $request->get('applicable');
-        $tax->type = $request->get('type');
-        if($request->get('description') !== null) {
-            $tax->description = $request->get('description');
+        $taxRatePercent = $request->input('rate') * 100;
+        $tax->name = "{$request->input('type')} {$taxRatePercent} %";
+        $tax->rate = $request->input('rate');
+        $tax->applicable = $request->input('applicable');
+        $tax->type = $request->input('type');
+        if($request->input('description') !== null) {
+            $tax->description = $request->input('description');
         }
 
         $tax->save();
@@ -99,12 +99,12 @@ class TaxFrontController extends Controller
                 ->withInput();
         }
 
-        $tax = Tax::where('name', $request->get('name'))->first();
-        $tax->rate = $request->get('rate');
-        $tax->applicable = $request->get('applicable');
-        $tax->type = $request->get('type');
-        if($request->get('description') !== null) {
-            $tax->description = $request->get('description');
+        $tax = Tax::where('name', $request->input('name'))->first();
+        $tax->rate = $request->input('rate');
+        $tax->applicable = $request->input('applicable');
+        $tax->type = $request->input('type');
+        if($request->input('description') !== null) {
+            $tax->description = $request->input('description');
         }
 
         $tax->save();

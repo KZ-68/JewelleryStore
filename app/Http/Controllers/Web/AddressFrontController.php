@@ -82,19 +82,19 @@ class AddressFrontController extends Controller
         $user = $request->user();
         $customer = Customer::where('email', $user->email)->first();
         $address = new Address;
-        $country = Country::where('local', $request->get('country'))->first();
+        $country = Country::where('local', $request->input('country'))->first();
         $address->customer_id = $customer->id;
         $address->country_id = $country->id;
-        $address->name = $request->get('name');
-        $address->address_line_1 = $request->get('address_line_1');
-        $address->address_line_2 = $request->get('address_line_2');
-        $address->city = $request->get('city');
-        $address->postal_code = $request->get('postal_code');
-        $address->region = $request->get('region');
-        $address->district = $request->get('district');
-        $address->sub_district = $request->get('sub_district');
-        $address->locality = $request->get('locality');
-        $address->sub_locality = $request->get('sub_locality');
+        $address->name = $request->input('name');
+        $address->address_line_1 = $request->input('address_line_1');
+        $address->address_line_2 = $request->input('address_line_2');
+        $address->city = $request->input('city');
+        $address->postal_code = $request->input('postal_code');
+        $address->region = $request->input('region');
+        $address->district = $request->input('district');
+        $address->sub_district = $request->input('sub_district');
+        $address->locality = $request->input('locality');
+        $address->sub_locality = $request->input('sub_locality');
         $address->save();
 
         if($isOrder === true) {
@@ -130,16 +130,16 @@ class AddressFrontController extends Controller
     //             ->withInput();
     //     }
 
-    //     $address = Address::where('address_line_1', $request->get('address_line_1'))->first();
-    //     $address->address_line_1 = $request->get('address_line_1');
-    //     $address->address_line_2 = $request->get('address_line_2');
-    //     $address->city = $request->get('city');
-    //     $address->postal_code = $request->get('postal_code');
-    //     $address->region = $request->get('region');
-    //     $address->district = $request->get('district');
-    //     $address->sub_district = $request->get('sub_district');
-    //     $address->locality = $request->get('locality');
-    //     $address->sub_locality = $request->get('sub_locality');
+    //     $address = Address::where('address_line_1', $request->input('address_line_1'))->first();
+    //     $address->address_line_1 = $request->input('address_line_1');
+    //     $address->address_line_2 = $request->input('address_line_2');
+    //     $address->city = $request->input('city');
+    //     $address->postal_code = $request->input('postal_code');
+    //     $address->region = $request->input('region');
+    //     $address->district = $request->input('district');
+    //     $address->sub_district = $request->input('sub_district');
+    //     $address->locality = $request->input('locality');
+    //     $address->sub_locality = $request->input('sub_locality');
     //     $address->save();
 
     //     return redirect('/settings/addresses');
@@ -152,7 +152,7 @@ class AddressFrontController extends Controller
     */
     public function deleteAddress(Request $request): RedirectResponse
     {
-        $address = Address::where('name', $request->get('name'))->first();
+        $address = Address::where('name', $request->input('name'))->first();
         $address->delete();
 
         return redirect('/settings/adresses');

@@ -44,8 +44,8 @@ class BackOfficeController extends Controller
     {
 
         // Create filters for dynamic change on the manufacturers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['name', 'country', 'created_at'])) {
             $sortBy = 'name';
@@ -80,8 +80,8 @@ class BackOfficeController extends Controller
     {
 
         // Create filters for dynamic change on the products list
-        $sortBy = $request->get('sortBy', 'id');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'id');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'id';
@@ -116,8 +116,8 @@ class BackOfficeController extends Controller
     {
 
         // Create filters for dynamic change on the suppliers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['name', 'created_at'])) {
             $sortBy = 'name';
@@ -151,8 +151,8 @@ class BackOfficeController extends Controller
     public function showCategories(Request $request): Response
     {
         // Create filters for dynamic change on the categories list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['name', 'created_at'])) {
             $sortBy = 'name';
@@ -182,8 +182,8 @@ class BackOfficeController extends Controller
     public function showCustomers(Request $request): Response
     {
         // Create filters for dynamic change on the customers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
             $sortBy = 'name';
@@ -217,8 +217,8 @@ class BackOfficeController extends Controller
     public function showCarriers(Request $request): Response
     {
         // Create filters for dynamic change on the carriers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'name';
@@ -252,8 +252,8 @@ class BackOfficeController extends Controller
     public function showTaxes(Request $request): Response
     {
         // Create filters for dynamic change on the taxes list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name'])) {
             $sortBy = 'name';
@@ -289,8 +289,8 @@ class BackOfficeController extends Controller
     */
     public function showTeam(Request $request): Response
     {
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
             $sortBy = 'name';
@@ -316,8 +316,8 @@ class BackOfficeController extends Controller
 
     public function featuresList(Request $request) : Response
     {
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'name';

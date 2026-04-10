@@ -86,7 +86,7 @@ class ShopProductFrontController extends Controller
         }
 
         $featureSizeValues = $this->getSizeValues($product);
-        
+
         return Inertia::render('web/ShopProductPage', [
             'product' => $product,
             'price' => $priceWithTax,
@@ -104,7 +104,7 @@ class ShopProductFrontController extends Controller
     */
     public function contactSeller(Request $request): Response
     {
-        $sellerId = $request->get('seller_id');
+        $sellerId = $request->input('seller_id');
         $seller = Seller::where('id', $sellerId)->firstOrFail();
         $productSlug = $request;
         $user = Auth::guard('web')->user();
@@ -150,13 +150,13 @@ class ShopProductFrontController extends Controller
 
     private function sendMailSeller(Request $request): void
     {
-        $seller = Seller::where('seller_id', $request->get('seller_id'))->firstOrFail();
+        $seller = Seller::where('seller_id', $request->input('seller_id'))->firstOrFail();
         $sellerCustomerRelation = Customer::whereBelongsTo($seller)->get();
-        if ($request->get('customer_id') !== null) {
-            $customer = Customer::where('customer_id', $request->get('customer_id'))->firstOrFail();
+        if ($request->input('customer_id') !== null) {
+            $customer = Customer::where('customer_id', $request->input('customer_id'))->firstOrFail();
         } else {
-            $fromEmail = $request->get('from_email');
-            $fromName = $request->get('from_name');
+            $fromEmail = $request->input('from_email');
+            $fromName = $request->input('from_name');
         }
 
         $message = Message::create([
@@ -164,8 +164,8 @@ class ShopProductFrontController extends Controller
             'to_email' => $sellerCustomerRelation->email,
             'from_name' => $customer->name ?? $fromName,
             'to_name' => $sellerCustomerRelation->name,
-            'subject' => $request->get('subject'),
-            'content' => $request->get('content')
+            'subject' => $request->input('subject'),
+            'content' => $request->input('content')
         ]);
 
         Mail::to($request->user())->send(new CustomerSellerMessage($message));
@@ -176,12 +176,12 @@ class ShopProductFrontController extends Controller
         $allowedSorts = ['name', 'quantity', 'price_ht', 'retail_price', 'created_at'];
         $allowedOrders = ['asc', 'desc'];
 
-        $sortBy = $request->get('sortBy', 'name');
-        $order = strtolower($request->get('order', 'asc'));
+        $sortBy = $request->input('sortBy', 'name');
+        $orderBy = strtolower($request->input('orderBy', 'asc'));
 
         return [
             'sortBy' => in_array($sortBy, $allowedSorts) ? $sortBy : 'name',
-            'order' => in_array($order, $allowedOrders) ? $order : 'asc',
+            'orderBy' => in_array($orderBy, $allowedOrders) ? $orderBy : 'asc',
         ];
     }
 

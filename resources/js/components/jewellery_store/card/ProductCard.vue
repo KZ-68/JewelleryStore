@@ -12,7 +12,7 @@ interface ProductCardProps {
     product: Product
     image: null | string
     sortBy: string
-    order: 'asc' | 'desc'
+    orderBy: 'asc' | 'desc'
     locale: string
 }
 

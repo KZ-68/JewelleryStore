@@ -1,10 +1,18 @@
 <?php
-/* 
-* Controller File for the cart page
+/**
+* Controller File for the cart page.
+* Manages the step-by-step order process including address selection,
+* carrier selection, payment selection and order confirmation after
+* Stripe payment verification.
+*
+* @package App\Http\Controllers\Web
+* @author  Kevin ZITNIK
 */
 
 namespace App\Http\Controllers\Web;
 
+use App\Contracts\StripePaymentVerifierInterface;
+use App\DTOs\CreateOrderDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\CartHelper;
 use App\Models\Address;
@@ -15,14 +23,22 @@ use App\Models\Order;
 use App\Models\Payment;
 use App\Models\ShippingRate;
 use App\Models\Status;
+use App\Services\Order\CreateOrderService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class OrderFrontController extends Controller
 {
+    public function __construct(
+        private CreateOrderService $orderService,
+        private StripePaymentVerifierInterface $paymentVerifier,
+    ) {}
+
     /**
      * Render the view assigned to the order page
      * @param Request $request Get the request
@@ -101,35 +117,45 @@ class OrderFrontController extends Controller
             $carrierId = $request->input('carrierId');
             $carrier = Carrier::where('id', $carrierId)->first();
             $cart->insertCarrier($carrier);
+            $shippingCost = $this->resolveShippingCost($carrierId, $cartData['total_price']);
         } catch (\Exception $e) {
             return response()->json([
                 'isCarrierSelected' => false,
-                'erros' => $e->getMessage()
+                'error' => $e->getMessage()
             ]);
         }
 
         return response()->json([
             'isCarrierSelected' => true,
+            'shipping_cost' => $shippingCost,
         ]);
     }
 
     public function getShippingRatePrice(CartHelper $cart): JsonResponse
     {
         $cartData = $cart->get();
-        $total = $cartData['total_price'];
-        $carrierId = $cartData['carrier']['id'];
-        $shippingRates = ShippingRate::where('carrier_id', $carrierId)->get();
-        foreach($shippingRates as $shippingRate) {
-            if ($shippingRate->min_total > $total || $shippingRate->max_total < $total) {
-                continue;
-            } else {
-                $total = $total += $shippingRate->price;
-            }
-        }
+        $shippingCost = $this->resolveShippingCost($cartData['carrier']['id'], $cartData['total_price']);
 
         return response()->json([
-            'totalWithShipping' => $total,
+            'totalWithShipping' => $cartData['total_price'] + $shippingCost,
         ]);
+    }
+
+    /**
+     * Find the applicable shipping cost for a carrier given an order total.
+     * Returns 0 if no matching rate is found.
+     * @param int $carrierId The identifier for the carrier
+     * @param float $total The total price for this cart
+     * @return float The shipping rate
+     */
+    private function resolveShippingCost(int $carrierId, float $total): float
+    {
+        $shippingRate = ShippingRate::where('carrier_id', $carrierId)
+            ->where('min_total', '<=', $total)
+            ->where('max_total', '>=', $total)
+            ->first();
+
+        return $shippingRate ? (float) $shippingRate->price : 0.0;
     }
 
     /**
@@ -140,10 +166,18 @@ class OrderFrontController extends Controller
     public function selectPayment(Request $request, CartHelper $cart): JsonResponse
     {
         $cartData = $cart->get();
-        if (!$cartData['carrier']) {
+
+        if (empty($cartData['carrier']['id'])) {
             return response()->json([
                 'isPaymentSelected' => false,
                 'error' => 'Carrier is not selected'
+            ]);
+        }
+
+        if ($cartData['total_price'] <= 0) {
+            return response()->json([
+                'isPaymentSelected' => false,
+                'error' => 'Order total must be greater than 0'
             ]);
         }
 
@@ -163,22 +197,61 @@ class OrderFrontController extends Controller
         ]);
     }
 
-    public function orderConfirmation(CartHelper $cart): Response
+    public function orderConfirmation(Request $request, CartHelper $cart): Response|RedirectResponse
     {
-        $orderSession = Session::get("order");
-        $order = Order::where('reference', $orderSession['reference'])->first();
-        $status = Status::where('name', 'like', '%'.'Payment Confirmed'.'%')->first();
-        $order->statuses()->attach($status);
-        $order->save();
-        Session::forget("order");
-        $cart->clear();
+        $paymentIntentId = $request->query('payment_intent');
+        $session         = Session::get('order');
+        $locale          = app()->getLocale();
 
-        return Inertia::render(
-            'web/OrderConfirmation', 
-            [
-                'order' => $order
-            ]
-        );
+        if (!$paymentIntentId || empty($session['payment_intent_id'])) {
+            return redirect()
+                ->route('order.showOrderPage', ['locale' => $locale])
+                ->with('error', 'No payment information found. Please complete your order again.');
+        }
+
+        if ($paymentIntentId !== $session['payment_intent_id']) {
+            Session::forget('order');
+            return redirect()
+                ->route('order.showOrderPage', ['locale' => $locale])
+                ->with('error', 'Payment reference mismatch. Please start a new order.');
+        }
+
+        if (!$this->paymentVerifier->isSucceeded($paymentIntentId)) {
+            Session::forget('order');
+            return redirect()
+                ->route('order.showOrderPage', ['locale' => $locale])
+                ->with('error', 'Payment was not successful. Please try again.');
+        }
+
+        try {
+            $cartData = $cart->get();
+            $user     = $request->user('web');
+            $customer = Customer::where('id', $user->id)->firstOrFail();
+            $carrier  = Carrier::where('id', $cartData['carrier']['id'])->firstOrFail();
+
+            $dto   = CreateOrderDTO::fromArray($session['order_dto']);
+            $order = $this->orderService->createOrder($dto, $carrier, $customer);
+
+            $status = Status::firstOrCreate(['name' => 'Payment Confirmed']);
+            $order->statuses()->attach($status);
+            $order->save();
+
+            Session::forget('order');
+            $cart->clear();
+
+            return Inertia::render('web/OrderConfirmation', ['order' => $order]);
+
+        } catch (\Exception $e) {
+            Log::error('Order confirmation failed', [
+                'payment_intent_id' => $paymentIntentId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            Session::forget('order');
+            return redirect()
+                ->route('order.showOrderPage', ['locale' => $locale])
+                ->with('error', 'An error occurred while confirming your order. Please contact support.');
+        }
     }
 
 }

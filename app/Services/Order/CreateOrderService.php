@@ -23,7 +23,7 @@ class CreateOrderService
         $order = Order::create($orderData);
         $order->carrier()->associate($carrier);
         $order->customer()->associate($customer);
-        $status = Status::where('name', 'pending')->firstOrFail();
+        $status = Status::firstOrCreate(['name' => 'pending']);
         $order->statuses()->attach($status);
 
         return $order;

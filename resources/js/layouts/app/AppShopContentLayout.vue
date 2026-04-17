@@ -6,8 +6,9 @@ import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 import ShopHomeContent from '@/components/jewellery_store/ShopHomeContent.vue';
 import type { BreadcrumbItemType } from '@/types';
 import type { Category } from '@/types/category';
+import { useCookieConsent } from '@/composables/useCookieConsent';
 import { useWindowSize } from '@vueuse/core';
-import { provide, ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 
 interface Props {
     frontCategories: Category[]
@@ -25,6 +26,9 @@ provide('active', active)
 const openNav = () => {
   active.value = true
 }
+
+const { init: initCookieConsent } = useCookieConsent()
+onMounted(() => initCookieConsent())
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Category } from '@/types/category';
+import { Head } from '@inertiajs/vue3';
 import AppShopLayout from '@/layouts/AppShopLayout.vue';
 
 interface PrivacyProps {
@@ -12,6 +13,9 @@ const props = defineProps<PrivacyProps>();
 </script>
 
 <template>
+    <Head title="Politique de Confidentialité">
+        <meta name="description" content="Consultez la politique de confidentialité de JewelleryStore : protection des données personnelles, conformité RGPD et utilisation de vos informations." head-key="description" />
+    </Head>
     <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
         <div id="privacy-wrapper" class="py-4 px-6">
             <section class="my-4">

@@ -4,7 +4,7 @@ import type { Feature } from '@/types/feature'
 import type { FeatureValue } from '@/types/feature_value'
 import ProductCard from '@/components/jewellery_store/card/ProductCard.vue';
 import { Category } from '@/types/category';
-import { router } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { computed, provide, ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
@@ -123,6 +123,9 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
 </script>
 
 <template>
+    <Head :title="props.category_name">
+        <meta name="description" :content="`Découvrez notre sélection de bijoux ${props.category_name} — colliers, bagues, bracelets et plus. Filtres disponibles par taille et matière.`" head-key="description" />
+    </Head>
     <AppShopLayout
         :isHome="false"
         :frontCategories="props.frontCategories"

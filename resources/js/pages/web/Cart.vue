@@ -4,6 +4,7 @@ import CartLeftColumn from '../../components/jewellery_store/cart/left_column/Ca
 import CartSummary from '@/components/jewellery_store/CartSummary.vue';
 import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
+import { Head } from '@inertiajs/vue3';
 import AppShopLayout from '@/layouts/AppShopLayout.vue';
 
 interface CartProduct {
@@ -26,6 +27,9 @@ const props = defineProps<CartProps>();
 </script>
 
 <template>
+    <Head title="Mon Panier">
+        <meta name="description" content="Consultez votre panier et finalisez votre commande. Livraison sécurisée et retours sous 30 jours." head-key="description" />
+    </Head>
     <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
         <div id="cart-wrapper">
             <div class="flex flex-row lg:justify-center gap-40">

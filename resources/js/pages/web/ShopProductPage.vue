@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import axios from 'axios'
 import type { Product } from '@/types/product'
 import type { BreadcrumbItemType } from '@/types';
@@ -8,7 +8,7 @@ import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
 import SizeSelector from '@/components/jewellery_store/select/SizeSelector.vue';
@@ -98,9 +98,17 @@ const activeTab = ref<'description' | 'features'>('description')
 const selectSize = (key: string) => {
     currentSelectedSize.value = key
 }
+
+const metaDescription = computed(() => {
+    const desc = props.product.description ?? ''
+    return desc.length > 160 ? desc.substring(0, 157) + '...' : desc
+})
 </script>
 
 <template>
+    <Head :title="props.product.name">
+        <meta name="description" :content="metaDescription" head-key="description" />
+    </Head>
     <AppShopLayout
         :isHome="false"
         :frontCategories="props.frontCategories"

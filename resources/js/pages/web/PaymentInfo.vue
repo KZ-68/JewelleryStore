@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Category } from '@/types/category';
+import { Head } from '@inertiajs/vue3';
 import AppShopLayout from '@/layouts/AppShopLayout.vue';
 
 interface PaymentInfoProps {
@@ -12,6 +13,9 @@ const props = defineProps<PaymentInfoProps>();
 </script>
 
 <template>
+    <Head title="Informations de Paiement">
+        <meta name="description" content="Découvrez les moyens de paiement acceptés sur JewelleryStore. Paiement sécurisé par SSL, cartes bancaires et autres options disponibles." head-key="description" />
+    </Head>
     <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
         <h2>
             Payment Informations

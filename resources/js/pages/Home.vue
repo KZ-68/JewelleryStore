@@ -45,6 +45,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
 
 <template>
     <Head title="Home">
+        <meta name="description" content="JewelleryStore — Découvrez notre collection de bijoux : colliers, bagues, bracelets et plus encore. Livraison sécurisée, retours sous 30 jours." head-key="description" />
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>

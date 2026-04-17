@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link} from '@inertiajs/vue3';
 import type { Order } from '@/types/order'
 import OrdersList from '@/components/jewellery_store/list/orders/OrdersList.vue'
-import { newOrder } from '@/actions/App/Http/Controllers/Admin/OrderFrontController';
 import { router } from '@inertiajs/vue3'
 import { ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy';
@@ -13,7 +12,7 @@ interface OrdersProps {
   orders: Order[]
   filters: {
     sortBy: string
-    order: string
+    orderBy: "asc" | "desc"
   }
   locale: string
 }
@@ -47,17 +46,6 @@ const navigate = (url: string) => {
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Orders
                     </h1>
-                    <div class="flex flex-wrap items-center gap-3 self-start sm:self-auto">
-                        <Link
-                            :href="newOrder({locale: props.locale})"
-                            class="inline-flex items-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
-                        >
-                            <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            Add a order
-                        </Link>
-                    </div>
                 </div>
 
                 <!-- Filtres -->
@@ -88,8 +76,8 @@ const navigate = (url: string) => {
                 <OrdersList
                     classname=""
                     :orders="props.orders"
-                    :sort-by="sortBy"
-                    :order="order"
+                    :filters="props.filters"
+                    :locale="props.locale"
                     ref="deleteBulkRef"
                 />
             </div>

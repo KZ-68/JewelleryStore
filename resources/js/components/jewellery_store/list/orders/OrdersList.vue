@@ -10,7 +10,7 @@ interface OrdersListProps {
     orders: Order[]
     filters: {
         sortBy: string
-        order: "asc" | "desc"
+        orderBy: "asc" | "desc"
     }
     locale: string
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
 import SellerRegisterForm from '@/components/jewellery_store/form/SellerRegisterForm.vue';
 
 interface SellerRegistrationProps {
@@ -11,6 +12,9 @@ const props = defineProps<SellerRegistrationProps>();
 </script>
 
 <template>
+    <Head title="Devenir Vendeur">
+        <meta name="description" content="Rejoignez la marketplace JewelleryStore en tant que vendeur. Proposez vos créations artisanales à notre communauté de passionnés de bijoux." head-key="description" />
+    </Head>
     <main class="flex flex-row bg-gray-100 rounded-xl border-t-[1px] border-gray-100">
         <section id="seller-registration-section" class="lg:ml-10 lg:my-10 lg:px-10 lg:py-10 rounded-l-xl lg:w-50/50 bg-white">
             <SellerRegisterForm :locale="props.locale"></SellerRegisterForm>

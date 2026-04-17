@@ -6,12 +6,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { ref } from 'vue';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
 
 interface SellerRegisterForm {
     locale: string
 }
 
 const props = defineProps<SellerRegisterForm>();
+const passwordValue = ref('')
 </script>
 
 <template>
@@ -66,7 +69,9 @@ const props = defineProps<SellerRegisterForm>();
                         autocomplete="new-password"
                         name="password"
                         placeholder="Password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 

@@ -23,7 +23,9 @@ defineProps<{
         description="Enter your email to receive a password reset link"
         :locale="locale"
     >
-        <Head title="Forgot password" />
+        <Head title="Forgot password">
+            <meta name="description" content="Réinitialisez votre mot de passe JewelleryStore en renseignant votre adresse email. Un lien de réinitialisation vous sera envoyé." head-key="description" />
+        </Head>
 
         <div
             v-if="status"

@@ -8,6 +8,7 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
 
 const props = defineProps<{
     token: string;
@@ -16,6 +17,7 @@ const props = defineProps<{
 }>();
 
 const inputEmail = ref(props.email);
+const passwordValue = ref('')
 </script>
 
 <template>
@@ -57,7 +59,9 @@ const inputEmail = ref(props.email);
                         class="mt-1 block w-full"
                         autofocus
                         placeholder="Password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 

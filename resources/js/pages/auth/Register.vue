@@ -8,15 +8,18 @@ import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { ref } from 'vue';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '@/ziggy';
 import { local } from '@/routes/storage';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
 
 interface RegisterProps {
     locale: string
 }
 
 const props = defineProps<RegisterProps>();
+const passwordValue = ref('')
 </script>
 
 <template>
@@ -25,7 +28,9 @@ const props = defineProps<RegisterProps>();
         description="Enter your details below to create your account"
         :locale="props.locale"
     >
-        <Head title="Register" />
+        <Head title="Register">
+            <meta name="description" content="Créez votre compte JewelleryStore gratuitement pour passer commande, suivre vos livraisons et gérer vos bijoux préférés." head-key="description" />
+        </Head>
 
         <Form
             v-bind="RegisteredCustomerController.store.form({locale: locale})"
@@ -73,7 +78,9 @@ const props = defineProps<RegisterProps>();
                         autocomplete="new-password"
                         name="password"
                         placeholder="Password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 

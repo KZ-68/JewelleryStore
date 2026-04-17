@@ -4,6 +4,7 @@ import InputError from '@/components/InputError.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { Form, Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ interface SettingsPasswordProps {
 
 const passwordInput = ref<HTMLInputElement | null>(null);
 const currentPasswordInput = ref<HTMLInputElement | null>(null);
+const passwordValue = ref('')
 
 const props = defineProps<SettingsPasswordProps>();
 </script>
@@ -66,7 +68,9 @@ const props = defineProps<SettingsPasswordProps>();
                         class="mt-1 block w-full"
                         autocomplete="new-password"
                         placeholder="New password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 

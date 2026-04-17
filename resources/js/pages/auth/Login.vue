@@ -25,7 +25,9 @@ const props = defineProps<{
         description="Enter your email and password below to log in"
         :locale="props.locale"
     >
-        <Head title="Log in" />
+        <Head title="Log in">
+            <meta name="description" content="Connectez-vous à votre compte JewelleryStore pour accéder à vos commandes, adresses et paramètres." head-key="description" />
+        </Head>
 
         <div
             v-if="status"

@@ -29,7 +29,7 @@ function toggleCategory(id: number) {
 </script>
 
 <template>
-    <nav aria-label="Catégories" class="bg-white w-full mx-64">
+    <nav aria-label="Catégories" class="bg-white w-full px-4 md:px-6 max-w-screen-2xl mx-auto">
         <ul class="flex flex-col lg:flex-row lg:items-center">
             <li
                 v-for="category in categories"

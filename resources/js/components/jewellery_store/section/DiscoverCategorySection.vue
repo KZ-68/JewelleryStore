@@ -43,11 +43,13 @@ const collectionCategory = ref<null|Category>(getCategory(props.category_name))
             </div>
             <div id="discover-category-right" class="flex flex-col gap-8 md:gap-16 justify-center items-start px-6 py-8 md:px-12 lg:py-0">
                 <h3 id="discover-category-heading" class="text-base md:text-xl">{{ useTrans(props.description) }}</h3>
-                <button id="discover-btn" class="bg-shop-primary py-2 px-3">
-                    <Link :href="route('showCategoryProducts', {locale: props.locale, category_slug: 'collections'}, false, Ziggy)">
-                        <h4 class="text-white font-bold text-base md:text-lg">{{ useTrans('Discover') }}</h4>
-                    </Link>
-                </button>
+                <Link
+                    id="discover-btn"
+                    :href="route('showCategoryProducts', {locale: props.locale, category_slug: 'collections'}, false, Ziggy)"
+                    class="inline-flex items-center justify-center min-h-12 min-w-12 bg-shop-primary py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:ring-offset-2"
+                >
+                    <span class="text-white font-bold text-base md:text-lg">{{ useTrans('Discover') }}</span>
+                </Link>
             </div>
         </div>
     </section>

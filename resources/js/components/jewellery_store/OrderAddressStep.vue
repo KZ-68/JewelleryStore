@@ -24,33 +24,51 @@ defineEmits(['selectStep']);
 </script>
 
 <template>
-    <section id="order-address-step-wrapper" class="py-8">
-        <div id="order-address-step" class="flex flex-col items-center md:items-stretch my-2 mx-4 w-80 lg:w-[60rem] lg:max-w-[60rem] gap-1">
-            <button @click="$emit('selectStep', 0)" id="order-address-step-tab" class="bg-white py-6 my-2 w-80 lg:w-[60rem] lg:max-w-[60rem] rounded-t-md  hover:cursor-pointer hover:bg-gray-50">
-                <h2 class="text-left text-xl px-3 py-4">1. Connecting an account</h2>
+    <section class="py-8 px-4 lg:px-0">
+        <div class="mx-auto w-full max-w-[60rem] lg:max-w-none flex flex-col gap-1">
+
+            <button
+                @click="$emit('selectStep', 0)"
+                class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors"
+                aria-label="Go back to step 1: Connecting an account"
+            >
+                <h2 class="text-xl px-3 py-4">1. Connecting an account</h2>
             </button>
-            <div id="order-address-step-tab" class="bg-white py-6 w-80 lg:w-[60rem] lg:max-w-[60rem] rounded-t-md">
+
+            <div class="bg-white py-6 w-full rounded-t-md" aria-current="step">
                 <h2 class="text-xl px-3 py-4">2. Delivery address</h2>
             </div>
+
             <div v-if="props.addresses.length === 0 || isNewAddress === true">
-                <AddressCreateForm  classname="" :countries="countries" :isOrder="true" :locale="props.locale"/>
+                <AddressCreateForm classname="" :countries="countries" :isOrder="true" :locale="props.locale" />
             </div>
-            <div v-else class="bg-white w-80 lg:w-[60rem]">
+            <div v-else class="bg-white w-full">
                 <h3 class="text-lg px-6 mt-8 mb-4">Select an address</h3>
                 <AddressesList
                     classname=""
-                    :addresses=addresses
+                    :addresses="addresses"
                     :isOrder="true"
                     :locale="props.locale"
                 />
-                <button v-if="isNewAddress === false" @click="displayNewAddressForm" class="mb-10 mx-8 py-4 px-6 bg-shop-primary text-white font-bold rounded-lg hover:cursor-pointer hover:bg-[#a32a32]">Add a new address</button>
+                <button
+                    v-if="!isNewAddress"
+                    @click="displayNewAddressForm"
+                    class="mb-10 mx-4 sm:mx-8 py-4 px-6 bg-shop-primary text-white font-bold rounded-lg hover:bg-[#a32a32] focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors"
+                >Add a new address</button>
             </div>
-            <button v-if="isAddressSelected === true" @click="$emit('selectStep', 2)" id="order-address-step-tab" class="bg-white py-6 my-2 w-80 lg:w-[60rem] lg:max-w-[60rem] rounded-t-md hover:cursor-pointer hover:bg-gray-50">
-                <h2 class="text-left text-xl px-3 py-4">3. Select a carrier</h2>
+
+            <button
+                @click="$emit('selectStep', 2)"
+                :disabled="!isAddressSelected"
+                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors"
+                :class="isAddressSelected
+                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2'
+                    : 'opacity-50 cursor-not-allowed'"
+                aria-label="Step 3: Select a carrier"
+            >
+                <h2 class="text-xl px-3 py-4">3. Select a carrier</h2>
             </button>
-            <button v-else id="order-address-step-tab" class="bg-white py-6 my-2 w-80 lg:w-[60rem] lg:max-w-[60rem] rounded-t-md">
-                <h2 class="text-left text-xl px-3 py-4">3. Select a carrier</h2>
-            </button>
+
         </div>
     </section>
 </template>

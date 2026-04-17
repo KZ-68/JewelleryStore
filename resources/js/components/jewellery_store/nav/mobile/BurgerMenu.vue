@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/vue3';
 import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
 import { Category } from '@/types/category';
 import CartNotifier from '@/components/jewellery_store/cart/notifier/CartNotifier.vue';
-import CategoryMenu from '../../nav/CategoryMenu.vue';
+import MobileCategoryMenu from './MobileCategoryMenu.vue';
 import SearchBar from '../../SearchBar.vue';
 import { inject, Ref } from 'vue';
 import { route } from '../../../../../../vendor/tightenco/ziggy/src/js';
@@ -38,7 +38,7 @@ const closingNav = () => {
 
       </div>
 
-      <CategoryMenu :locale="props.locale" :frontCategories=props.frontCategories></CategoryMenu>
+      <MobileCategoryMenu :locale="props.locale" :frontCategories="props.frontCategories" />
 
       <Link
           

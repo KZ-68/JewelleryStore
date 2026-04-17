@@ -6,7 +6,6 @@ import {
     VueStripeProvider,
     VueStripeElements,
     VueStripePaymentElement,
-    usePaymentIntent
 } from '@vue-stripe/vue-stripe'
 
 interface StripePaymentProps {
@@ -33,18 +32,23 @@ const onElementsReady = (elements: StripeElements) => {
 
 onMounted(async () => {
   try {
+    const csrfToken = document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]
     const response = await fetch('stripe/payment/create-intent', {
       method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-      body: JSON.stringify({locale: props.locale, amount: props.amount, gift:false, valid:false, returned:false})
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-XSRF-TOKEN': decodeURIComponent(csrfToken ?? ''),
+      },
+      body: JSON.stringify({ locale: props.locale, gift: false, valid: false, returned: false })
     })
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`)
+    }
     const data = await response.json()
     clientSecret.value = data.clientSecret
   } catch(err){
-    errorMessage.value = 'Failed to initialize payment'
+    errorMessage.value = 'Failed to initialize payment. Please refresh and try again.'
   }
 })
 
@@ -57,7 +61,7 @@ const handleSubmit = async () => {
   const { error } = await stripeInstance.value.confirmPayment({
     elements: elementsInstance.value,
     confirmParams: {
-      return_url: `${window.location.origin}/order/confirmation`
+      return_url: `${window.location.origin}/${props.locale}/order/confirmation`
     }
   })
 

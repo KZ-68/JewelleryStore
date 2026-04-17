@@ -18,11 +18,13 @@ const props = defineProps<SellerRegistrationInvitationBanner>();
                 <h2 class="text-white text-xl md:text-2xl lg:text-3xl my-3 mx-4">{{ useTrans('Boost your business by becoming a seller on our store !') }}</h2>
                 <p class="text-white text-sm md:text-base">{{ useTrans('We verify each professional to offer an attractive and safe choice for your customers.') }}</p>
             </hgroup>
-            <button id="seller-btn" class="bg-shop-primary py-2 px-3 rounded-md">
-                <Link :href="route('register-seller', {locale: props.locale,}, false, Ziggy)">
-                    <h4 class="text-white font-bold text-base md:text-lg">{{ useTrans('Register Now !') }}</h4>
-                </Link>
-            </button>
+            <Link
+                id="seller-btn"
+                :href="route('register-seller', {locale: props.locale,}, false, Ziggy)"
+                class="inline-flex items-center justify-center min-h-12 min-w-12 bg-shop-primary py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/60"
+            >
+                <span class="text-white font-bold text-base md:text-lg">{{ useTrans('Register Now !') }}</span>
+            </Link>
         </div>
     </section>
 </template>

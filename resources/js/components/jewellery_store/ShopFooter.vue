@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import * as CookieConsent from 'vanilla-cookieconsent';
 import { useTrans } from '@/composables/trans';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
@@ -102,6 +103,14 @@ const linkClass = 'hover:opacity-80 underline-offset-4 hover:underline transitio
                     <a :href="route('sitemap', {locale: props.locale}, false, Ziggy)" :class="linkClass">Sitemap</a>
                     <a href="#" :class="linkClass">{{ useTrans('Terms and conditions') }}</a>
                     <a :href="route('privacy', {locale: props.locale}, false, Ziggy)" :class="linkClass">{{ useTrans('Privacy Policy') }}</a>
+                    <button
+                        type="button"
+                        :class="linkClass"
+                        @click="CookieConsent.showPreferences()"
+                        :aria-label="useTrans('Cookie preferences')"
+                    >
+                        {{ useTrans('Cookie preferences') }}
+                    </button>
                 </nav>
                 <small class="opacity-70 text-xs shrink-0">
                     &copy; {{ new Date().getFullYear() }} {{ useTrans('Joaillerie Orient. All rights reserved.') }}

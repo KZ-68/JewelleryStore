@@ -18,7 +18,7 @@ module.exports = defineConfig({
         return require(path.join(projectRoot, 'tests/cypress/plugins/index.js'))(on, config)
         },
         baseUrl: 'http://localhost:8000',
-        specPattern: path.join(projectRoot, 'tests/cypress/integration/**/*.cy.{js,jsx,ts,tsx}'),
+        specPattern: path.join(projectRoot, 'tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}'),
         supportFile: path.join(projectRoot, 'tests/cypress/support/e2e.js'),
     },
 })

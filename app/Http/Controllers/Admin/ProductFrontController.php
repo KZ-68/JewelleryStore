@@ -15,6 +15,7 @@ use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Tax\TaxCalculatorService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
@@ -85,6 +86,34 @@ class ProductFrontController extends Controller
     }
 
     /**
+    * Preview the price with tax for a given price_ht and tax_rule_group_id.
+    * @param Request GET request with price_ht and tax_rule_group_id query params
+    * @return JsonResponse Return the computed price with tax
+    */
+    public function pricePreview(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'price_ht'          => 'required|numeric|min:0',
+            'tax_rule_group_id' => 'required|integer|exists:tax_rule_groups,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 422);
+        }
+
+        $taxRule = TaxRule::where('tax_rule_group_id', $request->integer('tax_rule_group_id'))->first();
+
+        if (!$taxRule) {
+            return response()->json(['error' => 'No tax rule found for this group.'], 404);
+        }
+
+        $calculator = new TaxCalculatorService;
+        $priceWithTax = $calculator->withTax((float) $request->input('price_ht'), $taxRule->tax->rate);
+
+        return response()->json(['price_with_tax' => $priceWithTax]);
+    }
+
+    /**
     * This method validate every fields used in the new product form.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
@@ -110,11 +139,9 @@ class ProductFrontController extends Controller
 
         if ($validator->fails()) {
             return redirect('{locale}/admin/back-office/products')
-                ->withErrors(
-                    $validator, 
-                    ['error' => 'This product is invalid, please register correctly every required fields']
-                )
-                ->withInput();
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'This product is invalid, please fill in all required fields correctly.');
         }
 
         $product = new Product;
@@ -130,7 +157,8 @@ class ProductFrontController extends Controller
         $product->categories()->attach($categories);
         $product->save();
 
-        return redirect('/admin/back-office/products');
+        return redirect('/admin/back-office/products')
+            ->with('success', 'Product "' . $product->name . '" has been created successfully.');
     }
 
     /**
@@ -153,7 +181,8 @@ class ProductFrontController extends Controller
         if ($validator->fails()) {
             return redirect('/admin/back-office/products')
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('error', 'This product is invalid, please fill in all required fields correctly.');
         }
 
         $product = Product::where('name', $request->input('name'))->first();
@@ -172,6 +201,7 @@ class ProductFrontController extends Controller
         }
         $product->save();
 
-        return redirect('/admin/back-office/products');
+        return redirect('/admin/back-office/products')
+            ->with('success', 'Product "' . $product->name . '" has been updated successfully.');
     }
 }

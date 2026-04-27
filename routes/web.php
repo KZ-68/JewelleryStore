@@ -101,6 +101,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(
     Route::get('/admin/back-office/taxes', [BackOfficeController::class, 'showTaxes'])->name('admin.back-office.showTaxes');
     Route::get('/admin/back-office/users', [BackOfficeController::class, 'showTeam'])->name('admin.back-office.showTeam');
     Route::get('/admin/back-office/features', [BackOfficeController::class, 'featuresList'])->name('admin.back-office.featuresList');
+    Route::get('/admin/back-office/products/price-preview', [ProductFrontController::class, 'pricePreview'])->name('product.pricePreview');
     Route::get('/admin/back-office/products/new', [ProductFrontController::class, 'newProduct'])->name('new-product');
     Route::post('/admin/back-office/products/new', [ProductFrontController::class, 'create'])->name('new-product.create');
     Route::get('/admin/back-office/products/{slug}', [ProductFrontController::class, 'show'])->name('product-details');

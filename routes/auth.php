@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\Admin\AdminEmailVerificationPromptController;
 use App\Http\Controllers\Auth\Admin\AdminNewPasswordController;
 use App\Http\Controllers\Auth\Admin\AdminPasswordResetLinkController;
 use App\Http\Controllers\Auth\Admin\AdminRegisteredUserController;
+use App\Http\Controllers\Auth\Admin\AdminTwoFactorChallengeController;
+use App\Http\Controllers\Auth\Admin\AdminTwoFactorController;
 use App\Http\Controllers\Auth\Admin\AdminVerifyEmailController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -88,6 +90,33 @@ Route::middleware(['web.session', 'role:basic', 'auth:web'])->group(function () 
 
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('customer-logout');
+});
+
+Route::prefix('/admin')->middleware(['admin.session', 'role:admin', 'auth:admin'])->group(function () {
+    Route::get('/back-office/two-factor', [AdminTwoFactorController::class, 'show'])
+        ->name('admin.two-factor.show');
+    Route::post('/back-office/two-factor/enable', [AdminTwoFactorController::class, 'enable'])
+        ->name('admin.two-factor.enable');
+    Route::post('/back-office/two-factor/disable', [AdminTwoFactorController::class, 'disable'])
+        ->name('admin.two-factor.disable');
+    Route::post('/back-office/two-factor/confirm', [AdminTwoFactorController::class, 'confirm'])
+        ->name('admin.two-factor.confirm');
+    Route::get('/back-office/two-factor/qr-code', [AdminTwoFactorController::class, 'qrCode'])
+        ->name('admin.two-factor.qr-code');
+    Route::get('/back-office/two-factor/secret-key', [AdminTwoFactorController::class, 'secretKey'])
+        ->name('admin.two-factor.secret-key');
+    Route::get('/back-office/two-factor/recovery-codes', [AdminTwoFactorController::class, 'recoveryCodes'])
+        ->name('admin.two-factor.recovery-codes');
+    Route::post('/back-office/two-factor/regenerate', [AdminTwoFactorController::class, 'regenerate'])
+        ->name('admin.two-factor.regenerate');
+});
+
+Route::prefix('/admin')->middleware(['admin.session'])->group(function () {
+    Route::get('/two-factor-challenge', [AdminTwoFactorChallengeController::class, 'show'])
+        ->name('admin.two-factor.login');
+    Route::post('/two-factor-challenge', [AdminTwoFactorChallengeController::class, 'store'])
+        ->middleware('throttle:two-factor')
+        ->name('admin.two-factor.store');
 });
 
 Route::prefix('/admin')->middleware(['admin.session', 'role:admin', 'auth:admin'])->group(function () {

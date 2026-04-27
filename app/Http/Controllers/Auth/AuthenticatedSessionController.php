@@ -63,9 +63,14 @@ class AuthenticatedSessionController extends Controller
             if($user->hasAnyRole($roles)) {
                 if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
                     $request->session()->put([
-                        'login.id' => $user->getKey(),
+                        'login.id'       => $user->getKey(),
                         'login.remember' => $request->boolean('remember'),
+                        'login.guard'    => $guard,
                     ]);
+
+                    if ($guard === 'admin') {
+                        return redirect()->route('admin.two-factor.login', ['locale' => App::currentLocale()]);
+                    }
 
                     return to_route('two-factor.login');
                 }

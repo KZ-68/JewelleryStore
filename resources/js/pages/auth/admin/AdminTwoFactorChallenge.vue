@@ -8,7 +8,6 @@ import {
     PinInputSlot,
 } from '@/components/ui/pin-input';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { store } from '@/routes/two-factor/login';
 import { Form, Head } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
@@ -17,6 +16,10 @@ interface AuthConfigContent {
     description: string;
     toggleText: string;
 }
+
+const props = defineProps<{
+    locale: string;
+}>();
 
 const authConfigContent = computed<AuthConfigContent>(() => {
     if (showRecoveryInput.value) {
@@ -46,9 +49,12 @@ const toggleRecoveryMode = (clearErrors: () => void): void => {
 
 const code = ref<number[]>([]);
 const codeValue = computed<string>(() => code.value.join(''));
-defineProps<{
-    locale: string
-}>();
+
+// Posts to the custom admin 2FA challenge endpoint (not Fortify's)
+const challengeForm = computed(() => ({
+    action: `/${props.locale}/back-office/two-factor-challenge`,
+    method: 'post' as const,
+}));
 </script>
 
 <template>
@@ -62,7 +68,7 @@ defineProps<{
         <div class="space-y-6">
             <template v-if="!showRecoveryInput">
                 <Form
-                    v-bind="store.form()"
+                    v-bind="challengeForm"
                     class="space-y-4"
                     reset-on-error
                     @error="code = []"
@@ -111,7 +117,7 @@ defineProps<{
 
             <template v-else>
                 <Form
-                    v-bind="store.form()"
+                    v-bind="challengeForm"
                     class="space-y-4"
                     reset-on-error
                     #default="{ errors, processing, clearErrors }"

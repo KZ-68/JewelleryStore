@@ -30,12 +30,12 @@ jobs:
   
         - name: Add known_hosts
           run: |
-            ssh-keyscan -H www.blend-collection.com >> ~/.ssh/known_hosts
+            ssh-keyscan -H srv1501506.hstgr.cloud >> ~/.ssh/known_hosts
   
         - name: Deploy to prod server
           run: |
-            ssh root@www.blend-collection.com "\
-              cd /var/www/blend/app_blenderCollection && \
+            ssh root@srv1501506.hstgr.cloud "\
+              cd /root/JewelleryStore && \
               git pull origin main && \
               php bin/console cache:clear --env=prod && \
               php bin/console doctrine:migrations:migrate --no-interaction --env=prod &&\

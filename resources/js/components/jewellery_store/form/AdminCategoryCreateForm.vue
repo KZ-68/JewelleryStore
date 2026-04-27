@@ -14,6 +14,7 @@ interface AdminCategoryMainFormProps {
     classname:string;
     categories: Array<TreeNode[]>
     root: Category
+    locale: string
 }   
 
 const props = defineProps<AdminCategoryMainFormProps>();
@@ -48,7 +49,7 @@ function log(s: string): void {
 <template>
     <section id="admin-category-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="CategoryFrontController.create.form()"
+            v-bind="CategoryFrontController.create.form({locale: props.locale})"
             :reset-on-success="['category-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('feature_values', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('feature_id');
-            $table->string('value', 100);
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('value', 255);
             $table->foreign('feature_id')->references('id')->on('features')->onDelete('cascade');
         });
     }

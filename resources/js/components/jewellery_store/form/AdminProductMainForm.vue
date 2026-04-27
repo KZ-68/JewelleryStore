@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Form } from '@inertiajs/vue3';
 import type { Product } from '@/types/product'
 import { TaxRuleGroup } from '@/types/taxRuleGroup';
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 interface AdminProductMainFormProps {
     classname:string;
@@ -13,16 +13,58 @@ interface AdminProductMainFormProps {
     taxRuleGroups: TaxRuleGroup[]
     priceWithTax: number|null
     taxRuleGroupId: number|string
-}   
+    locale: string
+}
 
 const props = defineProps<AdminProductMainFormProps>();
 const selectedTaxRuleGroup = ref(props.taxRuleGroupId !== '' ? props.taxRuleGroupId : '');
+const priceHt = ref<number>(props.product.price_ht);
+const currentPriceWithTax = ref<number | null>(props.priceWithTax);
+const isPriceLoading = ref(false);
+const priceUpdateStatus = ref<'idle' | 'updated' | 'error'>('idle');
+
+async function fetchPriceWithTax(taxRuleGroupId: number | string) {
+    if (!taxRuleGroupId || !priceHt.value) return;
+
+    isPriceLoading.value = true;
+    priceUpdateStatus.value = 'idle';
+
+    try {
+        const params = new URLSearchParams({
+            price_ht: priceHt.value.toString(),
+            tax_rule_group_id: taxRuleGroupId.toString(),
+        });
+
+        const response = await fetch(`/${props.locale}/admin/back-office/products/price-preview?${params}`, {
+            headers: { 'Accept': 'application/json' },
+        });
+
+        if (!response.ok) {
+            priceUpdateStatus.value = 'error';
+            return;
+        }
+
+        const data: { price_with_tax: number } = await response.json();
+        currentPriceWithTax.value = data.price_with_tax;
+        priceUpdateStatus.value = 'updated';
+
+        setTimeout(() => { priceUpdateStatus.value = 'idle'; }, 2500);
+    } catch {
+        priceUpdateStatus.value = 'error';
+    } finally {
+        isPriceLoading.value = false;
+    }
+}
+
+watch(selectedTaxRuleGroup, (newVal) => {
+    fetchPriceWithTax(newVal);
+});
 </script>
 
 <template>
     <section id="admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="ProductFrontController.update.form({ slug: props.product.slug })"
+            v-bind="ProductFrontController.update.form({locale: props.locale, slug: props.product.slug })"
             :reset-on-success="['product-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -115,20 +157,50 @@ const selectedTaxRuleGroup = ref(props.taxRuleGroupId !== '' ? props.taxRuleGrou
                     <Label for="price_ht" class="text-lg">Price without Tax</Label>
                     <Input
                         id="price_ht"
-                        type="number" 
+                        type="number"
                         name="price_ht"
                         step=".01"
                         required
                         :tabindex="5"
-                        :default-value=props.product.price_ht
+                        :default-value="priceHt"
                         class="bg-gray-100 p-1 rounded-md"
+                        @change="(e: Event) => { priceHt = parseFloat((e.target as HTMLInputElement).value); fetchPriceWithTax(selectedTaxRuleGroup); }"
                     />
                     <InputError :message="errors.cost_price" />
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <p>Price with tax :</p>
-                    <data class="price-with-tax" :value=props.priceWithTax??0>{{ props.priceWithTax ?? 0 }}</data>
+                    <div class="flex items-center gap-2">
+                        <p>Price with tax :</p>
+                        <Transition
+                            enter-active-class="transition-all duration-200 ease-out"
+                            enter-from-class="opacity-0 scale-90"
+                            enter-to-class="opacity-100 scale-100"
+                            leave-active-class="transition-all duration-300 ease-in"
+                            leave-from-class="opacity-100 scale-100"
+                            leave-to-class="opacity-0 scale-90"
+                        >
+                            <span
+                                v-if="priceUpdateStatus === 'updated'"
+                                class="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300"
+                            >
+                                <svg class="h-3 w-3" viewBox="0 0 12 12" fill="none">
+                                    <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Updated
+                            </span>
+                            <span
+                                v-else-if="priceUpdateStatus === 'error'"
+                                class="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900 dark:text-red-300"
+                            >
+                                Error
+                            </span>
+                        </Transition>
+                    </div>
+                    <data class="price-with-tax" :value="currentPriceWithTax ?? 0">
+                        <span v-if="isPriceLoading" class="inline-block h-4 w-16 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+                        <span v-else>{{ currentPriceWithTax ?? 0 }}</span>
+                    </data>
                 </div>
 
                 <div class="grid gap-2">

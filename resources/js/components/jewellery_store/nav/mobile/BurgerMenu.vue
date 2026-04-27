@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { login, register } from '@/routes';
+import { register } from '@/routes';
 import { showBO }  from '@/routes/admin/back-office'
 import { Link } from '@inertiajs/vue3';
 import LogoutButton from '@/components/jewellery_store/button/LogoutButton.vue'
 import { Category } from '@/types/category';
 import CartNotifier from '@/components/jewellery_store/cart/notifier/CartNotifier.vue';
-import CategoryMenu from '../../nav/CategoryMenu.vue';
+import MobileCategoryMenu from './MobileCategoryMenu.vue';
 import SearchBar from '../../SearchBar.vue';
-import { inject, reactive, Ref } from 'vue';
+import { inject, Ref } from 'vue';
+import { route } from '../../../../../../vendor/tightenco/ziggy/src/js';
+import { Ziggy } from '@/ziggy';
+import { local } from '@/routes/storage';
 
 interface BurgerMenuProps {
     frontCategories: Category[]
     cartProductsCount: number
+    locale: string
 }
 
 const props = defineProps<BurgerMenuProps>();
@@ -30,33 +34,33 @@ const closingNav = () => {
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
         </button>
         <h1 class="text-xl py-3 align-middle">MENU</h1>
-        <CartNotifier :cartProductsCount="props.cartProductsCount"></CartNotifier>
+        <CartNotifier :locale="props.locale" :cartProductsCount="props.cartProductsCount"></CartNotifier>
 
       </div>
 
-      <CategoryMenu :frontCategories=props.frontCategories></CategoryMenu>
+      <MobileCategoryMenu :locale="props.locale" :frontCategories="props.frontCategories" />
 
       <Link
           
-          :href="showBO()"
+          :href="showBO({locale: props.locale})"
           class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
           v-if="$page.props.auth.user"
       >
           Dashboard
       </Link>
 
-      <LogoutButton v-if="$page.props.auth.user">Logout</LogoutButton>
-      <LogoutButton v-else-if="$page.props.auth.customer">Logout</LogoutButton>
+      <LogoutButton :locale="props.locale" v-if="$page.props.auth.user">Logout</LogoutButton>
+      <LogoutButton :locale="props.locale" v-else-if="$page.props.auth.customer">Logout</LogoutButton>
       <template v-else>
           <div class="flex flex-row gap-3">
             <Link
-              :href="login()"
+              :href="route('login', {locale: props.locale,}, false, Ziggy)"
               class="inline-block w-36 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm text-center leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
             >
               Log in
             </Link>
             <Link
-                :href="register()"
+                :href="register({locale: props.locale})"
                 class="inline-block w-36 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm text-center leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
             >
               Register

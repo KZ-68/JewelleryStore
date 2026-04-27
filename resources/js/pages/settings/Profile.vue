@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 import DeleteUser from '@/components/DeleteUser.vue';
@@ -10,21 +9,39 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
+import { Category } from '@/types/category';
+import { useWindowSize } from '@vueuse/core';
+import { provide, ref } from 'vue';
+import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 
 interface Props {
     mustVerifyEmail: boolean;
     status?: string;
+    locale: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const page = usePage();
 const user = page.props.auth.customer;
+
+const { width } = useWindowSize()
+const active = ref<boolean>(false)
+provide('active', active)
+const openNav = () => {
+  active.value = true
+}
+
 </script>
 
 <template>
     <Head title="Profile settings" />
-    <SettingsLayout>
+    <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+    </button>
+    <SettingsLayout :locale="props.locale">
         <div class="flex flex-col space-y-6">
             <HeadingSmall
                 title="Profile information"
@@ -32,7 +49,7 @@ const user = page.props.auth.customer;
             />
 
             <Form
-                v-bind="ProfileController.update.form()"
+                v-bind="ProfileController.update.form({locale: locale})"
                 class="space-y-6"
                 v-slot="{ errors, processing, recentlySuccessful }"
             >
@@ -69,7 +86,7 @@ const user = page.props.auth.customer;
                     <p class="-mt-4 text-sm text-muted-foreground">
                         Your email address is unverified.
                         <Link
-                            :href="send()"
+                            :href="send({locale:locale})"
                             as="button"
                             class="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                         >
@@ -112,4 +129,5 @@ const user = page.props.auth.customer;
 
         <DeleteUser />
     </SettingsLayout>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

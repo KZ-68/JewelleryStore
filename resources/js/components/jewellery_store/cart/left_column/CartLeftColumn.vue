@@ -11,6 +11,7 @@ interface CartProduct {
 
 interface CartLeftColumnProps {
     products: Array<CartProduct>
+    locale: string
 }
 
 const props = defineProps<CartLeftColumnProps>();
@@ -21,6 +22,6 @@ const props = defineProps<CartLeftColumnProps>();
         class="lg:w-[900px] max-w-[900px] flex-start my-10 px-8 pt-20 pb-10 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800"
     >
     <CartHeader classname="" title="Panier" :products="props.products"/>
-    <CartBody classname="flex flex-row" :products="props.products"/>
+    <CartBody classname="flex flex-row" :products="props.products" :locale="props.locale"/>
     </section>
 </template>

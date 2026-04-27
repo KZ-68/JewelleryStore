@@ -84,9 +84,9 @@ class Product extends Model
     /**
     * The features that belong to the product.
     */
-    public function features(): BelongsToMany
+    public function feature_values(): BelongsToMany
     {
-        return $this->belongsToMany(Feature::class, 'feature_values', 'product_id', 'feature_id');
+        return $this->belongsToMany(FeatureValue::class, 'product_feature_values', 'product_id', 'feature_value_id');
     }
 
     /**

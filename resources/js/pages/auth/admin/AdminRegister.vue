@@ -6,20 +6,28 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
+import { Ziggy } from '@/ziggy';
+
+interface AdminRegisterProps {
+    locale: string
+}
+
+const props = defineProps<AdminRegisterProps>();
 </script>
 
 <template>
     <AuthBase
         title="Create an account"
         description="Enter your details below to create your account"
+        :locale="locale"
     >
         <Head title="Register" />
 
         <Form
-            v-bind="AdminRegisteredUserController.store.form()"
+            v-bind="AdminRegisteredUserController.store.form({locale: locale})"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -100,7 +108,7 @@ import { LoaderCircle } from 'lucide-vue-next';
             <div class="text-center text-sm text-muted-foreground">
                 Already have an account?
                 <TextLink
-                    :href="login()"
+                    :href="route('admin-login', {locale: props.locale}, false, Ziggy)"
                     class="underline underline-offset-4"
                     :tabindex="6"
                     >Log in</TextLink

@@ -62,7 +62,7 @@ class ManufacturerFrontController extends Controller
         }
 
         $manufacturer = new Manufacturer;
-        $manufacturer->name = $request->get('name');
+        $manufacturer->name = $request->input('name');
         $manufacturer->save();
 
         return redirect('/admin/back-office/manufacturers');
@@ -85,8 +85,8 @@ class ManufacturerFrontController extends Controller
                 ->withInput();
         }
 
-        $manufacturer = Manufacturer::where('name', $request->get('name'))->first();
-        $manufacturer->name = $request->get('name');
+        $manufacturer = Manufacturer::where('name', $request->input('name'))->first();
+        $manufacturer->name = $request->input('name');
         $manufacturer->save();
 
         return redirect('/admin/back-office/manufacturers');
@@ -99,7 +99,7 @@ class ManufacturerFrontController extends Controller
     */
     public function destroy(Request $request): RedirectResponse
     {
-        $manufacturer = Manufacturer::where('name', $request->get('name'))->first();
+        $manufacturer = Manufacturer::where('name', $request->input('name'))->first();
         $manufacturer->delete();
 
         return redirect('/admin/back-office/manufacturers');
@@ -112,7 +112,7 @@ class ManufacturerFrontController extends Controller
     */
     public function destroyBulk(Request $request): RedirectResponse
     {
-        $manufacturers = Manufacturer::whereIn('name', $request->get('names'))->get();
+        $manufacturers = Manufacturer::whereIn('name', $request->input('names'))->get();
         foreach($manufacturers as $manufacturer) {
             $manufacturer->delete();
         }

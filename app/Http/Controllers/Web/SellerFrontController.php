@@ -66,15 +66,15 @@ class SellerFrontController extends Controller
         $seller = new Seller();
         $seller->save();
         $sellerTaxInformation = new SellerTaxInformation();
-        $sellerTaxInformation->tax_country = $request->get('tax_country');
-        $sellerTaxInformation->tax_type = $request->get('tax_type');
-        $sellerTaxInformation->tax_number = $request->get('tax_number');
-        $sellerTaxInformation->tax_scheme = $request->get('tax_scheme');
-        $sellerTaxInformation->reduced_tax_rate = $request->get('reduced_tax_rate');
-        $sellerTaxInformation->tax_registration_status = $request->get('tax_registration_status');
-        $sellerTaxInformation->invoice_tax_label = $request->get('invoice_tax_label') ?? null;
+        $sellerTaxInformation->tax_country = $request->input('tax_country');
+        $sellerTaxInformation->tax_type = $request->input('tax_type');
+        $sellerTaxInformation->tax_number = $request->input('tax_number');
+        $sellerTaxInformation->tax_scheme = $request->input('tax_scheme');
+        $sellerTaxInformation->reduced_tax_rate = $request->input('reduced_tax_rate');
+        $sellerTaxInformation->tax_registration_status = $request->input('tax_registration_status');
+        $sellerTaxInformation->invoice_tax_label = $request->input('invoice_tax_label') ?? null;
         $sellerTaxInformation->requires_tax_invoice = true;
-        $sellerTaxInformation->qualified_invoice_number = $request->get('qualified_invoice_number') ?? null;
+        $sellerTaxInformation->qualified_invoice_number = $request->input('qualified_invoice_number') ?? null;
         $sellerTaxInformation->seller()->associate($seller);
         $sellerTaxInformation->save();
 
@@ -90,8 +90,8 @@ class SellerFrontController extends Controller
             return redirect('/settings');
         }
 
-        $sortBy = $request->get('sortBy', 'id');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'id');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'id';

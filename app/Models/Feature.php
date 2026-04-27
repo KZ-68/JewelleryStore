@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Feature extends Model
 {
@@ -16,12 +17,29 @@ class Feature extends Model
         'name',
     ];
 
+    // Create a slug automaticaly after the creation of the feature
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($feature) {
+            $slug = Str::slug($feature->name);
+            $count = 1;
+
+            while (static::where('slug', $slug)->exists()) {
+                $slug = $slug . '-' . $count++;
+            }
+
+            $feature->slug = $slug;
+        });
+    }
+
     /**
     * The products that belong to the feature.
     */
-    public function products(): BelongsToMany
+    public function values(): HasMany
     {
-        return $this->belongsToMany(Product::class, 'feature_values', 'feature_id', 'product_id');
+        return $this->hasMany(FeatureValue::class);
     }
 
     /**

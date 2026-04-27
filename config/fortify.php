@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'passwords' => 'users',
+    'passwords' => 'customers',
 
     /*
     |--------------------------------------------------------------------------
@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    'home' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -151,7 +151,7 @@ return [
         // Features::updatePasswords(),
         Features::twoFactorAuthentication([
             'confirm' => true,
-            'confirmPassword' => true,
+            'confirmPassword' => false,
             // 'window' => 0
         ]),
     ],

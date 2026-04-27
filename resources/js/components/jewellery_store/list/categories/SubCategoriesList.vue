@@ -9,29 +9,29 @@ import { Ziggy } from '../../../../ziggy.js';
 interface SubCategoriesListProps {
     classname:string
     subCategories: Category[]
+    parentCategoryName: string
+    locale: string
 }
 
-// const emit = defineEmits<{
-//   (e: 'navigate', url: string): void
-// }>() 
+const props = defineProps<SubCategoriesListProps>()
 
 const selected = ref<string[]>([]);
 
 const deleteSubCategory = (name: string) => {
-    router.post(route('delete-category', {slug: name}, false, Ziggy), {name: name})
+    router.post(route('delete-category', {locale: props.locale, slug: name}, false, Ziggy), {locale: props.locale, name: name})
 }
 
 const getSelected = () => {
     return selected.value
 }
 
-defineProps<SubCategoriesListProps>()
 defineExpose({
     getSelected
 });
 </script>
 
 <template>
+    <h2 class="text-3xl my-6">Sub Categories for {{ props.parentCategoryName }}</h2>
     <section id="sub-categories-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-8">
         <ul v-if="subCategories.length > 0" id="categories-list" class="flex flex-col gap-4">
             <li v-for="subCategory in subCategories" v-bind:key="subCategory.id" class="flex flex-row justify-between bg-white rounded-md py-4 px-5 my-3">

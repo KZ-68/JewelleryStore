@@ -4,6 +4,8 @@ import { Product } from '@/types/product';
 import { ref } from "vue";
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';import SearchProductCard from './card/SearchProductCard.vue';
+import { usePage } from '@inertiajs/vue3';
+import { useTrans } from '@/composables/trans';
 
 let searchText = ref('');
 let results = ref<Product[]|null>(null);
@@ -18,7 +20,7 @@ async function search(text: string) {
 
     try {
         await axios.post(
-            route('searchProducts', {text: text}, false, Ziggy), {text: text}
+            route('searchProducts', {locale: usePage.props.locale, text: text}, false, Ziggy), {text: text}
         ).then(response => {
             results.value = response.data.results
         })
@@ -30,15 +32,15 @@ async function search(text: string) {
 </script>
 
 <template>
-    <div id="search-bar-wrapper" class="flex flex-col lg:block relative mx-4 lg:mx-8">
-        <input @input="search(searchText)" id="shop-search-bar" type="text" name="text" v-model="searchText" class="w-80 lg:w-3xl px-2 py-3 rounded-md border-2 border-gray-200">
+    <div id="search-bar-wrapper" class="relative w-full">
+        <input @input="search(searchText)" id="shop-search-bar" type="text" name="text" v-model="searchText" class="w-full px-2 py-2 lg:py-3 rounded-md border-2 border-gray-200">
         <div id="search-results-wrapper" class="absolute top-9 lg:top-0 px-3 py-4 z-[2]">
             <ul id="search-results-list" class="flex flex-col">
                 <li v-if="results !== null" v-for="product in results">
-                    <SearchProductCard :product="product" :image="product.image"></SearchProductCard>
+                    <SearchProductCard :locale="usePage.props.locale" :product="product" :image="product.image"></SearchProductCard>
                 </li>
                 <li v-else-if="searchBarActive === true && results === null" class="flex flex-row">
-                    <p>No products found</p>
+                    <p>{{ useTrans('No products found') }}</p>
                 </li>
             </ul>
         </div>

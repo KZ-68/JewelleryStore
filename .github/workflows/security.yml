@@ -21,7 +21,7 @@ jobs:
     
     steps:
         - name: Checkout code
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             fetch-depth: 0
 
@@ -42,12 +42,24 @@ jobs:
               ${{ runner.os }}-composer-
         - name: Install PHP dependencies
           run: composer install --no-progress --prefer-dist --optimize-autoloader
-        - name: Run security check
-          run: composer audit
+        - name: Run critical vulnerability check
+          run: |
+            composer audit --format=json > audit.json
+            if grep -q '"severity":"critical"' audit.json; then
+              echo "Critical vulnerability found!"
+              exit 1
+            fi
         - name: Analyze code quality
           run: |
             echo "## Analyse de la Pull Request" >> pr_analysis.md
             echo "" >> pr_analysis.md
+
+            if [ -s audit.json ]; then
+              echo "Vulnérabilités détectées :" >> pr_analysis.md
+              cat audit.json >> pr_analysis.md
+            else
+              echo "Aucune vulnérabilité détectée" >> pr_analysis.md
+            fi
             
             # Compter les fichiers modifiés
             FILES_CHANGED=$(git diff --name-only origin/main...HEAD | wc -l)
@@ -56,11 +68,6 @@ jobs:
             # Compter les lignes ajoutées/supprimées
             LINES_STATS=$(git diff --stat origin/main...HEAD | tail -1)
             echo "- **Statistiques:** $LINES_STATS" >> pr_analysis.md
-            
-            echo "" >> pr_analysis.md
-            echo "### Vérifications effectuées" >> pr_analysis.md
-            echo "- Tests unitaires passés" >> pr_analysis.md
-            echo "- Analyse de sécurité effectuée" >> pr_analysis.md
             
             if [ -f ".php-cs-fixer.php" ]; then
               echo "- Standards de code vérifiés" >> pr_analysis.md
@@ -71,11 +78,31 @@ jobs:
             github-token: ${{ secrets.GITHUB_TOKEN }}
             script: |
               const fs = require('fs');
+
               const analysis = fs.readFileSync('pr_analysis.md', 'utf8');
-              
-              github.rest.issues.createComment({
-                issue_number: context.issue.number,
+
+              const comments = await github.rest.issues.listComments({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: analysis
+                issue_number: context.issue.number
               });
+
+              const botComment = comments.data.find(c =>
+                c.body.includes('Composer Security Audit')
+              );
+
+              if (botComment) {
+                await github.rest.issues.updateComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: botComment.id,
+                  body: analysis
+                });
+              } else {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: analysis
+                });
+              }

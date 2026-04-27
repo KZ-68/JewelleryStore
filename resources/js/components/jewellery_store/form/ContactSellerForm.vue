@@ -16,6 +16,7 @@ interface ContactSellerFormProps {
     seller: Seller
     customer: null|Customer
     slug: string
+    locale: string
 }
     
 const props = defineProps<ContactSellerFormProps>();
@@ -24,7 +25,7 @@ const props = defineProps<ContactSellerFormProps>();
 <template>
     <section id="contact-form-wrapper" class="lg:my-10 lg:mx-15 w-[300px] lg:w-[900px] max-w-[300px] lg:max-w-[900px] py-6 px-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
         <Form
-            v-bind="ShopProductFrontController.validateContactSeller.form({slug: props.slug})"
+            v-bind="ShopProductFrontController.validateContactSeller.form({locale: props.locale, slug: props.slug})"
             :reset-on-success="['contact']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -99,7 +100,7 @@ const props = defineProps<ContactSellerFormProps>();
                         <span>
                             By submitting this form, I declare that I have read the privacy policy and authorize the Controller to respond to me as expressed in point a and b of the
                             <Link
-                                :href="privacy()"
+                                :href="privacy({locale: props.locale})"
                                 class="inline-block "
                             >
                                 Privacy Policy
@@ -111,7 +112,7 @@ const props = defineProps<ContactSellerFormProps>();
 
                 <Button
                     type="submit"
-                    class="mt-4 w-20 py-2 bg-[#84070F] hover:bg-red-800 hover:cursor-pointer font-bold text-white rounded-sm"
+                    class="mt-4 w-20 py-2 bg-shop-primary hover:bg-red-800 hover:cursor-pointer font-bold text-white rounded-sm"
                     :tabindex="5"
                     :disabled="processing"
                     data-test="login-button"

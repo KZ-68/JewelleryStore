@@ -68,9 +68,9 @@ class CustomerFrontController extends Controller
         }
 
         $customer = new Customer;
-        $customer->name = $request->get('name');
-        $customer->email = $request->get('email');
-        $customer->password = Hash::make($request->get('password'));
+        $customer->name = $request->input('name');
+        $customer->email = $request->input('email');
+        $customer->password = Hash::make($request->input('password'));
         $customer->save();
 
         return redirect('/admin/back-office/customers');
@@ -88,13 +88,13 @@ class CustomerFrontController extends Controller
             'email' => 'required|string|email|max:255|unique:customers',
         ]);
 
-        if($request->get('current_password') !== '' && $request->get('password') !== '') {
-            $customer = Customer::where('email', $request->get('email'))->first();
-            $validatePassword = Validator::make([$request->get('current_password'), $request->get('password')], [
+        if($request->input('current_password') !== '' && $request->input('password') !== '') {
+            $customer = Customer::where('email', $request->input('email'))->first();
+            $validatePassword = Validator::make([$request->input('current_password'), $request->input('password')], [
                 'current_password' => 'current_password',
                 'password' => 'min:12|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/',
             ]);
-            $customer->password = Hash::make($request->get('password'));
+            $customer->password = Hash::make($request->input('password'));
         }
 
         if ($validator->fails() || $validatePassword->fails()) {
@@ -104,12 +104,12 @@ class CustomerFrontController extends Controller
         }
 
 
-        $customer = Customer::where('email', $request->get('email'))->first();
-        $customer->name = $request->get('name');
-        $customer->email = $request->get('email');
+        $customer = Customer::where('email', $request->input('email'))->first();
+        $customer->name = $request->input('name');
+        $customer->email = $request->input('email');
         $customer->save();
-        if($request->get('checked_groups') !== null) {
-            $checkedGroups = json_decode($request->get('checked_groups'), true);
+        if($request->input('checked_groups') !== null) {
+            $checkedGroups = json_decode($request->input('checked_groups'), true);
             $customer->groups()->attach($checkedGroups);
             $customer->save();
         }

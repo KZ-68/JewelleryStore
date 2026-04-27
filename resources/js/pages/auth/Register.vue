@@ -6,20 +6,34 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { ref } from 'vue';
+import { route } from '../../../../vendor/tightenco/ziggy/src/js';
+import { Ziggy } from '@/ziggy';
+import { local } from '@/routes/storage';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
+
+interface RegisterProps {
+    locale: string
+}
+
+const props = defineProps<RegisterProps>();
+const passwordValue = ref('')
 </script>
 
 <template>
     <AuthBase
         title="Create an account"
         description="Enter your details below to create your account"
+        :locale="props.locale"
     >
-        <Head title="Register" />
+        <Head title="Register">
+            <meta name="description" content="Créez votre compte JewelleryStore gratuitement pour passer commande, suivre vos livraisons et gérer vos bijoux préférés." head-key="description" />
+        </Head>
 
         <Form
-            v-bind="RegisteredCustomerController.store.form()"
+            v-bind="RegisteredCustomerController.store.form({locale: locale})"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
@@ -64,7 +78,9 @@ import { LoaderCircle } from 'lucide-vue-next';
                         autocomplete="new-password"
                         name="password"
                         placeholder="Password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 
@@ -100,7 +116,7 @@ import { LoaderCircle } from 'lucide-vue-next';
             <div class="text-center text-sm text-muted-foreground">
                 Already have an account?
                 <TextLink
-                    :href="login()"
+                    :href="route('login', {locale: props.locale}, false, Ziggy)"
                     class="underline underline-offset-4"
                     :tabindex="6"
                     >Log in</TextLink

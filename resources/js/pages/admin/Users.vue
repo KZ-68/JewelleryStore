@@ -14,14 +14,15 @@ interface UsersProps {
     sortBy: string
     order: string
   }
-}  
+  locale: string
+}
 
 const props = defineProps<UsersProps>()
-  
+
 const sortBy = ref<string>(props.filters.sortBy || 'id')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'desc')
 
-const url = route('admin.back-office.showTeam', {}, false, Ziggy);
+const url = route('admin.back-office.showTeam', {locale: props.locale}, false, Ziggy);
 
 const updateUsersFilters = () => {
   router.get(url, {
@@ -37,33 +38,52 @@ const navigate = (url: string) => {
 
 <template>
     <Head title="Users" />
-    <AppLayout>
-      <div id="customers-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
-        <h2 class="text-3xl my-6">Users</h2>
-        <section id="customers-top-wrapper" class="flex lg:flex-row sm:flex-col lg:my-0 sm:my-6 justify-between items-center">
-            <div id="customers-filters-wrapper" class="flex flex-row my-6 gap-4">
-              <label for="sortBy" class="my-4">Trier par :</label>
-              <select id="sortBy" v-model="sortBy" @change="updateUsersFilters" class="rounded-md bg-neutral-100 px-2">
-                <option value="id">Id</option>
-                <option value="name">Nom</option>
-                <option value="email">Email</option>
-                <option value="created_at">Date de création</option>
-              </select>
-              <select id="order" v-model="order" @change="updateUsersFilters" class="rounded-md bg-neutral-100 px-2">
-                <option value="asc">Ascendant</option>
-                <option value="desc">Descendant</option>
-              </select>
-            </div>
-            <nav id="customers-top-nav" class="flex flex-row">
-            </nav>
-        </section>
+    <AppLayout :locale="props.locale">
+        <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
+            <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <UsersList
-          classname=""
-          :users=props.users
-          :sort-by="sortBy"
-          :order="order"
-        />
-      </div>
+                <!-- En-tête -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Users
+                    </h1>
+                </div>
+
+                <!-- Filtres -->
+                <div class="flex flex-wrap items-center gap-3 mb-6 px-4 py-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 shrink-0">Sort by :</span>
+                    <select
+                        id="sortBy"
+                        v-model="sortBy"
+                        @change="updateUsersFilters"
+                        aria-label="Sort field"
+                        class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
+                    >
+                        <option value="id">ID</option>
+                        <option value="name">Name</option>
+                        <option value="email">Email</option>
+                        <option value="created_at">Date created</option>
+                    </select>
+                    <select
+                        id="order"
+                        v-model="order"
+                        @change="updateUsersFilters"
+                        aria-label="Sort order"
+                        class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
+                    >
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+
+                <UsersList
+                    classname=""
+                    :users="props.users"
+                    :sort-by="sortBy"
+                    :order="order"
+                    :locale="props.locale"
+                />
+            </div>
+        </div>
     </AppLayout>
 </template>

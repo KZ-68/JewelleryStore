@@ -32,14 +32,14 @@ class CarrierDataFrontController extends Controller
                 ->withInput();
         }
 
-        $carrier = Carrier::where('name', $request->get('name'))->first();
-        $carrier->name = $request->get('name');
-        $carrier->description = $request->get('description');
+        $carrier = Carrier::where('name', $request->input('name'))->first();
+        $carrier->name = $request->input('name');
+        $carrier->description = $request->input('description');
         $carrier->save();
         $shippingRate = new ShippingRate();
-        $shippingRate->min_total = $request->get('min_total');
-        $shippingRate->max_total = $request->get('max_total');
-        $shippingRate->price = $request->get('price');
+        $shippingRate->min_total = $request->input('min_total');
+        $shippingRate->max_total = $request->input('max_total');
+        $shippingRate->price = $request->input('price');
         $shippingRate->save();
         $carrier->shippingRates()->associate($shippingRate);
         

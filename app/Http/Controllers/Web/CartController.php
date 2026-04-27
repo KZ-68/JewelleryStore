@@ -37,8 +37,8 @@ class CartController extends Controller
     {
         $product = $request->product;
         $productId = $request->product['id'];
-        $retailPrice = $request->retail_price;
         $quantity = $request->quantity;
+        $retailPrice = $request->retail_price * $quantity;
         $cart->add($product, $productId, $quantity, $retailPrice);
 
         if($request->user('web')) {
@@ -56,7 +56,7 @@ class CartController extends Controller
     {
         $productCart = $request->product;
         $product = Product::where('id', $productCart['product_id'])->first();
-        $cart->remove($product->id, $product->retail_price);
+        $cart->remove($product->id, $productCart['retail_price']);
 
         return true;
     }

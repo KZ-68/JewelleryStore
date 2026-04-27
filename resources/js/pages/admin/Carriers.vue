@@ -15,14 +15,15 @@ interface CarriersProps {
     sortBy: string
     order: string
   }
-}  
+  locale: string
+}
 
 const props = defineProps<CarriersProps>()
-  
+
 const sortBy = ref<string>(props.filters.sortBy || 'name')
 const order = ref<'asc' | 'desc'>((props.filters.order as 'asc' | 'desc') || 'asc')
 
-const url = route('admin.back-office.showCarriers', {}, false, Ziggy);
+const url = route('admin.back-office.showCarriers', {locale: props.locale}, false, Ziggy);
 
 const updateFilters = () => {
   router.get(url, {
@@ -38,37 +39,59 @@ const navigate = (url: string) => {
 
 <template>
     <Head title="Carriers" />
-    <AppLayout>
-      <div id="carriers-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 bg-neutral-200 dark:bg-[#0a0a0a]">
-        <h2 class="text-3xl my-6">Carriers</h2>
-        <section id="carriers-top-wrapper" class="flex flex-row justify-between items-center">
-          <div id="carriers-filters-wrapper" class="flex flex-row my-6 gap-2">
-            <label for="sortBy" class="my-4">Order by :</label>
-            <select id="sortBy" v-model="sortBy" @change="updateFilters" class="rounded-md bg-neutral-100 p-2">
-              <option value="name">Name</option>
-              <option value="created_at">Date created</option>
-            </select>
-            <select id="order" v-model="order" @change="updateFilters" class="rounded-md bg-neutral-100 p-2">
-              <option value="asc">Ascendant</option>
-              <option value="desc">Descendant</option>
-            </select>
-          </div>
-          <nav id="carriers-top-nav" class="flex flex-row">
-            <Link
-                :href="newCarrier()"
-                class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-            >
-                Add a new carrier
-            </Link>
-          </nav>
-        </section>
-        
-        <CarriersList
-          classname=""
-          :carriers=props.carriers
-          :sort-by="sortBy"
-          :order="order"
-        />
-      </div>
+    <AppLayout :locale="props.locale">
+        <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
+            <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+                <!-- En-tête -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Carriers
+                    </h1>
+                    <Link
+                        :href="newCarrier({locale: props.locale})"
+                        class="inline-flex items-center gap-2 self-start sm:self-auto rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+                    >
+                        <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Add a carrier
+                    </Link>
+                </div>
+
+                <!-- Filtres -->
+                <div class="flex flex-wrap items-center gap-3 mb-6 px-4 py-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 shrink-0">Order by :</span>
+                    <select
+                        id="sortBy"
+                        v-model="sortBy"
+                        @change="updateFilters"
+                        aria-label="Sort field"
+                        class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
+                    >
+                        <option value="name">Name</option>
+                        <option value="created_at">Date created</option>
+                    </select>
+                    <select
+                        id="order"
+                        v-model="order"
+                        @change="updateFilters"
+                        aria-label="Sort order"
+                        class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
+                    >
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+
+                <CarriersList
+                    classname=""
+                    :carriers="props.carriers"
+                    :sort-by="sortBy"
+                    :order="order"
+                    :locale="props.locale"
+                />
+            </div>
+        </div>
     </AppLayout>
 </template>

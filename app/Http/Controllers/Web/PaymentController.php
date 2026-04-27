@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\DTOs\CreateOrderDTO;
+use App\Contracts\StripePaymentMethodsResolverInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\CartHelper;
 use App\Http\Requests\CreateOrderRequest;
 use App\Models\Carrier;
-use App\Models\Customer;
-use App\Services\Order\CreateOrderService;
-use Illuminate\Http\Request;
+use App\Models\Country;
+use App\Models\ShippingRate;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -17,36 +17,71 @@ class PaymentController extends Controller
     private const SESSION_KEY = 'order';
 
     public function __construct(
-        private CreateOrderService $orderService
+        private StripePaymentMethodsResolverInterface $paymentMethodsResolver,
     ) {}
 
-    public function createIntent(Request $request, CartHelper $cart, CreateOrderRequest $orderRequest)
+    public function createIntent(CreateOrderRequest $orderRequest, CartHelper $cart): JsonResponse
     {
-        $cartProduct = $cart->get();
-        $carrier = Carrier::where('id', $cartProduct['carrier']['id'])->firstOrFail();
-        $user = $request->user('web');
-        $customer = Customer::where('id', $user->id)->firstOrFail();
-        $dto = CreateOrderDTO::fromRequest($orderRequest);
-        $order = $this->orderService->createOrder($dto, $carrier, $customer);
-        
-        Session::put(self::SESSION_KEY, [
-            'id' => $order->id,
-            'reference' => $order->reference
-        ]);
+        $user = $orderRequest->user('web');
 
-        $payment = $customer->payWith(
-            ($request->get('amount') * 100),
-            ['card', 'bancontact'],
-            [
-                'currency' => 'eur',
-                'metadata' => [
-                    'order_id' => $order->id,
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], 401);
+        }
+
+        $cartData = $cart->get();
+
+        if (empty($cartData['products'])) {
+            return response()->json(['error' => 'Your cart is empty'], 422);
+        }
+
+        if (empty($cartData['delivery_address']['address_line_1'])) {
+            return response()->json(['error' => 'No delivery address selected'], 422);
+        }
+
+        if (empty($cartData['carrier']['id'])) {
+            return response()->json(['error' => 'No carrier selected'], 422);
+        }
+
+        if (empty($cartData['payment']['id'])) {
+            return response()->json(['error' => 'No payment method selected'], 422);
+        }
+
+        try {
+            $carrier = Carrier::where('id', $cartData['carrier']['id'])->firstOrFail();
+            $country = Country::findOrFail($cartData['delivery_address']['country_id']);
+
+            $shippingRate = ShippingRate::where('carrier_id', $carrier->id)
+                ->where('min_total', '<=', $cartData['total_price'])
+                ->where('max_total', '>=', $cartData['total_price'])
+                ->first();
+
+            $shippingCost  = $shippingRate ? (float) $shippingRate->price : 0.0;
+            $amountInCents = (int) round(($cartData['total_price'] + $shippingCost) * 100);
+
+            $paymentMethods = $this->paymentMethodsResolver->resolve($country->iso);
+
+            $payment = $user->payWith(
+                $amountInCents,
+                $paymentMethods,
+                [
+                    'currency' => 'eur',
+                    'metadata' => [
+                        'carrier_id' => $carrier->id,
+                        'country'    => $country->iso,
+                    ],
                 ],
-            ],
-        );
+            );
 
-        return response()->json([
-            'clientSecret' => $payment->client_secret,
-        ]);
+            // Persiste le contexte nécessaire à la création de commande post-paiement
+            Session::put(self::SESSION_KEY, [
+                'payment_intent_id' => $payment->id,
+                'order_dto'         => $orderRequest->validated(),
+            ]);
+
+            return response()->json(['clientSecret' => $payment->client_secret]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Payment initialization failed'], 500);
+        }
     }
 }

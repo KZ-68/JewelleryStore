@@ -66,7 +66,7 @@ class CarrierFrontController extends Controller
         }
 
         $carrier = new Carrier;
-        $carrier->name = $request->get('name');
+        $carrier->name = $request->input('name');
         $carrier->save();
 
         return redirect('/admin/back-office/carriers');
@@ -89,8 +89,8 @@ class CarrierFrontController extends Controller
                 ->withInput();
         }
 
-        $carrier = Carrier::where('name', $request->get('name'))->first();
-        $carrier->name = $request->get('name');
+        $carrier = Carrier::where('name', $request->input('name'))->first();
+        $carrier->name = $request->input('name');
         $carrier->save();
 
         return redirect('/admin/back-office/carriers');
@@ -103,7 +103,7 @@ class CarrierFrontController extends Controller
     */
     public function destroy(Request $request): RedirectResponse
     {
-        $carrier = Carrier::where('name', $request->get('name'))->first();
+        $carrier = Carrier::where('name', $request->input('name'))->first();
         $carrier->delete();
 
         return redirect('/admin/back-office/carriers');

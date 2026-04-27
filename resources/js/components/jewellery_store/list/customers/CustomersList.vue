@@ -35,7 +35,11 @@ defineProps<CustomersListProps>()
                 </tr>
             </tbody>
             <tbody v-else id="customers-list">
-                <th scope="row">No Customer registered</th>
+                <tr>
+                    <th scope="row">
+                        No Customer registered
+                    </th>
+                </tr>
             </tbody>
         </table>
     </section>

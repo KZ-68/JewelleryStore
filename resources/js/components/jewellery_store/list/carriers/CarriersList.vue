@@ -11,23 +11,21 @@ interface CarriersListProps {
     carriers: Carrier[]
     sortBy: string
     order: 'asc' | 'desc'
+    locale: string
 }
 
-// const emit = defineEmits<{
-//   (e: 'navigate', url: string): void
-// }>() 
+const props = defineProps<CarriersListProps>()
 
 const selected = ref<string[]>([]);
 
 const deleteCarrier = (name: string) => {
-    router.post(route('delete-carrier', {slug: name}, false, Ziggy), {name: name})
+    router.post(route('delete-carrier', {locale: props.locale, slug: name}, false, Ziggy), {locale: props.locale, name: name})
 }
 
 const getSelected = () => {
     return selected.value
 }
 
-defineProps<CarriersListProps>()
 defineExpose({
     getSelected
 });

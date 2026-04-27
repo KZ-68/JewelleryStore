@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import ContactForm from '@/components/jewellery_store/form/ContactForm.vue';
-import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
-import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
+import { Head } from '@inertiajs/vue3';
+import AppShopLayout from '@/layouts/AppShopLayout.vue';
 import { Category } from '@/types/category';
 
 interface ContactPageProps {
     frontCategories: Category[]
     cartProductsCount: number
+    locale: string
 }
 
 const props =  defineProps<ContactPageProps>();
 </script>
 
 <template>
-    <ShopHeader :front-categories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-    <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-neutral-200 dark:bg-[#0a0a0a]">
+    <Head title="Contact">
+        <meta name="description" content="Contactez l'équipe JewelleryStore pour toute question sur vos commandes, bijoux ou services. Nous vous répondons dans les plus brefs délais." head-key="description" />
+    </Head>
+    <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
         <h2 class="text-3xl my-6 mx-15">Contact</h2>
-        <ContactForm classname=""></ContactForm>
-    </main>
-    <ShopFooter></ShopFooter>
+        <ContactForm classname="" :locale="props.locale"></ContactForm>
+    </AppShopLayout>
 </template>

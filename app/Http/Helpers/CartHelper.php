@@ -25,6 +25,7 @@ class CartHelper
             if ($item['product_id'] === $id) {
                 $item['quantity'] += $quantity;
                 $item['retail_price'] += $retailPrice;
+                $cart['total_price'] += $retailPrice;
                 $this->set($cart);
                 return;
             }
@@ -50,6 +51,7 @@ class CartHelper
                 if ($item['product_id'] === $id) {
                     $item['quantity'] += $quantity;
                     $item['retail_price'] += $retailPrice;
+                    $cart['total_price'] += $retailPrice;
                     $this->set($cart);
                 }
             }
@@ -66,8 +68,10 @@ class CartHelper
                 $item['retail_price'] -= $retailPrice;
                 if($item['quantity'] === 0) {
                     $cart['products'] = [];
+                    $cart['total_price'] = 0;
                     $this->set($cart);
                 } else {
+                    $cart['total_price'] -= $retailPrice;
                     $this->set($cart);
                 }
             }
@@ -133,6 +137,10 @@ class CartHelper
                 'slug' => null,
                 'description' => null,
                 'carrier_position' => 0
+            ],
+            'payment' => [
+                'id' => null,
+                'name' => null,
             ]
         ];
     }

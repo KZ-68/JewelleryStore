@@ -1,0 +1,93 @@
+services:
+    app:
+      build:
+        context: .
+        dockerfile: .docker/php/Dockerfile
+        target: frankenphp_dev
+      container_name: laravel_app
+      image: dunglas/frankenphp
+      networks:
+        - laravel_app
+      ports:
+        - '80:80'
+        - '443:443'
+        - '443:443/udp'
+        - ${VITE_PORT:-5173}:${VITE_PORT:-5173}
+      healthcheck:
+        disable: true
+      volumes:
+        - ./:/app:rw
+        - ./vendor:/vendor:rw
+        - caddy_data:/data
+        - caddy_config:/config
+        - ./frankenphp/Caddyfile:/etc/caddy/Caddyfile:rw
+        - ./frankenphp/conf.d/20-app.prod.ini:/usr/local/etc/php/app.conf.d/20-app.prod.ini:rw
+        - ./logs:/var/log/frankenphp:rw
+        - ./frankenphp/hosts:/etc/caddy/hosts:rw
+      cap_add:
+        - NET_BIND_SERVICE
+      tty: true
+      depends_on:
+        - mysql
+      environment:
+        APP_ENV: dev
+        APP_DEBUG: 'true'
+        APP_URL: 'http://www.joaillerie-orient.tech'
+        SANCTUM_STATEFUL_DOMAINS: joaillerie-orient.tech
+        SESSION_DOMAIN: joaillerie-orient.tech
+        DB_HOST: ${DB_HOST}
+        DB_PORT: ${DB_PORT}
+        DB_DATABASE: ${DB_DATABASE}
+        DB_USERNAME: ${DB_USERNAME}
+        DB_PASSWORD: ${DB_PASSWORD}
+    mysql:
+      image: 'mysql:8.0'
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${DB_DATABASE}
+        MYSQL_USER: ${DB_USERNAME}
+        MYSQL_PASSWORD: ${DB_PASSWORD}
+        MYSQL_ROOT_HOST: '%'
+      ports:
+        - 3306:3306
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 40s
+        retries: 5
+        start_period: 120s
+      volumes:
+        - db_data:/var/lib/mysql
+      networks:
+        - laravel_app
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      restart: always
+      ports:
+        - "8081:80"
+      depends_on:
+        - mysql
+      environment:
+        PMA_HOST: mysql
+        PMA_ARBITRARY: 0
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      networks:
+          - laravel_app
+    rabbitmq:
+      image: rabbitmq:3.9-management
+      depends_on:
+        - app
+      ports:
+      - '5672:5672'
+      - '15672:15672'
+      networks:
+        - laravel_app
+networks:
+    laravel_app:
+        driver: bridge
+volumes:
+    db_data:
+    caddy_data:
+    caddy_config:
+    sail-mysql:
+      driver: local

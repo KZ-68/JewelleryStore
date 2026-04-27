@@ -6,6 +6,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\OrderListRepositoryInterface;
 use App\Models\Tax;
 use App\Models\User;
 use Inertia\Inertia;
@@ -19,9 +20,14 @@ use App\Models\Manufacturer;
 use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Feature;
 
 class BackOfficeController extends Controller
 {
+    public function __construct(
+        private OrderListRepositoryInterface $orderListRepository
+    ) {}
+
     /**
     * Render the view assigned to the Back Office page
     * @param Request Get the request, via GET method
@@ -43,8 +49,8 @@ class BackOfficeController extends Controller
     {
 
         // Create filters for dynamic change on the manufacturers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['name', 'country', 'created_at'])) {
             $sortBy = 'name';
@@ -79,8 +85,8 @@ class BackOfficeController extends Controller
     {
 
         // Create filters for dynamic change on the products list
-        $sortBy = $request->get('sortBy', 'id');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'id');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'id';
@@ -115,8 +121,8 @@ class BackOfficeController extends Controller
     {
 
         // Create filters for dynamic change on the suppliers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['name', 'created_at'])) {
             $sortBy = 'name';
@@ -150,8 +156,8 @@ class BackOfficeController extends Controller
     public function showCategories(Request $request): Response
     {
         // Create filters for dynamic change on the categories list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['name', 'created_at'])) {
             $sortBy = 'name';
@@ -181,8 +187,8 @@ class BackOfficeController extends Controller
     public function showCustomers(Request $request): Response
     {
         // Create filters for dynamic change on the customers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
             $sortBy = 'name';
@@ -216,8 +222,8 @@ class BackOfficeController extends Controller
     public function showCarriers(Request $request): Response
     {
         // Create filters for dynamic change on the carriers list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
             $sortBy = 'name';
@@ -251,8 +257,8 @@ class BackOfficeController extends Controller
     public function showTaxes(Request $request): Response
     {
         // Create filters for dynamic change on the taxes list
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name'])) {
             $sortBy = 'name';
@@ -288,8 +294,8 @@ class BackOfficeController extends Controller
     */
     public function showTeam(Request $request): Response
     {
-        $sortBy = $request->get('sortBy', 'name');
-        $order = $request->get('order', 'asc');
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
 
         if (!in_array($sortBy, ['id', 'name', 'email', 'created_at'])) {
             $sortBy = 'name';
@@ -311,5 +317,60 @@ class BackOfficeController extends Controller
                 ],
             ]
         );
+    }
+
+    public function featuresList(Request $request) : Response
+    {
+        $sortBy = $request->input('sortBy', 'name');
+        $order = $request->input('order', 'asc');
+
+        if (!in_array($sortBy, ['id', 'name', 'created_at'])) {
+            $sortBy = 'name';
+        }
+
+        if (!in_array(strtolower($order), ['asc', 'desc'])) {
+            $order = 'asc';
+        }
+
+        $features = Feature::with('feature_values')->orderBy($sortBy, $order)->get();
+
+        return Inertia::render(
+            'admin/Features', 
+            [
+                'features' => $features,
+                'filters' => [
+                    'sortBy' => $sortBy,
+                    'order' => $order,
+                ],
+            ]
+        );
+    }
+
+    public function ordersList(Request $request) : Response
+    {
+        $filters = $this->extractFilters($request);
+        $orders = $this->orderListRepository->getAllOrders($filters);
+
+        return Inertia::render(
+            'admin/Orders', 
+            [
+                'orders' => $orders,
+                'filters' => $filters
+            ]
+        );
+    }
+
+    private function extractFilters(Request $request): array
+    {
+        $allowedSorts = ['reference', 'created_at'];
+        $allowedOrders = ['asc', 'desc'];
+
+        $sortBy = $request->input('sortBy', 'reference');
+        $orderBy = strtolower($request->input('orderBy', 'asc'));
+
+        return [
+            'sortBy' => in_array($sortBy, $allowedSorts) ? $sortBy : 'reference',
+            'orderBy' => in_array($orderBy, $allowedOrders) ? $orderBy : 'asc',
+        ];
     }
 }

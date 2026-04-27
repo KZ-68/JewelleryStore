@@ -76,29 +76,29 @@ class TaxRuleGroupFrontController extends Controller
         }
 
         $taxRuleGroup = new TaxRuleGroup;
-        $taxRuleGroup->name = $request->get('name');
-        $taxRuleGroup->active = $request->get('active');
+        $taxRuleGroup->name = $request->input('name');
+        $taxRuleGroup->active = $request->input('active');
         $taxRuleGroup->save();
-        $taxRuleGroup = TaxRuleGroup::where('name', $request->get('name'))->first();
-        $selectedCountries = json_decode($request->get('selected-countries'), true);
+        $taxRuleGroup = TaxRuleGroup::where('name', $request->input('name'))->first();
+        $selectedCountries = json_decode($request->input('selected-countries'), true);
         if(count($selectedCountries) > 1) {
             foreach ($selectedCountries as $countryLocal) {
                 $taxRule = new TaxRule;
-                $taxRule->tax()->associate(Tax::where('name', $request->get('tax'))->first());
+                $taxRule->tax()->associate(Tax::where('name', $request->input('tax'))->first());
                 $taxRule->country()->associate(Country::where('local', $countryLocal)->first());
                 $taxRule->taxRuleGroup()->associate($taxRuleGroup);
-                $taxRule->behavior = $request->get('behavior');
-                $taxRule->rate_order = $request->get('rate_order');
+                $taxRule->behavior = $request->input('behavior');
+                $taxRule->rate_order = $request->input('rate_order');
                 $taxRule->save();
                 $taxRule = null;
             }
         } else {
             $taxRule = new TaxRule;
-            $taxRule->tax()->associate(Tax::where('name', $request->get('tax'))->first());
-            $taxRule->country()->associate(Country::where('local', $request->get('countries'))->first());
+            $taxRule->tax()->associate(Tax::where('name', $request->input('tax'))->first());
+            $taxRule->country()->associate(Country::where('local', $request->input('countries'))->first());
             $taxRule->taxRuleGroup()->associate($taxRuleGroup);
-            $taxRule->behavior = $request->get('behavior');
-            $taxRule->rate_order = $request->get('rate_order');
+            $taxRule->behavior = $request->input('behavior');
+            $taxRule->rate_order = $request->input('rate_order');
             $taxRule->save();
         }
         
@@ -123,20 +123,20 @@ class TaxRuleGroupFrontController extends Controller
                 ->withInput();
         }
 
-        $taxRuleGroup = TaxRuleGroup::where('name', $request->get('name'))->first();
-        $taxRuleGroup->active = $request->get('active');
+        $taxRuleGroup = TaxRuleGroup::where('name', $request->input('name'))->first();
+        $taxRuleGroup->active = $request->input('active');
         $taxRuleGroup->save();
         $taxRules = $taxRuleGroup->taxRules;
 
         foreach ($taxRules as $taxRule) {
             $taxRule->tax()->disassociate();
-            $taxRule->tax()->associate(Tax::where('name', $request->get('tax'))->first());
+            $taxRule->tax()->associate(Tax::where('name', $request->input('tax'))->first());
             $taxRule->country()->disassociate();
-            $taxRule->country()->associate(Country::where('id', $request->get('selected-country'))->first());
+            $taxRule->country()->associate(Country::where('id', $request->input('selected-country'))->first());
             $taxRule->taxRuleGroup()->disassociate();
             $taxRule->taxRuleGroup()->associate($taxRuleGroup);
-            $taxRule->behavior = $request->get('behavior');
-            $taxRule->rate_order = $request->get('rate_order');
+            $taxRule->behavior = $request->input('behavior');
+            $taxRule->rate_order = $request->input('rate_order');
             $taxRule->save();
             
         }

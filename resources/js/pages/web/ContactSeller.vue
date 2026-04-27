@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { provide, ref } from "vue";
-import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
-import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
-import { useWindowSize } from '@vueuse/core';
 import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 import { Category } from '@/types/category';
 import { Seller } from "@/types/seller";
 import ContactSellerForm from "@/components/jewellery_store/form/ContactSellerForm.vue";
 import { Customer } from "@/types/customer";
+import { Head } from '@inertiajs/vue3';
+import AppShopLayout from '@/layouts/AppShopLayout.vue';
+import { useTrans } from '@/composables/trans';
 
 interface ContactPageProps {
     frontCategories: Category[]
@@ -15,28 +14,19 @@ interface ContactPageProps {
     seller: Seller
     customer: null|Customer
     slug: string
+    locale: string
 }
 
 const props =  defineProps<ContactPageProps>();
-const { width } = useWindowSize()
-const active = ref<boolean>(false)
-provide('active', active)
-const openNav = () => {
-  active.value = true
-}
 </script>
 
 <template>
-    <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-    </button>
-    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
-    <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-neutral-200 dark:bg-[#0a0a0a]">
-        <h2 class="text-3xl my-6 mx-15">Contact the seller</h2>
-        <ContactSellerForm classname="" :seller="props.seller" :customer="props.customer" :slug="props.slug"></ContactSellerForm>
-    </main>
-    <ShopFooter></ShopFooter>
+    <Head title="Contacter le Vendeur">
+        <meta name="description" content="Envoyez un message directement au vendeur pour toute question sur un bijou, une commande ou un délai de livraison." head-key="description" />
+    </Head>
+    <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
+        <h2 class="text-3xl my-6 mx-15">{{ useTrans('Contact the seller') }}</h2>
+        <ContactSellerForm classname="" :seller="props.seller" :customer="props.customer" :slug="props.slug" :locale="props.locale"></ContactSellerForm>
+    </AppShopLayout>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

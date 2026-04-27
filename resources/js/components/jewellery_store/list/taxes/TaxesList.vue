@@ -10,6 +10,7 @@ interface TaxesListProps {
     taxes: Tax[]
     sortBy: string
     order: 'asc' | 'desc'
+    locale: string
 }
 
 // const emit = defineEmits<{
@@ -37,7 +38,7 @@ const props = defineProps<TaxesListProps>()
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.name }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.rate }}</td>
                     <td class="m-[1rem 2rem 1rem 2rem] w-[15%] text-center">{{ tax.applicable }}</td>
-                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('tax-details', {slug: tax.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
+                    <td class="flex flex-row justify-center m-[1rem 2rem 1rem 2rem] w-[15%] text-center"><Link :href="route('tax-details', {locale: props.locale, slug: tax.slug}, false, Ziggy)"><FileEditIcon/></Link></td>
                 </tr>
             </tbody>
             <tbody v-else id="taxes-list">

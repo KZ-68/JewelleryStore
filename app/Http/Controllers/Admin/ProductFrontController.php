@@ -15,7 +15,9 @@ use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Tax\TaxCalculatorService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 
 class ProductFrontController extends Controller
@@ -84,16 +86,44 @@ class ProductFrontController extends Controller
     }
 
     /**
+    * Preview the price with tax for a given price_ht and tax_rule_group_id.
+    * @param Request GET request with price_ht and tax_rule_group_id query params
+    * @return JsonResponse Return the computed price with tax
+    */
+    public function pricePreview(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'price_ht'          => 'required|numeric|min:0',
+            'tax_rule_group_id' => 'required|integer|exists:tax_rule_groups,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->first()], 422);
+        }
+
+        $taxRule = TaxRule::where('tax_rule_group_id', $request->integer('tax_rule_group_id'))->first();
+
+        if (!$taxRule) {
+            return response()->json(['error' => 'No tax rule found for this group.'], 404);
+        }
+
+        $calculator = new TaxCalculatorService;
+        $priceWithTax = $calculator->withTax((float) $request->input('price_ht'), $taxRule->tax->rate);
+
+        return response()->json(['price_with_tax' => $priceWithTax]);
+    }
+
+    /**
     * This method validate every fields used in the new product form.
     * @param Request Get the POST method body from the form
     * @return RedirectResponse Send a response with a redirection
     */
     public function create(Request $request): RedirectResponse
     {
-        if($request->get('categories_selected') !== null) {
-            $categories = json_decode($request->get('categories_selected'), true);
+        if($request->input('categories_selected') !== null) {
+            $categories = json_decode($request->input('categories_selected'), true);
         } else {
-            $categories = $request->get('category_id');
+            $categories = $request->input('category_id');
         }
 
         $validator = Validator::make($request->all(), [
@@ -108,25 +138,27 @@ class ProductFrontController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect('/admin/back-office/products')
+            return redirect('{locale}/admin/back-office/products')
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('error', 'This product is invalid, please fill in all required fields correctly.');
         }
 
         $product = new Product;
-        $product->name = $request->get('name');
-        $product->description = $request->get('description');
-        $product->reference = $request->get('reference');
-        $product->ean13 = $request->get('ean13');
-        $product->quantity = $request->get('quantity');
-        $product->price_ht = $request->get('price_ht');
-        $product->cost_price = $request->get('cost_price');
-        $product->active = $request->get('active');
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->reference = $request->input('reference');
+        $product->ean13 = $request->input('ean13');
+        $product->quantity = $request->input('quantity');
+        $product->price_ht = $request->input('price_ht');
+        $product->cost_price = $request->input('cost_price');
+        $product->active = $request->input('active');
         $product->save();
         $product->categories()->attach($categories);
         $product->save();
 
-        return redirect('/admin/back-office/products');
+        return redirect('/admin/back-office/products')
+            ->with('success', 'Product "' . $product->name . '" has been created successfully.');
     }
 
     /**
@@ -149,25 +181,27 @@ class ProductFrontController extends Controller
         if ($validator->fails()) {
             return redirect('/admin/back-office/products')
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('error', 'This product is invalid, please fill in all required fields correctly.');
         }
 
-        $product = Product::where('name', $request->get('name'))->first();
-        $product->name = $request->get('name');
-        $product->description = $request->get('description');
-        $product->reference = $request->get('reference');
-        $product->ean13 = $request->get('ean13');
-        $product->quantity = $request->get('quantity');
-        $product->price_ht = $request->get('price_ht');
-        $product->cost_price = $request->get('cost_price');
-        if($request->get('tax_rule_group_id') !== null) {
+        $product = Product::where('name', $request->input('name'))->first();
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        $product->reference = $request->input('reference');
+        $product->ean13 = $request->input('ean13');
+        $product->quantity = $request->input('quantity');
+        $product->price_ht = $request->input('price_ht');
+        $product->cost_price = $request->input('cost_price');
+        if($request->input('tax_rule_group_id') !== null) {
             $taxCalculator = new TaxCalculatorService;
-            $taxRule = TaxRule::where('id', $request->get('tax_rule_group_id'))->first();
-            $product->retail_price = $taxCalculator->withTax($request->get('price_ht'), $taxRule->tax->rate);
-            $product->taxRuleGroup()->associate($request->get('tax_rule_group_id'));
+            $taxRule = TaxRule::where('id', $request->input('tax_rule_group_id'))->first();
+            $product->retail_price = $taxCalculator->withTax($request->input('price_ht'), $taxRule->tax->rate);
+            $product->taxRuleGroup()->associate($request->input('tax_rule_group_id'));
         }
         $product->save();
 
-        return redirect('/admin/back-office/products');
+        return redirect('/admin/back-office/products')
+            ->with('success', 'Product "' . $product->name . '" has been updated successfully.');
     }
 }

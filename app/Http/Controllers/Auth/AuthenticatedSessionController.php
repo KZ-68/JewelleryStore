@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Customer;
 use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
 use Laravel\Fortify\Features;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Route;
-use App\Http\Requests\Auth\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,52 +30,63 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Show the adminlogin page.
+     */
+    public function adminCreate(Request $request): Response
+    {
+        return Inertia::render('auth/admin/AdminLogin', [
+            'canResetPassword' => Route::has('password.request'),
+            'status' => $request->session()->get('status'),
+        ]);
+    }
+
+    /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
-        if (Auth::guard('web')->attempt($credentials)) {
-            $user = $request->validateCredentials('web');
-            $customerRoles = Role::where('guard_name', 'web')->get();
-            if($user->hasAnyRole($customerRoles)) {
+        $customerModel = Customer::where('email', $request->only('email'))->first();
+        $userModel = User::where('email', $request->only('email'))->first();
+        $guard = 'web';
+
+        if ($customerModel) {
+            $guard = 'web';
+        }
+        if ($userModel) {
+            $guard = 'admin';
+        }
+
+        if (Auth::guard($guard)->attempt($credentials)) {
+            $user = $request->validateCredentials($guard);
+            $roles = Role::where('guard_name', $guard)->get();
+            if($user->hasAnyRole($roles)) {
                 if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
                     $request->session()->put([
-                        'login.id' => $user->getKey(),
+                        'login.id'       => $user->getKey(),
                         'login.remember' => $request->boolean('remember'),
+                        'login.guard'    => $guard,
                     ]);
+
+                    if ($guard === 'admin') {
+                        return redirect()->route('admin.two-factor.login', ['locale' => App::currentLocale()]);
+                    }
 
                     return to_route('two-factor.login');
                 }
 
-                Auth::guard('web')->login($user, $request->boolean('remember'));
+                Auth::guard($guard)->login($user, $request->boolean('remember'));
                 $request->session()->regenerate();
 
-                return redirect()->intended(route('home', absolute: false));
-            }
-        }
-
-        if (Auth::guard('admin')->attempt($credentials)) {
-            $user = $request->validateCredentials('admin');
-            $adminUserRoles = Role::where('guard_name', 'admin')->get();
-            if($user->hasAnyRole($adminUserRoles)) {
-                if (Features::enabled(Features::twoFactorAuthentication()) && $user->hasEnabledTwoFactorAuthentication()) {
-                    $request->session()->put([
-                        'login.id' => $user->getKey(),
-                        'login.remember' => $request->boolean('remember'),
-                    ]);
-
-                    return to_route('two-factor.login');
+                if ($guard === 'web') {
+                    return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
+                } else {
+                    return redirect()->intended((route('admin.back-office.showBO', ['locale' => App::currentLocale()], absolute: false)));
                 }
-
-                Auth::guard('admin')->login($user, $request->boolean('remember'));
-                $request->session()->regenerate();
-
-                return redirect()->intended(route('admin.back-office.showBO', absolute: false));
             }
         }
 
-        return redirect()->intended(route('home', absolute: false));
+        return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
     }
 
     /**
@@ -80,10 +94,26 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('admin')->check() ? Auth::guard('admin')->logout() : Auth::guard('web')->logout();
+        Auth::guard('web')->logout();
+        $request->session()->forget([
+            'login.id',
+            'login.remember'
+        ]);
+        $request->session()->regenerate();
+        $request->session()->regenerateToken();
+
+        return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
+    }
+
+    /**
+     * Destroy an authenticated session.
+     */
+    public function adminDestroy(Request $request): RedirectResponse
+    {
+        Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->intended(route('home', ['locale' => App::currentLocale()], absolute: false));
     }
 }

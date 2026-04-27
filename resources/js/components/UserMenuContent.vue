@@ -6,21 +6,22 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { logout } from '@/routes';
+import { adminLogout } from '@/routes';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
-import { LogOut, Settings } from 'lucide-vue-next';
+import { LogOut, Settings, ShieldCheck } from 'lucide-vue-next';
 
 interface Props {
     user: User;
+    locale: string
 }
 
 const handleLogout = () => {
     router.flushAll();
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -32,9 +33,20 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="edit()" prefetch as="button">
+            <Link class="block w-full" :href="edit({locale: props.locale})" prefetch as="button">
                 <Settings class="mr-2 h-4 w-4" />
                 Settings
+            </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem :as-child="true">
+            <Link
+                class="block w-full"
+                :href="`/${props.locale}/admin/back-office/two-factor`"
+                prefetch
+                as="button"
+            >
+                <ShieldCheck class="mr-2 h-4 w-4" />
+                Two-Factor Auth
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -42,7 +54,7 @@ defineProps<Props>();
     <DropdownMenuItem :as-child="true">
         <Link
             class="block w-full"
-            :href="logout()"
+            :href="adminLogout({locale: props.locale})"
             @click="handleLogout"
             as="button"
             data-test="logout-button"

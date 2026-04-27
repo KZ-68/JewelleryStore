@@ -6,24 +6,32 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import { ref } from 'vue';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
+
+interface SellerRegisterForm {
+    locale: string
+}
+
+const props = defineProps<SellerRegisterForm>();
+const passwordValue = ref('')
 </script>
 
 <template>
+    <Head title="Seller Account Registration" />
+    <h1 class="text-3xl">Seller Account Registration</h1>
 
-    <section class="bg-white rounded-b-xl px-10 py-20 border-t-[1px] border-gray-100">
-        <Head title="Seller Account Registration" />
-
-        <h1 class="text-3xl">Seller Account Registration</h1>
-
-        <Form
-            v-bind="SellerFrontController.store.form()"
-            :reset-on-success="['password', 'password_confirmation']"
-            v-slot="{ errors, processing }"
-            class="flex flex-col gap-6"
-        >
-            <div class="grid gap-6">
+    <Form
+        v-bind="SellerFrontController.store.form({locale: props.locale})"
+        :reset-on-success="['password', 'password_confirmation']"
+        v-slot="{ errors, processing }"
+        class="flex flex-col gap-2"
+    >
+        <div class="grid gap-6">
+            <section id="seller-credentials-section" class="flex flex-col gap-6 my-2">
+                <h3 class="text-2xl my-4">Credentials</h3>
                 <div class="grid gap-2">
-                    <Label for="name">Seller Name</Label>
+                    <Label class="text-md" for="name">Seller Name</Label>
                     <Input
                         id="name"
                         type="text"
@@ -38,7 +46,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label class="text-md" for="email">Email address</Label>
                     <Input
                         id="email"
                         type="email"
@@ -52,7 +60,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label class="text-md" for="password">Password</Label>
                     <Input
                         id="password"
                         type="password"
@@ -61,12 +69,14 @@ import { LoaderCircle } from 'lucide-vue-next';
                         autocomplete="new-password"
                         name="password"
                         placeholder="Password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label class="text-md" for="password_confirmation">Confirm password</Label>
                     <Input
                         id="password_confirmation"
                         type="password"
@@ -78,9 +88,12 @@ import { LoaderCircle } from 'lucide-vue-next';
                     />
                     <InputError :message="errors.password_confirmation" />
                 </div>
+            </section>
 
+            <section id="seller-credentials-section" class="flex flex-col gap-6 my-2">
+                <h3 class="text-2xl my-4">Tax Informations</h3>    
                 <div class="grid gap-2">
-                    <Label for="tax_country">Country Tax</Label>
+                    <Label class="text-md" for="tax_country">Country Tax</Label>
                     <Input
                         id="tax_country"
                         type="text"
@@ -94,7 +107,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="tax_type">Tax Type</Label>
+                    <Label class="text-md" for="tax_type">Tax Type</Label>
                     <Input
                         id="tax_type"
                         type="text"
@@ -108,7 +121,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="tax_number">Tax Number</Label>
+                    <Label class="text-md" for="tax_number">Tax Number</Label>
                     <Input
                         id="tax_number"
                         type="text"
@@ -122,7 +135,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="tax_scheme">Tax Scheme</Label>
+                    <Label class="text-md" for="tax_scheme">Tax Scheme</Label>
                     <Input
                         id="tax_scheme"
                         type="text"
@@ -136,7 +149,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="reduced_tax_rate" class="text-lg">Reduced Tax Rate</Label>
+                    <Label class="text-md" for="reduced_tax_rate">Reduced Tax Rate</Label>
                     <Input
                         id="reduced_tax_rate"
                         type="number" 
@@ -144,13 +157,13 @@ import { LoaderCircle } from 'lucide-vue-next';
                         step=".01"
                         required
                         :tabindex="5"
-                        class="bg-gray-100 p-1 rounded-md"
+                        class="p-1 rounded-md"
                     />
                     <InputError :message="errors.reduced_tax_rate" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="tax_registration_status">Tax Registration Status</Label>
+                    <Label class="text-md" for="tax_registration_status">Tax Registration Status</Label>
                     <Input
                         id="tax_registration_status"
                         type="text"
@@ -164,7 +177,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="invoice_tax_label">Invoice Tax Label</Label>
+                    <Label class="text-md" for="invoice_tax_label">Invoice Tax Label</Label>
                     <Input
                         id="invoice_tax_label"
                         type="text"
@@ -177,7 +190,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="qualified_invoice_number">Qualified Invoice Number</Label>
+                    <Label class="text-md" for="qualified_invoice_number">Qualified Invoice Number</Label>
                     <Input
                         id="qualified_invoice_number"
                         type="text"
@@ -188,21 +201,21 @@ import { LoaderCircle } from 'lucide-vue-next';
                     />
                     <InputError :message="errors.qualified_invoice_number" />
                 </div>
+            </section>
 
-                <Button
-                    type="submit"
-                    class="mt-2 w-full"
-                    tabindex="5"
-                    :disabled="processing"
-                    data-test="register-user-button"
-                >
-                    <LoaderCircle
-                        v-if="processing"
-                        class="h-4 w-4 animate-spin"
-                    />
-                    Register seller account
-                </Button>
-            </div>
-        </Form>
-    </section>
+            <Button
+                type="submit"
+                class="mt-2 w-full"
+                tabindex="5"
+                :disabled="processing"
+                data-test="register-user-button"
+            >
+                <LoaderCircle
+                    v-if="processing"
+                    class="h-4 w-4 animate-spin"
+                />
+                Register seller account
+            </Button>
+        </div>
+    </Form>
 </template>

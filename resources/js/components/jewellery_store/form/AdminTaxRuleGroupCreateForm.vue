@@ -11,6 +11,7 @@ interface AdminTaxRuleGroupCreateFormProps {
     classname:string
     countries: Country[]
     taxes: Tax[]
+    locale: string
 }   
 
 const props = defineProps<AdminTaxRuleGroupCreateFormProps>();
@@ -20,9 +21,9 @@ const selectedTax = ref('');
 </script>
 
 <template>
-    <section id="new-admin-tax-rule-group-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white p-1 dark:bg-neutral-800">
+    <section id="new-admin-tax-rule-group-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
         <Form
-            v-bind="TaxRuleGroupFrontController.createRuleGroup.form()"
+            v-bind="TaxRuleGroupFrontController.createRuleGroup.form({locale: props.locale})"
             :reset-on-success="['tax-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"

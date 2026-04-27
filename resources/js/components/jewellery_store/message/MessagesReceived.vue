@@ -4,7 +4,8 @@ import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '@/ziggy';
 
 interface MessagesReceivedProps {
-    messagesReceived: Message[] 
+    messagesReceived: Message[]
+    locale: string
 }
 
 const props = defineProps<MessagesReceivedProps>();
@@ -34,7 +35,7 @@ const props = defineProps<MessagesReceivedProps>();
                                 </div>
                                 <div id="messages-column-center" class="flex flex-row gap-2">
                                     <h4>Subject :</h4>
-                                    <a v-if="message.isReaded === false" class="font-bold" :href="route('readMessage', {subject: message.subject}, false, Ziggy)">{{ message.subject }}</a>
+                                    <a v-if="message.isReaded === false" class="font-bold" :href="route('readMessage', {locale: props.locale,subject: message.subject}, false, Ziggy)">{{ message.subject }}</a>
                                     <a v-else href="#">{{ message.subject }}</a>
                                     <button id="btn btn-danger" href="#" aria-label="Delete">Delete</button>
                                 </div>

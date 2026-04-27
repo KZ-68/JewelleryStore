@@ -12,6 +12,7 @@ interface CarrierManagementProps {
     carrier: Carrier
     countries: Country[]
     isUpdate: boolean
+    locale: string
 } 
 
 const props = defineProps<CarrierManagementProps>()
@@ -49,7 +50,7 @@ const prev = () => {
 }
 
 const submit = () => {
-  form.post(route('carrierManagementUpdate', {slug: props.carrier.slug}, false, Ziggy))
+  form.post(route('carrierManagementUpdate', {locale: props.locale, slug: props.carrier.slug}, false, Ziggy))
 }
 </script>
 
@@ -60,6 +61,7 @@ const submit = () => {
       :form="form"
       :countries="countries"
       :is-last="currentStep === steps.length - 1"
+      :locale="props.locale"
       @next="next"
       @prev="prev"
       @submit="submit"

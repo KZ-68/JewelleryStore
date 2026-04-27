@@ -8,24 +8,28 @@ import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Form, Head } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import { ref } from 'vue';
+import PasswordRequirements from '@/components/PasswordRequirements.vue';
 
 const props = defineProps<{
     token: string;
     email: string;
+    locale: string;
 }>();
 
 const inputEmail = ref(props.email);
+const passwordValue = ref('')
 </script>
 
 <template>
     <AuthLayout
         title="Reset password"
         description="Please enter your new password below"
+        :locale="props.locale"
     >
         <Head title="Reset password" />
 
         <Form
-            v-bind="NewPasswordController.store['/reset-password'].form()"
+            v-bind="NewPasswordController.store.form({locale: locale})"
             :transform="(data) => ({ ...data, token, email })"
             :reset-on-success="['password', 'password_confirmation']"
             v-slot="{ errors, processing }"
@@ -55,7 +59,9 @@ const inputEmail = ref(props.email);
                         class="mt-1 block w-full"
                         autofocus
                         placeholder="Password"
+                        @input="(e: Event) => passwordValue = (e.target as HTMLInputElement).value"
                     />
+                    <PasswordRequirements :password="passwordValue" />
                     <InputError :message="errors.password" />
                 </div>
 

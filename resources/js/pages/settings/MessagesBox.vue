@@ -17,6 +17,7 @@ interface ContactPageProps {
     seller_email: string
     messagesReceived: Message[]
     messagesSended: Message[]
+    locale: string
 }
 
 const props =  defineProps<ContactPageProps>();
@@ -66,14 +67,14 @@ watch(
 
 <template>
     <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
-        <div class="w-[20px] h-0.5 bg-[#84070F]"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
+        <div class="w-[20px] h-0.5 bg-shop-primary"></div>
     </button>
-    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount"></ShopHeader>
-    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active"></BurgerMenu>
+    <ShopHeader v-if="width > 430" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale"></ShopHeader>
+    <BurgerMenu v-else :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :active="active" :locale="props.locale"></BurgerMenu>
     <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-neutral-200 dark:bg-[#0a0a0a]">
-        <SettingsLayout>
+        <SettingsLayout :locale="props.locale">
 
         <div id="message-box-wrapper" class="lg:mx-10 flex flex-col gap-2 w-80 lg:w-[64rem]">
             <div id="message-menu-wrapper">
@@ -100,5 +101,5 @@ watch(
         </div>
         </SettingsLayout>
     </main>
-    <ShopFooter></ShopFooter>
+    <ShopFooter :locale="props.locale"></ShopFooter>
 </template>

@@ -2,15 +2,11 @@
 name: deploy
 
 on:
-  merge:
+  pull_request:
+    types:
+      - closed
     branches:
       - main
-
-env:
-  PHP_VERSION: '8.4'
-  NODE_VERSION: '22.20.0'
-  DOCKER_BUILDKIT: 1
-  COMPOSE_DOCKER_CLI_BUILD: 1
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,27 +14,27 @@ concurrency:
 
 jobs:
   deploy:
-      needs: test
-      if: success()
-      runs-on: ubuntu-latest
-  
-      steps:
-        - name: Setup SSH
-          uses: webfactory/ssh-agent@v0.9.0
-          with:
-            ssh-private-key: ${{ secrets.PROD_SSH_KEY }}
-  
-        - name: Add known_hosts
-          run: |
-            ssh-keyscan -H srv1501506.hstgr.cloud >> ~/.ssh/known_hosts
-  
-        - name: Deploy to prod server
-          run: |
-            ssh root@srv1501506.hstgr.cloud "\
-              cd /root/JewelleryStore && \
-              git pull origin main && \
-              php bin/console cache:clear --env=prod && \
-              php bin/console doctrine:migrations:migrate --no-interaction --env=prod &&\
-              systemctl restart messenger-worker \
-            "
+    deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PROD_SSH_KEY }}
+
+      - name: Add known_hosts
+        run: |
+          ssh-keyscan -H srv1501506.hstgr.cloud >> ~/.ssh/known_hosts
+
+      - name: Deploy to prod server
+        run: |
+          ssh root@srv1501506.hstgr.cloud "\
+            cd /root/JewelleryStore && \
+            git pull origin main && \
+            php bin/console cache:clear --env=prod && \
+            php bin/console doctrine:migrations:migrate --no-interaction --env=prod &&\
+            systemctl restart messenger-worker \
+          "
  

@@ -18,6 +18,18 @@ interface AdminProductCreateFormProps {
 const props = defineProps<AdminProductCreateFormProps>();
 const categories = Object.assign({}, ...props.categories);
 
+const imagePreview = ref<string | null>(null);
+
+function onImageChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+        imagePreview.value = null;
+        return;
+    }
+    imagePreview.value = URL.createObjectURL(file);
+}
+
 const config = ref({
     roots: ["1"],
     checkboxes: true,
@@ -59,6 +71,7 @@ function log(s: string): void {
             :reset-on-success="['product-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
+            enctype="multipart/form-data"
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
@@ -172,6 +185,26 @@ function log(s: string): void {
                         <option :value=0 :selected=true>No</option>
                         <option :value=1>Yes</option>
                     </select>
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="image" class="text-lg">Product Image</Label>
+                    <input
+                        id="image"
+                        type="file"
+                        name="image"
+                        accept="image/jpeg,image/png,image/gif,image/webp"
+                        :tabindex="8"
+                        class="bg-gray-100 p-1 rounded-md file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-black file:text-white file:cursor-pointer"
+                        @change="onImageChange"
+                    />
+                    <img
+                        v-if="imagePreview"
+                        :src="imagePreview"
+                        alt="Product image preview"
+                        class="mt-2 max-h-48 rounded-md object-contain border border-gray-200"
+                    />
+                    <InputError :message="errors.image" />
                 </div>
 
                 <section id="category-tree">

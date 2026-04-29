@@ -97,6 +97,7 @@ class Product extends Model
     protected function casts(): array
     {
         return [
+            'active' => 'boolean',
             'cost_price' => 'float',
             'price_ht' => 'float',
             'created_at' => 'datetime:Y-m-d H:i:s',

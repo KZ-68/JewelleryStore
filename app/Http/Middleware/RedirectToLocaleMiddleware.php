@@ -3,11 +3,12 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
 class RedirectToLocaleMiddleware
 {
-    public function handle($request, Closure $next) : \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+    public function handle(Request $request, Closure $next) : \Illuminate\Http\Response|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
     {
         $segments = $request->segments();
         $availableLocales = config('app.available_locales');

@@ -18,7 +18,7 @@ class CartController extends Controller
 {
     /**
     * Render the view assigned to the cart page
-    * @param Request Get the request, via GET method
+    * @param Request $request Get the request, via GET method
     * @return Response Return an Inertia Object response with the rendered view
     */
     public function show(Request $request, CartHelper $cart): Response

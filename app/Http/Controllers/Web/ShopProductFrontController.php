@@ -47,10 +47,17 @@ class ShopProductFrontController extends Controller
             $product->image = $this->image->getFirstImage($product->id);
         }
 
+        $availableFeatures = Feature::with(['values' => function ($q) {
+                $q->whereHas('products');
+            }])
+            ->whereHas('values.products')
+            ->get();
+
         return Inertia::render('web/ShopProductsList', [
-            'products' => $products,
-            'categories' => $categories,
-            'filters' => $filters
+            'products'          => $products,
+            'categories'        => $categories,
+            'filters'           => $filters,
+            'availableFeatures' => $availableFeatures,
         ]);
     }
 
@@ -178,12 +185,18 @@ class ShopProductFrontController extends Controller
         $allowedSorts = ['name', 'quantity', 'price_ht', 'retail_price', 'created_at'];
         $allowedOrders = ['asc', 'desc'];
 
-        $sortBy = $request->input('sortBy', 'name');
+        $sortBy  = $request->input('sortBy', 'name');
         $orderBy = strtolower($request->input('orderBy', 'asc'));
 
+        $featureValueIds = array_values(array_filter(
+            array_map('intval', (array) $request->input('feature_value_ids', [])),
+            fn (int $id) => $id > 0
+        ));
+
         return [
-            'sortBy' => in_array($sortBy, $allowedSorts) ? $sortBy : 'name',
-            'orderBy' => in_array($orderBy, $allowedOrders) ? $orderBy : 'asc',
+            'sortBy'            => in_array($sortBy, $allowedSorts) ? $sortBy : 'name',
+            'orderBy'           => in_array($orderBy, $allowedOrders) ? $orderBy : 'asc',
+            'feature_value_ids' => $featureValueIds,
         ];
     }
 

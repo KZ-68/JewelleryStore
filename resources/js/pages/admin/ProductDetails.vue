@@ -22,11 +22,11 @@ const props = defineProps<ProductDetailsProps>()
     <Head :title=props.product.name />
     <AppLayout :locale="locale">
       <AdminProductMainForm classname="" :product=props.product :taxRuleGroups=props.taxRuleGroups :priceWithTax=props.priceWithTax :taxRuleGroupId=props.taxRuleGroupId :locale="props.locale"></AdminProductMainForm>
-      <div id="product-page-footer-wrapper" class="px-6 py-8">
-            <nav id="product-nav-links" class="flex flex-row gap-4">
-                 <Link :href="showProducts({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+      <div id="product-page-footer-wrapper" class="px-4 sm:px-6 py-4 sm:py-8">
+            <nav id="product-nav-links" class="flex flex-col sm:flex-row gap-4">
+                 <Link :href="showProducts({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-4 sm:mx-6 my-4 sm:my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
                     Back to products list
-                </Link>         
+                </Link>
                 <a href="#">Show product on store</a>
             </nav>
       </div>

@@ -21,7 +21,7 @@ defineEmits(['next'])
 
 <template>
     <AppLayout :locale="props.locale">
-        <div id="carrier-info-wrapper" class="flex flex-col gap-4 py-8 px-20">
+        <div id="carrier-info-wrapper" class="flex flex-col gap-4 py-8 px-4 sm:px-8 md:px-20">
             <div class="grid gap-2">
                 <Label for="name" class="text-lg">Carrier Name</Label>
                 <Input
@@ -33,7 +33,7 @@ defineEmits(['next'])
                     autofocus
                     :tabindex="1"
                     autocomplete="name"
-                    class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
+                    class="p-1 text-base md:text-2xl"
                     :default-value=props.form.name
                 />
             </div>
@@ -49,7 +49,7 @@ defineEmits(['next'])
                     autofocus
                     :tabindex="2"
                     autocomplete="description"
-                    class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
+                    class="p-1 text-base md:text-2xl"
                     :default-value=props.form.description
                 />
             </div>

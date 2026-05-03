@@ -108,7 +108,7 @@ const props = defineProps<AdminRegisterProps>();
             <div class="text-center text-sm text-muted-foreground">
                 Already have an account?
                 <TextLink
-                    :href="route('admin-login', {locale: props.locale}, false, Ziggy)"
+                    :href="route('admin-login.adminCreate', {locale: props.locale}, false, Ziggy)"
                     class="underline underline-offset-4"
                     :tabindex="6"
                     >Log in</TextLink

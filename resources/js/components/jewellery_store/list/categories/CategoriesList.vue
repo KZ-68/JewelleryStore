@@ -31,19 +31,20 @@ defineExpose({
 
 <template>
     <h2 class="text-3xl my-6">Categories</h2>
-    <section id="categories-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-8">
+    <section id="categories-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-4 sm:px-8">
         <ul v-if="categories.length > 0" id="categories-list" class="flex flex-col gap-4">
-            <li v-for="category in categories" v-bind:key="category.id" class="flex flex-row justify-between bg-white rounded-md py-4 px-5 my-3">
+            <li v-for="category in categories" v-bind:key="category.id" class="flex flex-row items-center gap-3 justify-between bg-white rounded-md py-4 px-4 sm:px-5 my-3">
                 <input
                     id="delete"
-                    type="checkbox" 
+                    type="checkbox"
                     name="delete"
                     :value="category.name"
                     v-model="selected"
                     :tabindex="1"
+                    class="shrink-0"
                 />
-                <Link :href="route('admin.back-office.showSubCategories', {locale: props.locale, id: category.id}, false, Ziggy)">{{ category.name }}</Link>
-                <Button @click="deleteCategory(category.name)">Delete</Button>
+                <Link class="flex-1 min-w-0 break-words" :href="route('admin.back-office.showSubCategories', {locale: props.locale, id: category.id}, false, Ziggy)">{{ category.name }}</Link>
+                <Button class="shrink-0" @click="deleteCategory(category.name)">Delete</Button>
             </li>
         </ul>
         <ul v-else id="categories-list" class="flex flex-col gap-4">

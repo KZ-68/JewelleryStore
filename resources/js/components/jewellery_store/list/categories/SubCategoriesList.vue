@@ -32,19 +32,20 @@ defineExpose({
 
 <template>
     <h2 class="text-3xl my-6">Sub Categories for {{ props.parentCategoryName }}</h2>
-    <section id="sub-categories-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-8">
+    <section id="sub-categories-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-4 sm:px-8">
         <ul v-if="subCategories.length > 0" id="categories-list" class="flex flex-col gap-4">
-            <li v-for="subCategory in subCategories" v-bind:key="subCategory.id" class="flex flex-row justify-between bg-white rounded-md py-4 px-5 my-3">
+            <li v-for="subCategory in subCategories" v-bind:key="subCategory.id" class="flex flex-row items-center gap-3 justify-between bg-white rounded-md py-4 px-4 sm:px-5 my-3">
                 <input
                     id="delete"
-                    type="checkbox" 
+                    type="checkbox"
                     name="delete"
                     :value="subCategory.name"
                     v-model="selected"
                     :tabindex="1"
+                    class="shrink-0"
                 />
-                <p>{{ subCategory.name }}</p>
-                <Button @click="deleteSubCategory(subCategory.name)">Delete</Button>
+                <p class="flex-1 min-w-0 break-words">{{ subCategory.name }}</p>
+                <Button class="shrink-0" @click="deleteSubCategory(subCategory.name)">Delete</Button>
             </li>
         </ul>
         <ul v-else id="sub-categories-list" class="flex flex-col gap-4">

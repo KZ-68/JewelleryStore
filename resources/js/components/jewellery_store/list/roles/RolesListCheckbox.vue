@@ -17,7 +17,7 @@ defineProps<RolesListCheckboxProps>()
 </script>
 
 <template>
-    <section id="roles-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-8">
+    <section id="roles-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-4 sm:px-8">
         <ul v-if="roles.length > 0" id="roles-list" class="flex flex-col gap-4">
             <li v-for="role in roles" v-bind:key="role.id" class="bg-white rounded-md py-4 px-5 my-3">{{ role.name }}</li>
         </ul>

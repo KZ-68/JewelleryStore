@@ -3,10 +3,10 @@
 Plateforme e-commerce de joaillerie développée avec **Laravel 12**, **Vue 3**, **Inertia.js**, **FrankenPHP**.  
 Le projet inclut un front-office complet, avec gestion des langues, un back-office, un système de paiement Stripe, la gestion des transporteurs, des taxes, des factures PDF et une authentification à deux facteurs (2FA).
 
----
-
 ## Stack technique
 
+| Couche | Technologie |
+|---|---|
 | Backend | PHP 8.4 · Laravel 12 · FrankenPHP |
 | Frontend | Vue 3 · TypeScript · Inertia.js · Tailwind CSS v4 |
 | Base de données | MySQL 8.0 |
@@ -17,15 +17,11 @@ Le projet inclut un front-office complet, avec gestion des langues, un back-offi
 | Serveur web | Caddy (via FrankenPHP) |
 | Tests | PHPUnit · Cypress |
 
----
-
 ## Prérequis
 
 - Docker >= 24
 - Docker Compose >= 2.x
 - Git
-
----
 
 ## Installation via Docker
 
@@ -98,12 +94,12 @@ docker exec laravel_app php artisan db:seed
 
 ### 7. Accès aux services
 
+| Service | URL |
+|---|---|
 | Application | http://localhost |
 | phpMyAdmin | http://localhost:8081 |
 | RabbitMQ (UI) | http://localhost:15672 |
 | Vite (dev HMR) | http://localhost:5173 |
-
----
 
 ## Commandes utiles
 
@@ -126,8 +122,6 @@ docker exec laravel_app php artisan optimize:clear
 # Stopper tous les conteneurs
 docker compose down
 ```
-
----
 
 ## Structure du projet
 
@@ -212,8 +206,6 @@ JeweleryStore/
 │   ├── Unit/                       # Tests unitaires
 │   └── cypress/                    # Tests E2E Cypress
 ```
-
----
 
 ## Architecture
 

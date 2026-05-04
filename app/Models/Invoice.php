@@ -18,6 +18,7 @@ class Invoice extends Model
     protected $fillable = [
         'id',
         'number',
+        'due_date',
     ];
 
     protected static function booted()

@@ -205,13 +205,27 @@ class OrderFrontController extends Controller
         $session         = Session::get('order');
         $locale          = app()->getLocale();
 
+        Log::info('orderConfirmation: entry', [
+            'payment_intent_id_from_query' => $paymentIntentId,
+            'session_order_exists'         => !is_null($session),
+            'session_payment_intent_id'    => $session['payment_intent_id'] ?? null,
+        ]);
+
         if (!$paymentIntentId || empty($session['payment_intent_id'])) {
+            Log::warning('orderConfirmation: missing payment info', [
+                'has_payment_intent_id' => (bool) $paymentIntentId,
+                'session_is_null'       => is_null($session),
+            ]);
             return redirect()
                 ->route('order.showOrderPage', ['locale' => $locale])
                 ->with('error', 'No payment information found. Please complete your order again.');
         }
 
         if ($paymentIntentId !== $session['payment_intent_id']) {
+            Log::warning('orderConfirmation: payment intent mismatch', [
+                'from_query'   => $paymentIntentId,
+                'from_session' => $session['payment_intent_id'],
+            ]);
             Session::forget('order');
             return redirect()
                 ->route('order.showOrderPage', ['locale' => $locale])
@@ -219,6 +233,9 @@ class OrderFrontController extends Controller
         }
 
         if (!$this->paymentVerifier->isSucceeded($paymentIntentId)) {
+            Log::warning('orderConfirmation: payment not succeeded', [
+                'payment_intent_id' => $paymentIntentId,
+            ]);
             Session::forget('order');
             return redirect()
                 ->route('order.showOrderPage', ['locale' => $locale])

@@ -30,6 +30,8 @@ const getCategory = (name:string) => {
 }
 
 const collectionCategory = ref<null|Category>(getCategory(props.category_name))
+
+const imageUrl = '/storage/img/home/pendant-golden-coins-chinese-new-year_23-2148357937.jpg'
 </script>
 
 <template>
@@ -38,7 +40,7 @@ const collectionCategory = ref<null|Category>(getCategory(props.category_name))
         <div id="discover-category-wrapper" class="flex flex-col lg:flex-row w-full max-w-xs md:max-w-3xl lg:max-w-6xl mx-auto my-8 md:my-12 border-2 border-[#84070F] rounded-md overflow-hidden">
             <div id="discover-category-left" class="w-full lg:w-[48rem] shrink-0">
                 <figure>
-                    <img src="/storage/img/home/pendant-golden-coins-chinese-new-year_23-2148357937.jpg" alt="" class="w-full h-[20rem] md:h-[28rem] lg:h-[32rem] object-cover">
+                    <img :src="imageUrl" alt="" class="w-full h-[20rem] md:h-[28rem] lg:h-[32rem] object-cover">
                 </figure>
             </div>
             <div id="discover-category-right" class="flex flex-col gap-8 md:gap-16 justify-center items-start px-6 py-8 md:px-12 lg:py-0">

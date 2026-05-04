@@ -19,8 +19,10 @@ use App\Models\Address;
 use App\Models\Carrier;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\ShippingRate;
 use App\Models\Status;
 use App\Services\Order\CreateOrderService;
@@ -236,11 +238,28 @@ class OrderFrontController extends Controller
             $order->statuses()->attach($status);
             $order->save();
 
+            // Attach ordered products with quantity and price from cart
+            foreach ($cartData['products'] as $item) {
+                $product = Product::find((int) $item['product_id']);
+                if ($product) {
+                    $order->products()->attach($product->id, [
+                        'quantity'     => (int) $item['quantity'],
+                        'retail_price' => (float) $item['retail_price'],
+                    ]);
+                }
+            }
+
+            // Create and attach invoice
+            $invoice = Invoice::create([
+                'number' => (Invoice::max('number') ?? 0) + 1,
+            ]);
+            $order->invoices()->attach($invoice);
+
             Session::forget('order');
             $cart->clear();
             $customer->cart?->delete();
 
-            return Inertia::render('web/OrderConfirmation', ['order' => $order]);
+            return Inertia::render('web/OrderConfirmation', ['order' => $order->load('products', 'invoices')]);
 
         } catch (\Exception $e) {
             Log::error('Order confirmation failed', [

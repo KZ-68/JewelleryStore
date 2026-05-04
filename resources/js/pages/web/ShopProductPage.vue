@@ -74,7 +74,8 @@ async function addToCart(product: Product, quantity: number, price: number) {
     if (currentSelectedSize.value !== '') {
         try {
             await axios.post(
-                route('cart.addToCart', {locale: props.locale, product: product, quantity: quantity, retail_price: price, selected_size: currentSelectedSize.value}, false, Ziggy)
+                route('cart.addToCart', { locale: props.locale }, false, Ziggy),
+                { product_id: product.id, quantity: quantity, retail_price: price, selected_size: currentSelectedSize.value }
             )
             productsAdded.value = [product]
             productsQuantity.value = quantity

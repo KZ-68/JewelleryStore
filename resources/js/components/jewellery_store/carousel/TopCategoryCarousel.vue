@@ -15,15 +15,14 @@ function categoryLink(slug: string): string {
     return route('showCategoryProducts', { locale: locale.value, category_slug: slug }, false, Ziggy)
 }
 
-// Mettre à jour les slugs pour qu'ils correspondent aux slugs réels en base de données
 const slides = [
-    { slug: 'rings',     title: 'Rings',     button: 'Shop Rings',     img: '' },
-    { slug: 'necklaces', title: 'Necklaces', button: 'Shop Necklaces', img: '' },
+    { slug: 'rings',     title: 'Rings',     button: 'Shop Rings',     img: '/storage/img/home/carousel/gold_oriental_rings.avif' },
+    { slug: 'necklaces', title: 'Necklaces', button: 'Shop Necklaces', img: '/storage/img/home/carousel/gold_oriental_necklaces.avif' },
     { slug: 'earrings',  title: 'Earrings',  button: 'Shop earrings',  img: '/storage/img/home/carousel/gold_oriental_earrings.png' },
-    { slug: 'bangles',   title: 'Bangles',   button: 'Shop Bangles',   img: '' },
+    { slug: 'bangles',   title: 'Bangles',   button: 'Shop Bangles',   img: '/storage/img/home/carousel/gold_oriental_bangles.webp' },
     { slug: 'pendants',  title: 'Pendants',  button: 'Shop Pendants',  img: '/storage/img/home/carousel/gold_oriental_pendant.png' },
     { slug: 'bracelets', title: 'Bracelets', button: 'Shop Bracelets', img: '/storage/img/home/carousel/gold_oriental_bracelet.jpg' },
-    { slug: 'charms',    title: 'Charms',    button: 'Shop Charms',    img: '' },
+    { slug: 'charms',    title: 'Charms',    button: 'Shop Charms',    img: '/storage/img/home/carousel/gold_oriental_charms.webp' },
 ]
 
 const swiperBreakpoints = {

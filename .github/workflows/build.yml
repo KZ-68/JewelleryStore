@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [22, 24, 25]
+        node: [22, 24, 26]
     environment: dev
     env:
       APP_NAME: Laravel
@@ -81,6 +81,7 @@ jobs:
 
       - name: Install Xvbf for chrome/selenium
         run: |
+          sudo apt-get update
           sudo apt-get -y install xorg xvfb gtk2-engines-pixbuf
           sudo apt-get -y install dbus-x11 xfonts-base xfonts-100dpi xfonts-75dpi xfonts-cyrillic xfonts-scalable
 

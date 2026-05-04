@@ -59,7 +59,6 @@ const breadcrumbs = computed<BreadcrumbItemType[]>(() => {
     return items
 })
 
-const retailPrice = ref(0);
 const currentSelectedSize = ref<string>('');
 const currentSelectedQuantity = ref<number>(1);
 
@@ -233,7 +232,7 @@ const metaDescription = computed(() => {
                                 </div>
 
                                 <button
-                                    @click="addToCart(props.product, currentSelectedQuantity, retailPrice)"
+                                    @click="addToCart(props.product, currentSelectedQuantity, props.price)"
                                     type="button"
                                     :aria-label="`Add ${props.product.name} to cart`"
                                     class="flex-1 sm:flex-none h-14 px-8 py-2 font-semibold rounded-xl bg-shop-primary hover:bg-red-900 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:ring-offset-2"

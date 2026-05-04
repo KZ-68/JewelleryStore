@@ -74,7 +74,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(
         return Inertia::render('web/NotFound');
     })->name('not-found');
 
-    Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products');
+    Route::get('/products', [ShopProductFrontController::class, 'shopProductsList'])->name('products.shopProductsList');
     Route::post('/products/retail-price', [ShopProductFrontController::class, 'shopRetailPrice'])->name('products.shopRetailPrice');
     Route::get('/order', [OrderFrontController::class, 'showOrderPage'])->name('order.showOrderPage');
     Route::post('/order/select-address', [OrderFrontController::class, 'selectAddress'])->name('order.selectAddress');

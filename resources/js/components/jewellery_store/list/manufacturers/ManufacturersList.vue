@@ -35,19 +35,20 @@ defineExpose({
 </script>
 
 <template>
-    <section id="manufacturers-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-8">
+    <section id="manufacturers-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-4 sm:px-8">
         <ul v-if="manufacturers.length > 0" id="manufacturers-list" class="flex flex-col gap-4">
-            <li v-for="manufacturer in manufacturers" v-bind:key="manufacturer.id" class="flex flex-row justify-between bg-white rounded-md py-4 px-5 my-3">
+            <li v-for="manufacturer in manufacturers" v-bind:key="manufacturer.id" class="flex flex-row items-center gap-3 justify-between bg-white rounded-md py-4 px-4 sm:px-5 my-3">
                 <input
                     id="delete"
-                    type="checkbox" 
+                    type="checkbox"
                     name="delete"
                     :value="manufacturer.name"
                     v-model="selected"
                     :tabindex="1"
+                    class="shrink-0"
                 />
-                <p>{{ manufacturer.name }}</p>
-                <Button @click="deleteManufacturer(manufacturer.name)">Delete</Button>
+                <p class="flex-1 min-w-0 break-words">{{ manufacturer.name }}</p>
+                <Button class="shrink-0" @click="deleteManufacturer(manufacturer.name)">Delete</Button>
             </li>
         </ul>
         <ul v-else id="manufacturers-list" class="flex flex-col gap-4">

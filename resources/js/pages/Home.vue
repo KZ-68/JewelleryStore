@@ -3,21 +3,20 @@ import { Head } from '@inertiajs/vue3';
 import { Category } from '@/types/category';
 import { Product } from '@/types/product';
 import TopProductCarousel from '@/components/jewellery_store/carousel/TopProductCarousel.vue';
-import ShopHeader from '@/components/jewellery_store/ShopHeader.vue';
 import Slider from '@/components/jewellery_store/Slider.vue';
-import ShopFooter from '@/components/jewellery_store/ShopFooter.vue';
 import DiscoverCategorySection from '@/components/jewellery_store/section/DiscoverCategorySection.vue';
 import { useWindowSize } from '@vueuse/core'
-import BurgerMenu from '@/components/jewellery_store/nav/mobile/BurgerMenu.vue';
-import { ref, provide, watch } from 'vue'
+import { ref, provide } from 'vue'
 import SellerRegistrationInvitationBanner from '@/components/jewellery_store/section/SellerRegistrationInvitationBanner.vue';
 import TopCategoryCarousel from '@/components/jewellery_store/carousel/TopCategoryCarousel.vue';
 import AppShopLayout from '@/layouts/AppShopLayout.vue';
+import BlockCartModal from '@/components/jewellery_store/cart/modal/BlockCartModal.vue';
 
 interface HomeProps {
     frontCategories: Category[]
     topProducts: Product[]
     cartProductsCount: number
+    defaultShippingRatePrice: number
     locale: string
 }
 
@@ -54,10 +53,16 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
             class="flex flex-col w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"
         >
             <Slider></Slider>
-            <TopProductCarousel :topProducts="props.topProducts" :locale="props.locale"></TopProductCarousel>
+            <TopProductCarousel
+                :topProducts="props.topProducts"
+                :locale="props.locale"
+                @addProduct="addProduct"
+                @addProductQuantity="addProductQuantity"
+                @addProductPrice="addProductPrice"
+            />
             <DiscoverCategorySection :categories="frontCategories" category_name="Noir" description="Catchphrase placeholder for appealing customer to this category" :isCollection="true" :locale="props.locale"></DiscoverCategorySection>
             <hr class="text-2xl my-3 mx-4" />
-            <TopCategoryCarousel></TopCategoryCarousel>
+            <TopCategoryCarousel />
             <SellerRegistrationInvitationBanner :locale="props.locale"></SellerRegistrationInvitationBanner>
         </div>
         <BlockCartModal
@@ -66,7 +71,6 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
             :products="productsAdded"
             :productsPrice="productsPrice"
             :productsQuantity="productsQuantity"
-            :cartProductsCount="props.cartProductsCount"
             :defaultShippingRatePrice="props.defaultShippingRatePrice"
         />
     </AppShopLayout>

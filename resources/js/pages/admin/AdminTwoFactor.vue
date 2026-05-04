@@ -42,7 +42,7 @@ onUnmounted(() => {
 <template>
     <Head title="Two-Factor Authentication" />
     <AppLayout :locale="locale">
-        <div class="px-4 py-24 max-w-2xl mx-auto space-y-6">
+        <div class="px-4 py-8 sm:py-24 max-w-2xl mx-auto space-y-6">
             <HeadingSmall
                 title="Two-Factor Authentication"
                 description="Manage your two-factor authentication settings"

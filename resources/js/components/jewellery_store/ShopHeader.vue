@@ -80,7 +80,7 @@ const linkClass = 'rounded-sm border border-[#19140035] px-2.5 md:px-3 lg:px-4 p
                 </template>
 
                 <LanguageSwitcher :locale="props.locale" />
-                <CartNotifier :cartProductsCount="props.cartProductsCount" :locale="props.locale" />
+                <CartNotifier :locale="props.locale" />
             </div>
         </nav>
 

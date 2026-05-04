@@ -23,7 +23,7 @@ defineEmits(['prev', 'submit'])
 
 <template>
     <AppLayout :locale="props.locale">
-        <div id="shipping-rates-wrapper" class="flex flex-col gap-4 py-8 px-20">
+        <div id="shipping-rates-wrapper" class="flex flex-col gap-4 py-8 px-4 sm:px-8 md:px-20">
             <ShippingRateTable classname="" :countries="props.countries" :form="props.form"></ShippingRateTable>
             <div class="flex justify-between mt-4">
                 <button @click="$emit('prev')" class="px-4 py-2 text-white bg-black rounded-md">

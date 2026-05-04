@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Image\ImageUploader;
 use App\Services\Tax\TaxCalculatorService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -134,7 +135,8 @@ class ProductFrontController extends Controller
             'quantity' => 'required|integer|numeric|min:0|max:10000000',
             'price_ht' => 'required|decimal:0,2',
             'cost_price' => 'required|decimal:0,2',
-            'active' => 'required|boolean'
+            'active' => 'required|boolean',
+            'image' => 'nullable|file|image|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -156,6 +158,16 @@ class ProductFrontController extends Controller
         $product->save();
         $product->categories()->attach($categories);
         $product->save();
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            try {
+                $uploader = new ImageUploader('public');
+                $uploader->uploadForProduct($request->file('image'), $product->id);
+            } catch (\InvalidArgumentException $e) {
+                return redirect('/admin/back-office/products')
+                    ->with('warning', 'Product "' . $product->name . '" created but image upload failed: ' . $e->getMessage());
+            }
+        }
 
         return redirect('/admin/back-office/products')
             ->with('success', 'Product "' . $product->name . '" has been created successfully.');

@@ -15,12 +15,12 @@ const props = defineProps<NewManufacturerProps>()
 <template>
   <Head title='New Manufacturer'/>
   <AppLayout :locale="props.locale">
-    <section id="new-manufacturer-page-wrapper" class="flex flex-col mx-2">
+    <section id="new-manufacturer-page-wrapper" class="flex flex-col mx-2 sm:mx-4">
       <hgroup id="new-manufacturer-page-top" class="mx-4 mt-8 mb-4">
-        <h1 id="new-manufacturer-page-heading" class="text-xl">Add a new manufacturer</h1>            
+        <h1 id="new-manufacturer-page-heading" class="text-xl">Add a new manufacturer</h1>
       </hgroup>
       <AdminManufacturerCreateForm classname="" :locale="props.locale"></AdminManufacturerCreateForm>
-      <Link :href="showManufacturers({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+      <Link :href="showManufacturers({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-4 sm:mx-6 my-4 sm:my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
         Back to manufacturers list
       </Link>
     </section>

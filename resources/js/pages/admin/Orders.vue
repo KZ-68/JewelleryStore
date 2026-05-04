@@ -41,14 +41,12 @@ const navigate = (url: string) => {
         <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
             <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-                <!-- En-tête -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Orders
                     </h1>
                 </div>
 
-                <!-- Filtres -->
                 <div class="flex flex-wrap items-center gap-3 mb-6 px-4 py-3 bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
                     <span class="text-sm font-medium text-gray-600 dark:text-gray-400 shrink-0">Sort by :</span>
                     <select

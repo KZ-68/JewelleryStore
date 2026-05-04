@@ -35,15 +35,14 @@ class CartController extends Controller
 
     public function addToCart(Request $request, CartHelper $cart): bool
     {
-        $productId    = (int) $request->input('product_id');
-        $quantity     = (int) $request->input('quantity', 1);
-        $retailPrice  = (float) $request->input('retail_price') * $quantity;
-        $selectedSize = $request->input('selected_size');
-
-        $product = Product::findOrFail($productId);
+        $product      = $request->product;
+        $productId    = $request->product['id'];
+        $quantity     = $request->quantity;
+        $retailPrice  = $request->retail_price * $quantity;
+        $selectedSize = $request->selected_size ?? null;
 
         // Session cart (guests + logged-in users)
-        $cart->add($product->toArray(), $productId, $quantity, $retailPrice);
+        $cart->add($product, $productId, $quantity, $retailPrice);
 
         // Persist to database for authenticated customers
         if ($request->user('web')) {

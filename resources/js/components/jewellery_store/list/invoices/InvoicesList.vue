@@ -15,11 +15,11 @@ interface InvoicesListProps {
 //   (e: 'navigate', url: string): void
 // }>() 
 
+const props = defineProps<InvoicesListProps>()
+
 const displayPdf = (number: string) => {
     window.open(route('invoices.displayPdf', {locale: props.locale, number: number}, false, Ziggy), '_blank')
 }
-
-defineProps<InvoicesListProps>()
 </script>
 
 <template>

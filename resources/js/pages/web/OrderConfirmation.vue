@@ -103,7 +103,7 @@ const formattedDate = computed(() => {
 
                         <div class="flex flex-col sm:flex-row gap-3 pt-2">
                             <Link
-                                :href="route('products', { locale: props.locale }, false, Ziggy)"
+                                :href="route('products.shopProductsList', { locale: props.locale }, false, Ziggy)"
                                 class="inline-flex items-center justify-center min-h-[48px] rounded-lg bg-shop-primary px-6 py-3 text-sm font-medium text-shop-secondary transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-shop-primary focus:ring-offset-2"
                                 :aria-label="useTrans('Continue shopping and discover our products')"
                             >

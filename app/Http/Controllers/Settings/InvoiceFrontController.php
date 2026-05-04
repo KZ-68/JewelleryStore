@@ -11,7 +11,6 @@ use App\Models\Delivery;
 use Illuminate\Http\Request;
 use App\Services\PdfService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 
 class InvoiceFrontController extends Controller
 {
@@ -20,21 +19,17 @@ class InvoiceFrontController extends Controller
     * @param Request Get the request, via GET method
     * @return Response|RedirectResponse Return an Inertia Object response with the rendered view or a redirection
     */
-    public function showInvoices(Request $request): Response|RedirectResponse
+    public function showInvoices(Request $request): Response
     {
         $user = $request->user("web");
-        $customer = Customer::where('email', $user->email)->first();
+        $customer = Customer::where('email', $user->email)->firstOrFail();
         $orders = Order::where('customer_id', $customer->id)->get();
         $invoices = [];
 
         foreach ($orders as $order) {
-            foreach($order->invoices as $invoice) {
-                array_push($invoices, $invoice);
+            foreach ($order->invoices as $invoice) {
+                $invoices[] = $invoice;
             }
-        }
-
-        if(!$invoices) {
-            redirect('not-found', 404);
         }
 
         return Inertia::render('settings/Invoices', [
@@ -66,7 +61,7 @@ class InvoiceFrontController extends Controller
 
     public function displayPdf(Request $request, PdfService $pdfService) {
 
-        $invoice = Invoice::where('number', $request->input('number'))->first();
+        $invoice = Invoice::where('number', $request->input('number'))->firstOrFail();
         $orders = $invoice->orders;
         foreach($orders as $order) {
             $customer = Customer::where('id', $order->customer_id)->first();

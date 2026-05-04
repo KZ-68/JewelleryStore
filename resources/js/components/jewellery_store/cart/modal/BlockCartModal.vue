@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Product } from '@/types/product';
 import { ref, watch, computed } from "vue";
-import { show } from "@/routes/cart"
+import { showOrderPage } from "@/routes/order"
 import { X } from 'lucide-vue-next';
 import { usePage } from '@inertiajs/vue3';
 
@@ -98,7 +98,7 @@ const baseImagePath = 'storage/img/p/';
                         </p>
                     </div>
                     <a
-                        :href="show({ locale: props.locale })"
+                        :href="showOrderPage({ locale: props.locale }).url"
                         class="block w-full text-center bg-shop-primary text-white py-3 rounded-lg font-semibold hover:bg-red-800 transition"
                     >
                         Checkout

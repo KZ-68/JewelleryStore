@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 * Controller File for the cart page
 */
 
@@ -33,30 +33,54 @@ class CartController extends Controller
         ]);
     }
 
-    public function addToCart(Request $request, CartHelper $cart) : bool
+    public function addToCart(Request $request, CartHelper $cart): bool
     {
-        $product = $request->product;
-        $productId = $request->product['id'];
-        $quantity = $request->quantity;
-        $retailPrice = $request->retail_price * $quantity;
+        $product      = $request->product;
+        $productId    = $request->product['id'];
+        $quantity     = $request->quantity;
+        $retailPrice  = $request->retail_price * $quantity;
+        $selectedSize = $request->selected_size ?? null;
+
+        // Session cart (guests + logged-in users)
         $cart->add($product, $productId, $quantity, $retailPrice);
 
-        if($request->user('web')) {
-            $user = $request->user('web');
-            $cartCustomer = new Cart;
-            $cartCustomer->products()->attach($product);
-            $customer = Customer::where('email', $user->email)->firstOrFail();
-            $customer->carts()->attach($cartCustomer);
-        } 
+        // Persist to database for authenticated customers
+        if ($request->user('web')) {
+            $customer     = Customer::where('email', $request->user('web')->email)->firstOrFail();
+            $customerCart = Cart::firstOrCreate(['customer_id' => $customer->id]);
+
+            $existing = $customerCart->products()->wherePivot('product_id', $productId)->first();
+
+            if ($existing) {
+                $customerCart->products()->updateExistingPivot($productId, [
+                    'quantity'     => $existing->pivot->quantity + $quantity,
+                    'retail_price' => $existing->pivot->retail_price + $retailPrice,
+                ]);
+            } else {
+                $customerCart->products()->attach($productId, [
+                    'quantity'      => $quantity,
+                    'retail_price'  => $retailPrice,
+                    'selected_size' => $selectedSize,
+                ]);
+            }
+        }
 
         return true;
     }
 
-    public function removeToCart(Request $request, CartHelper $cart) : bool
+    public function removeToCart(Request $request, CartHelper $cart): bool
     {
         $productCart = $request->product;
-        $product = Product::where('id', $productCart['product_id'])->first();
+        $product     = Product::where('id', $productCart['product_id'])->firstOrFail();
+
+        // Remove from session cart
         $cart->remove($product->id, $productCart['retail_price']);
+
+        // Remove from database cart for authenticated customers
+        if ($request->user('web')) {
+            $customer = Customer::where('email', $request->user('web')->email)->firstOrFail();
+            $customer->cart?->products()->detach($product->id);
+        }
 
         return true;
     }

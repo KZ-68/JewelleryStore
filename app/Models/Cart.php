@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,24 +14,25 @@ class Cart extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'id',
-        'status'
+        'customer_id',
     ];
 
     /**
-     * The products that belong to the category.
+     * Get the customer that owns the cart.
      */
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'cart_product', 'cart_id', 'product_id')->withTimestamps();
-    }
-
-    /**
-     * Get the customer that owns the address.
-    */
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * The products that belong to the cart.
+     */
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'cart_product', 'cart_id', 'product_id')
+            ->withPivot('quantity', 'retail_price', 'selected_size')
+            ->withTimestamps();
     }
 
     /**

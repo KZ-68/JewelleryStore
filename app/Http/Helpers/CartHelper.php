@@ -158,18 +158,22 @@ class CartHelper
             return null;
         }
 
-        $cart = Cart::firstOrCreate(
-            ['user_id' => $customer->id, 'status' => 'draft']
-        );
+        $cart = Cart::firstOrCreate(['customer_id' => $customer->id]);
 
-        foreach ($cartSession['products'] as $product) {
-            $cart->products()->updateOrCreate(
-                ['product_id' => $product['product_id']],
-                [
-                    'price'    => $product['price'],
-                    'quantity' => $product['quantity'],
-                ]
-            );
+        foreach ($cartSession['products'] as $item) {
+            $existing = $cart->products()->wherePivot('product_id', $item['product_id'])->first();
+
+            if ($existing) {
+                $cart->products()->updateExistingPivot($item['product_id'], [
+                    'quantity'     => $existing->pivot->quantity + $item['quantity'],
+                    'retail_price' => $existing->pivot->retail_price + $item['retail_price'],
+                ]);
+            } else {
+                $cart->products()->attach($item['product_id'], [
+                    'quantity'     => $item['quantity'],
+                    'retail_price' => $item['retail_price'],
+                ]);
+            }
         }
 
         return $cart;

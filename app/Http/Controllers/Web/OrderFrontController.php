@@ -238,6 +238,7 @@ class OrderFrontController extends Controller
 
             Session::forget('order');
             $cart->clear();
+            $customer->cart?->delete();
 
             return Inertia::render('web/OrderConfirmation', ['order' => $order]);
 

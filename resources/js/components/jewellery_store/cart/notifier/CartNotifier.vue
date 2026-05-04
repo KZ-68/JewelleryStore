@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { show } from '@/routes/cart'
 import { HandbagIcon } from 'lucide-vue-next';
-import { Link } from '@inertiajs/vue3';
-import { toRefs, computed } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 interface CartNotifierProps {
-    cartProductsCount: number
     locale: string
 }
 
 const props = defineProps<CartNotifierProps>();
 
-const shopHeader = toRefs(props);
-const cartNumber = computed(() => shopHeader.cartProductsCount)
+const page = usePage()
+const cartNumber = computed(() => page.props.cartProductsCount as number)
 </script>
 
 <template>

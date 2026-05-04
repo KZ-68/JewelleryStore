@@ -12,6 +12,12 @@ interface TopProductCarouselProps {
 
 const props = defineProps<TopProductCarouselProps>();
 
+defineEmits<{
+    addProduct: [product: Product]
+    addProductQuantity: [quantity: number]
+    addProductPrice: [price: number]
+}>()
+
 const swiperBreakpoints = {
     0:    { slidesPerView: 2, spaceBetween: 12 },
     768:  { slidesPerView: 3, spaceBetween: 16 },
@@ -28,7 +34,17 @@ const swiperBreakpoints = {
             <div class="py-2">
                 <swiper :navigation="true" :modules="[Navigation]" :breakpoints="swiperBreakpoints" class="mySwiper">
                     <swiper-slide v-for="topProduct in props.topProducts" :key="topProduct.id">
-                        <ProductCard classname="" :product="topProduct" :image="topProduct.image" sortBy="name" orderBy="asc" :locale="props.locale"></ProductCard>
+                        <ProductCard
+                            classname=""
+                            :product="topProduct"
+                            :image="topProduct.image"
+                            sortBy="name"
+                            orderBy="asc"
+                            :locale="props.locale"
+                            @addProduct="$emit('addProduct', $event)"
+                            @addProductQuantity="$emit('addProductQuantity', $event)"
+                            @addProductPrice="$emit('addProductPrice', $event)"
+                        />
                     </swiper-slide>
                 </swiper>
             </div>

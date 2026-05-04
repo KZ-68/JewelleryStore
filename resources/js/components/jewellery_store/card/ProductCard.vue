@@ -6,6 +6,7 @@ import { ShoppingCart } from 'lucide-vue-next';
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../../ziggy.js';
 import { useTrans } from '@/composables/trans';
+import { router } from '@inertiajs/vue3';
 
 interface ProductCardProps {
     classname: string
@@ -26,6 +27,7 @@ async function addToCart(product: Product, quantity: number, retailPrice: number
         await axios.post(
             route('cart.addToCart', {locale: props.locale, product: product, quantity: quantity, retail_price: retailPrice}, false, Ziggy)
         )
+        router.reload({ only: ['cartProductsCount'] })
     } catch (error) {
         console.error('Erreur:', error);
     }

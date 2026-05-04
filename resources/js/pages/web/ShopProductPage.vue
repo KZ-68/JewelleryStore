@@ -8,7 +8,9 @@ import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
-import { ref, computed } from 'vue';
+import { ref, computed, provide } from 'vue';
+import BlockCartModal from '@/components/jewellery_store/cart/modal/BlockCartModal.vue';
+import { router } from '@inertiajs/vue3';
 import { route } from '../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../ziggy.js';
 import SizeSelector from '@/components/jewellery_store/select/SizeSelector.vue';
@@ -32,6 +34,7 @@ interface ProductsListProps {
     locale: string
     feature_size_values: Array<string>
     breadcrumb_category: BreadcrumbCategory | null
+    defaultShippingRatePrice: number
 }
 
 const props = defineProps<ProductsListProps>()
@@ -60,12 +63,24 @@ const retailPrice = ref(0);
 const currentSelectedSize = ref<string>('');
 const currentSelectedQuantity = ref<number>(1);
 
-async function addToCart(product: Product, quantity: number, retailPrice: number) {
+const openCartModalValue = ref<boolean>(false)
+provide('openCartModalValue', openCartModalValue)
+
+const productsAdded = ref<Product[]>([])
+const productsQuantity = ref<number>(0)
+const productsPrice = ref<number>(0)
+
+async function addToCart(product: Product, quantity: number, price: number) {
     if (currentSelectedSize.value !== '') {
         try {
             await axios.post(
-                route('cart.addToCart', {locale: props.locale, product: product, quantity: quantity, retail_price: retailPrice, selected_size: currentSelectedSize.value}, false, Ziggy)
+                route('cart.addToCart', {locale: props.locale, product: product, quantity: quantity, retail_price: price, selected_size: currentSelectedSize.value}, false, Ziggy)
             )
+            productsAdded.value = [product]
+            productsQuantity.value = quantity
+            productsPrice.value = price * quantity
+            openCartModalValue.value = true
+            router.reload({ only: ['cartProductsCount'] })
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -333,5 +348,13 @@ const metaDescription = computed(() => {
                 </section>
             </div>
         </div>
+        <BlockCartModal
+            v-model:is-open-value="openCartModalValue"
+            :locale="props.locale"
+            :products="productsAdded"
+            :productsPrice="productsPrice"
+            :productsQuantity="productsQuantity"
+            :defaultShippingRatePrice="props.defaultShippingRatePrice"
+        />
     </AppShopLayout>
 </template>

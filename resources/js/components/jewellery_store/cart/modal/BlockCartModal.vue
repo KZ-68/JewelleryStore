@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { Product } from '@/types/product';
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { show } from "@/routes/cart"
 import { X } from 'lucide-vue-next';
+import { usePage } from '@inertiajs/vue3';
 
 interface BlockCartModal {
     products: Product[]
     productsQuantity: number
     productsPrice: number
-    cartProductsCount: number
     defaultShippingRatePrice: number
     locale: string
     isOpenValue: boolean
@@ -16,6 +16,9 @@ interface BlockCartModal {
 
 const props = defineProps<BlockCartModal>()
 const emit = defineEmits<{ 'update:isOpenValue': [value: boolean] }>()
+
+const page = usePage()
+const cartProductsCount = computed(() => page.props.cartProductsCount as number)
 
 const isOpen = ref(props.isOpenValue)
 

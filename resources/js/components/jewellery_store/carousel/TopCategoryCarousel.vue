@@ -3,7 +3,28 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from 'swiper/modules';
+import { computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
+import { Ziggy } from '../../../ziggy.js';
 import { useTrans } from "@/composables/trans";
+
+const locale = computed(() => usePage().props.locale as string)
+
+function categoryLink(slug: string): string {
+    return route('showCategoryProducts', { locale: locale.value, category_slug: slug }, false, Ziggy)
+}
+
+// Mettre à jour les slugs pour qu'ils correspondent aux slugs réels en base de données
+const slides = [
+    { slug: 'rings',     title: 'Rings',     button: 'Shop Rings',     img: '' },
+    { slug: 'necklaces', title: 'Necklaces', button: 'Shop Necklaces', img: '' },
+    { slug: 'earrings',  title: 'Earrings',  button: 'Shop earrings',  img: '/storage/img/home/carousel/gold_oriental_earrings.png' },
+    { slug: 'bangles',   title: 'Bangles',   button: 'Shop Bangles',   img: '' },
+    { slug: 'pendants',  title: 'Pendants',  button: 'Shop Pendants',  img: '/storage/img/home/carousel/gold_oriental_pendant.png' },
+    { slug: 'bracelets', title: 'Bracelets', button: 'Shop Bracelets', img: '/storage/img/home/carousel/gold_oriental_bracelet.jpg' },
+    { slug: 'charms',    title: 'Charms',    button: 'Shop Charms',    img: '' },
+]
 
 const swiperBreakpoints = {
     0:    { slidesPerView: 1, spaceBetween: 10 },
@@ -20,86 +41,19 @@ const swiperBreakpoints = {
             </hgroup>
             <div class="py-2">
                 <swiper class="mySwiper" :navigation="true" :modules="[Navigation]" :breakpoints="swiperBreakpoints">
-                    <swiper-slide role="group" aria-label="1 / 7">
+                    <swiper-slide
+                        v-for="(slide, index) in slides"
+                        :key="slide.slug"
+                        role="group"
+                        :aria-label="`${index + 1} / ${slides.length}`"
+                    >
                         <div class="content-list">
                             <div class="content">
                                 <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="" alt="">
+                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" :src="slide.img" :alt="useTrans(slide.title)">
                                 </figure>
-                                <h3 class="content_title">{{ useTrans('Rings') }}</h3>
-                                <a class="content_button" href="">{{ useTrans('Shop Rings') }}</a>
-                            </div>
-                        </div>
-                    </swiper-slide>
-                
-                    <swiper-slide role="group" aria-label="2 / 7">
-                        <div class="content-list">
-                            <div class="content">
-                                <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="" alt="">
-                                </figure>
-                                <h3 class="content_title">{{ useTrans('Necklaces') }}</h3>
-                                <a class="content_button" href="">{{ useTrans('Shop Necklaces') }}</a>   
-                            </div>
-                        </div>
-                    </swiper-slide>
-                
-                    <swiper-slide role="group" aria-label="3 / 7">
-                        <div class="content-list">
-                            <div class="content">
-                                <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="/storage/img/home/carousel/gold_oriental_earrings.png" alt="">
-                                </figure>
-                                <h3 class="content_title">{{ useTrans('Earrings') }}</h3>
-                                <a class="content_button" href="">{{ useTrans('Shop earrings') }}</a>
-                            </div>
-                        </div>
-                    </swiper-slide>
-                
-                    <swiper-slide role="group" aria-label="4 / 7">
-                        <div class="content-list">
-                            <div class="content">
-                                <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="" alt="">
-                                </figure>
-                                <h3 class="">{{ useTrans('Bangles') }}</h3>
-                                <a class="content_button" href="">{{ useTrans('Shop Bangles') }}</a>
-                            </div>
-                        </div>
-                    </swiper-slide>
-                    
-                    <swiper-slide role="group" aria-label="5 / 7">
-                        <div class="content-list">
-                            <div class="content">
-                                <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="/storage/img/home/carousel/gold_oriental_pendant.png" alt="">
-                                </figure>
-                                <h3 class="content_title">{{ useTrans('Pendants') }}</h3>
-                                <a class="content_button" href="#">{{ useTrans('Shop Pendants') }}</a>
-                            </div>
-                        </div>
-                    </swiper-slide>
-                    
-                    <swiper-slide role="group" aria-label="6 / 7">
-                        <div class="content-list">
-                            <div class="content">
-                                <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="/storage/img/home/carousel/gold_oriental_bracelet.jpg" alt="">
-                                </figure>
-                                <h3 class="content_title">{{ useTrans('Bracelets') }}</h3>
-                                <a class="content_button" href="">{{ useTrans('Shop Bracelets') }}</a>
-                            </div>
-                        </div>
-                    </swiper-slide>
-                
-                    <swiper-slide role="group" aria-label="7 / 7">
-                        <div class="content-list">
-                            <div class="content">
-                                <figure class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full">
-                                    <img class="aspect-square bg-[#d7d4d1] bg-center bg-cover mb-4 md:mb-8 lg:mb-12 w-full" src="" alt="">
-                                </figure>
-                                <h3 class="content_title">{{ useTrans('Charms') }}</h3>
-                                <a class="content_button" href="">{{ useTrans('Shop Charms') }}</a>
+                                <h3 class="content_title">{{ useTrans(slide.title) }}</h3>
+                                <a class="content_button" :href="categoryLink(slide.slug)">{{ useTrans(slide.button) }}</a>
                             </div>
                         </div>
                     </swiper-slide>

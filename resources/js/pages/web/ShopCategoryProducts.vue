@@ -392,7 +392,6 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                 :products="productsAdded"
                 :productsPrice="productsPrice"
                 :productsQuantity="productsQuantity"
-                :cartProductsCount="props.cartProductsCount"
                 :defaultShippingRatePrice="props.defaultShippingRatePrice"
             />
         </div>

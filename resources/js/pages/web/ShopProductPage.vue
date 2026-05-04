@@ -169,10 +169,12 @@ const metaDescription = computed(() => {
                                         <button
                                             @click="selectThumbnail(index)"
                                             :aria-label="`Voir l'image ${index + 1}`"
-                                            class="w-full focus:outline-none focus:ring-2 focus:ring-[#84070F] rounded-lg"
-                                            :class="activeIndex === index ? 'ring-2 ring-[#84070F]' : ''"
+                                            class="w-full focus:outline-none rounded-lg"
                                         >
-                                            <figure class="w-full aspect-square rounded-lg bg-gray-50 border border-gray-100 overflow-hidden flex items-center justify-center p-1">
+                                            <figure
+                                                class="w-full aspect-square rounded-lg bg-gray-50 border-2 overflow-hidden flex items-center justify-center p-1 transition-colors"
+                                                :class="activeIndex === index ? 'border-[#84070F]' : 'border-gray-100'"
+                                            >
                                                 <img
                                                     :src="image"
                                                     :alt="`${props.product.name} – vue ${index + 1}`"

@@ -16,7 +16,7 @@ function categoryLink(slug: string): string {
 }
 
 const slides = [
-    { slug: 'rings',     title: 'Rings',     button: 'Shop Rings',     img: '/storage/img/home/carousel/gold_oriental_rings.avif' },
+    { slug: 'rings',     title: 'Rings',     button: 'Shop Rings',     img: '/storage/img/home/carousel/gold_oriental_rings.webp' },
     { slug: 'necklaces', title: 'Necklaces', button: 'Shop Necklaces', img: '/storage/img/home/carousel/gold_oriental_necklaces.avif' },
     { slug: 'earrings',  title: 'Earrings',  button: 'Shop earrings',  img: '/storage/img/home/carousel/gold_oriental_earrings.png' },
     { slug: 'bangles',   title: 'Bangles',   button: 'Shop Bangles',   img: '/storage/img/home/carousel/gold_oriental_bangles.webp' },

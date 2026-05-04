@@ -12,7 +12,7 @@ const props = defineProps<SellerRegistrationInvitationBanner>();
 </script>
 
 <template>
-    <section id="seller-invitation-section" class="bg-[url(storage/img/home/day_still_life_design.webp)] bg-fixed bg-center bg-no-repeat bg-cover w-full my-12 md:my-24 text-white h-auto md:h-[36rem] lg:h-[42rem]">
+    <section id="seller-invitation-section" class="bg-[url('/storage/img/home/day_still_life_design.jpg')] bg-fixed bg-center bg-no-repeat bg-cover w-full my-12 md:my-24 text-white h-auto md:h-[36rem] lg:h-[42rem]">
         <div id="seller-invitation-wrapper" class="bg-black/60 overflow-hidden py-16 md:py-[180px] lg:py-[240px] flex flex-col items-center gap-6 md:gap-10 h-full">
             <hgroup class="text-center px-4 md:px-8">
                 <h2 class="text-white text-xl md:text-2xl lg:text-3xl my-3 mx-4">{{ useTrans('Boost your business by becoming a seller on our store !') }}</h2>

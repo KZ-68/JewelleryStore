@@ -219,7 +219,7 @@
                     <td style="width:50%">
                         <div class="invoice-number-label">Invoice #{{ $invoice->number }}</div>
                         <div class="invoice-meta-row">
-                            Date: <span>{{ $invoice->created_at ? $invoice->created_at->format('d/m/Y') : '—' }}</span>
+                            Date: <span>{{ $invoice->created_at ? \Carbon\Carbon::parse($invoice->created_at)->format('d/m/Y') : '—' }}</span>
                         </div>
                         @if($invoice->due_date)
                         <div class="invoice-meta-row">

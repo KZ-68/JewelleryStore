@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Models\Address;
 
 class Order extends Model
 {
@@ -18,6 +19,7 @@ class Order extends Model
     protected $fillable = [
         'carrier_id',
         'customer_id',
+        'address_id',
         'reference',
         'gift',
         'gift_message',
@@ -50,6 +52,11 @@ class Order extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 
     /**

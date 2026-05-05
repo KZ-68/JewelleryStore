@@ -251,6 +251,11 @@ class OrderFrontController extends Controller
             $dto   = CreateOrderDTO::fromArray($session['order_dto']);
             $order = $this->orderService->createOrder($dto, $carrier, $customer);
 
+            $addressId = $cartData['delivery_address']['id'] ?? null;
+            if ($addressId) {
+                $order->address()->associate(Address::find($addressId));
+            }
+
             $status = Status::firstOrCreate(['name' => 'Payment Confirmed']);
             $order->statuses()->attach($status);
             $order->save();

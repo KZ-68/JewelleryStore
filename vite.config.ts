@@ -6,6 +6,15 @@ import { defineConfig } from 'vite';
 import { run } from 'vite-plugin-run';
 
 export default defineConfig({
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    chart: ['chart.js', 'vue-chartjs', 'chartjs-plugin-datalabels'],
+                },
+            },
+        },
+    },
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],

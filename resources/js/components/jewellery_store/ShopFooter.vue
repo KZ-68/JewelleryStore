@@ -84,11 +84,6 @@ const linkClass = 'hover:opacity-80 underline-offset-4 hover:underline transitio
                     </li>
                     <li>
                         <figure>
-                            <img src="/storage/img/icons/payments/16_small.png" alt="Google Pay" class="h-8">
-                        </figure>
-                    </li>
-                    <li>
-                        <figure>
                             <img src="/storage/img/icons/payments/22_small.png" alt="Klarna" class="h-8">
                         </figure>
                     </li>

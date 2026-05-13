@@ -118,6 +118,7 @@ class CartHelper
             'products' => [],
             'total_price' => 0,
             'delivery_address' => [
+                'id' => null,
                 'country_id' => null,
                 'customer_id' => null,
                 'name' => '',
@@ -182,6 +183,7 @@ class CartHelper
     public function insertDeliveryAddress($user, $address): void
     {
         $cart = $this->get();
+        $cart['delivery_address']['id'] = $address->id;
         $cart['delivery_address']['country_id'] = $address->country_id;
         if($user) {
             $customer = Customer::where('email', $user->email)->firstOrFail();

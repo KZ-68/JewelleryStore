@@ -25,7 +25,8 @@ const props = defineProps<ProductCardProps>()
 async function addToCart(product: Product, quantity: number, retailPrice: number) {
     try {
         await axios.post(
-            route('cart.addToCart', {locale: props.locale, product: product, quantity: quantity, retail_price: retailPrice}, false, Ziggy)
+            route('cart.addToCart', { locale: props.locale }, false, Ziggy),
+            { product_id: product.id, quantity: quantity, retail_price: retailPrice }
         )
         router.reload({ only: ['cartProductsCount'] })
     } catch (error) {

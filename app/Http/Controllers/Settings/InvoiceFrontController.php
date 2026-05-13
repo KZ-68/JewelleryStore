@@ -7,7 +7,6 @@ use App\Models\Order;
 use Inertia\Response;
 use App\Models\Invoice;
 use App\Models\Customer;
-use App\Models\Delivery;
 use Illuminate\Http\Request;
 use App\Services\PdfService;
 use App\Http\Controllers\Controller;
@@ -62,19 +61,13 @@ class InvoiceFrontController extends Controller
     public function displayPdf(Request $request, PdfService $pdfService) {
 
         $invoice = Invoice::where('number', $request->input('number'))->firstOrFail();
-        $orders = $invoice->orders;
-        foreach($orders as $order) {
-            $customer = Customer::where('id', $order->customer_id)->first();
-            $carrier = $order->carrier;
-            $delivery = Delivery::where('carrier_id', $carrier->id)->first();
-            $latestDeliveryAddress = $delivery->latestAddress()->firstOrFail();
-        }
-        
+        $order   = $invoice->orders()->with('address', 'customer', 'products')->firstOrFail();
+
         $data = [
-            "invoice" => $invoice,
-            "address" => $latestDeliveryAddress,
-            "customer" => $customer,
-            "products" => $order->products
+            'invoice'  => $invoice,
+            'address'  => $order->address,
+            'customer' => $order->customer,
+            'products' => $order->products,
         ];
 
         return $pdfService->display($data);

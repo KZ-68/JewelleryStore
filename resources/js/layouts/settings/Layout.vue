@@ -9,44 +9,35 @@ import { edit as editProfile } from '@/routes/profile';
 import { showAddresses } from '@/routes/addresses';
 import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { showInvoices } from '@/routes/invoices';
 import { sellerPage } from '@/routes/seller';
+import { computed } from 'vue';
 
 const props = defineProps<{
     locale: string
 }>();
 
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: editProfile({locale: props.locale}),
-    },
-    {
-        title: 'Password',
-        href: editPassword({locale: props.locale}),
-    },
-    {
-        title: 'Two-Factor Auth',
-        href: show({locale: props.locale}),
-    },
-    {
-        title: 'Appearance',
-        href: editAppearance({locale: props.locale}),
-    },
-    {
-        title: 'Addresses',
-        href: showAddresses({locale: props.locale}),
-    },
-    {
-        title: 'Invoices',
-        href: showInvoices({locale: props.locale}),
-    },
-    {
-        title: 'Seller Page',
-        href: sellerPage({locale: props.locale}),
-    },
-];
+const page = usePage()
+
+const isSeller = computed(() => (page.props.auth.roles as string[]).includes('seller'));
+
+const sidebarNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [
+        { title: 'Profile',        href: editProfile({locale: props.locale}) },
+        { title: 'Password',       href: editPassword({locale: props.locale}) },
+        { title: 'Two-Factor Auth', href: show({locale: props.locale}) },
+        { title: 'Appearance',     href: editAppearance({locale: props.locale}) },
+        { title: 'Addresses',      href: showAddresses({locale: props.locale}) },
+        { title: 'Invoices',       href: showInvoices({locale: props.locale}) },
+    ];
+
+    if (isSeller.value) {
+        items.push({ title: 'Seller Page', href: sellerPage({locale: props.locale}) });
+    }
+
+    return items;
+});
 
 const currentPath = typeof window !== undefined ? window.location.pathname : '';
 </script>

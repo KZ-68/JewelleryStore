@@ -2,20 +2,17 @@
 name: deploy
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  environment: test
   deploy:
-    if: github.event.pull_request.merged == true
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
@@ -37,4 +34,3 @@ jobs:
             php bin/console doctrine:migrations:migrate --no-interaction --env=prod &&\
             systemctl restart messenger-worker \
           "
- 

@@ -132,13 +132,13 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
         :cartProductsCount="props.cartProductsCount"
         :locale="props.locale"
     >
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-950">
             <div class="max-w-screen-2xl mx-auto py-8">
                 <div class="mb-6">
-                    <h1 class="text-2xl md:text-3xl font-semibold text-gray-900">
+                    <h1 class="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100">
                         {{ props.category_name }}
                     </h1>
-                    <p class="mt-1 text-sm text-gray-500">
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                         {{ props.products.length }} produit{{ props.products.length !== 1 ? 's' : '' }} disponible{{ props.products.length !== 1 ? 's' : '' }}
                     </p>
                 </div>
@@ -147,7 +147,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                     @click="filtersOpen = !filtersOpen"
                     :aria-expanded="filtersOpen.toString()"
                     aria-controls="filters-panel"
-                    class="lg:hidden flex items-center gap-2 mb-4 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#84070F] transition-colors"
+                    class="lg:hidden flex items-center gap-2 mb-4 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#84070F] transition-colors dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                     <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M7 8h10M11 12h2"/>
@@ -170,18 +170,18 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                         :class="filtersOpen ? 'block' : 'hidden'"
                         class="lg:block w-full lg:w-84 shrink-0"
                     >
-                        <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                            <div class="px-5 py-4 border-b border-gray-100">
-                                <h2 class="text-sm font-semibold text-gray-900 uppercase tracking-wide">{{ useTrans('Filters') }}</h2>
+                        <div class="bg-white rounded-xl border border-gray-100 overflow-hidden dark:bg-gray-900 dark:border-gray-800">
+                            <div class="px-5 py-4 border-b border-gray-100 dark:border-gray-800">
+                                <h2 class="text-sm font-semibold text-gray-900 uppercase tracking-wide dark:text-gray-100">{{ useTrans('Filters') }}</h2>
                             </div>
-                            <div class="flex flex-col divide-y divide-gray-100">
+                            <div class="flex flex-col divide-y divide-gray-100 dark:divide-gray-800">
                                 <fieldset class="px-5 py-4">
-                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3">{{ useTrans('Sort by') }}</legend>
+                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3 dark:text-gray-500">{{ useTrans('Sort by') }}</legend>
                                     <select
                                         id="sort-by-field"
                                         v-model="sortBy"
                                         @change="updateCustomersFilters"
-                                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:border-transparent transition-colors"
+                                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
                                         :aria-label="useTrans('Sort field')"
                                     >
                                         <option value="name">{{ useTrans('Name') }}</option>
@@ -190,14 +190,14 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 </fieldset>
 
                                 <fieldset class="px-5 py-4">
-                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3">{{ useTrans('Order') }}</legend>
+                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3 dark:text-gray-500">{{ useTrans('Order') }}</legend>
                                     <div class="flex gap-2" role="group" aria-label="Ordre de tri">
                                         <button
                                             @click="setOrderBy('asc')"
                                             :aria-pressed="(orderBy === 'asc').toString()"
                                             :class="orderBy === 'asc'
                                                 ? 'bg-[#84070F] text-white border-[#84070F]'
-                                                : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                                                : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-700'"
                                             class="flex-1 px-3 py-2 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
                                         >
                                             {{ useTrans('Ascendant') }}
@@ -207,7 +207,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                             :aria-pressed="(orderBy === 'desc').toString()"
                                             :class="orderBy === 'desc'
                                                 ? 'bg-[#84070F] text-white border-[#84070F]'
-                                                : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                                                : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-700'"
                                             class="flex-1 px-3 py-2 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
                                         >
                                            {{ useTrans('Descendant') }}
@@ -216,13 +216,13 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 </fieldset>
 
                                 <fieldset v-if="sizeFeature" class="px-5 py-4">
-                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3">
+                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3 dark:text-gray-500">
                                         {{ useTrans('Size') }}
                                     </legend>
                                     <select
                                         v-model="selectedSizeId"
                                         @change="updateCustomersFilters"
-                                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:border-transparent transition-colors"
+                                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
                                         :aria-label="useTrans('Filter by size')"
                                     >
                                         <option value="">{{ useTrans('All sizes') }}</option>
@@ -237,13 +237,13 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 </fieldset>
 
                                 <fieldset v-if="materialFeature" class="px-5 py-4">
-                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3">
+                                    <legend class="text-xs font-semibold text-gray-400 uppercase tracking-wide py-3 dark:text-gray-500">
                                         {{ useTrans('Material') }}
                                     </legend>
                                     <select
                                         v-model="selectedMaterialId"
                                         @change="updateCustomersFilters"
-                                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:border-transparent transition-colors"
+                                        class="w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:border-transparent transition-colors dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200"
                                         :aria-label="useTrans('Filter by material')"
                                     >
                                         <option value="">{{ useTrans('All materials') }}</option>
@@ -261,7 +261,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                     <button
                                         type="button"
                                         @click="resetFeatureFilters"
-                                        class="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm rounded-lg border border-[#84070F] text-[#84070F] hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
+                                        class="w-full flex items-center justify-center gap-2 px-3 py-2 text-sm rounded-lg border border-[#84070F] text-[#84070F] hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:hover:bg-red-950/30"
                                     >
                                         <svg aria-hidden="true" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -275,20 +275,20 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
 
                     <div class="flex-1 flex flex-col gap-6 min-w-0">
                         <p
-                            class="text-sm text-gray-500"
+                            class="text-sm text-gray-500 dark:text-gray-400"
                             aria-live="polite"
                             aria-atomic="true"
                         >
                             {{useTrans('Display off')}}
-                            <span class="font-medium text-gray-700">{{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }}–{{ Math.min(currentPage * ITEMS_PER_PAGE, props.products.length) }}</span>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">{{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }}–{{ Math.min(currentPage * ITEMS_PER_PAGE, props.products.length) }}</span>
                             {{useTrans('on')}}
-                            <span class="font-medium text-gray-700">{{ props.products.length }}</span>
+                            <span class="font-medium text-gray-700 dark:text-gray-300">{{ props.products.length }}</span>
                             {{useTrans('product')}}{{ props.products.length !== 1 ? 's' : '' }}
                         </p>
 
                         <div
                             v-if="props.products.length === 0"
-                            class="flex flex-col items-center justify-center py-24 text-gray-400 bg-white rounded-xl border border-gray-100"
+                            class="flex flex-col items-center justify-center py-24 text-gray-400 bg-white rounded-xl border border-gray-100 dark:bg-gray-900 dark:border-gray-800 dark:text-gray-500"
                             role="status"
                         >
                             <svg aria-hidden="true" class="w-12 h-12 mb-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -328,7 +328,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 @click="goToPage(currentPage - 1)"
                                 :disabled="currentPage === 1"
                                 :aria-label="useTrans('Previous page')"
-                                class="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
+                                class="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800"
                             >
                                 <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/>
@@ -339,11 +339,11 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 <button
                                     @click="goToPage(1)"
                                     aria-label="Page 1"
-                                    class="w-9 h-9 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
+                                    class="w-9 h-9 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                                 >
                                     1
                                 </button>
-                                <span v-if="visiblePages[0] > 2" class="px-1 text-gray-400 select-none" aria-hidden="true">…</span>
+                                <span v-if="visiblePages[0] > 2" class="px-1 text-gray-400 select-none dark:text-gray-600" aria-hidden="true">…</span>
                             </template>
 
                             <button
@@ -354,18 +354,18 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 :aria-current="page === currentPage ? 'page' : undefined"
                                 :class="page === currentPage
                                     ? 'bg-[#84070F] text-white border-[#84070F]'
-                                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'"
+                                    : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800'"
                                 class="w-9 h-9 rounded-lg border text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
                             >
                                 {{ page }}
                             </button>
 
                             <template v-if="visiblePages[visiblePages.length - 1] < totalPages">
-                                <span v-if="visiblePages[visiblePages.length - 1] < totalPages - 1" class="px-1 text-gray-400 select-none" aria-hidden="true">…</span>
+                                <span v-if="visiblePages[visiblePages.length - 1] < totalPages - 1" class="px-1 text-gray-400 select-none dark:text-gray-600" aria-hidden="true">…</span>
                                 <button
                                     @click="goToPage(totalPages)"
                                     :aria-label="`Page ${totalPages}`"
-                                    class="w-9 h-9 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
+                                    class="w-9 h-9 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                                 >
                                     {{ totalPages }}
                                 </button>
@@ -375,7 +375,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 @click="goToPage(currentPage + 1)"
                                 :disabled="currentPage === totalPages"
                                 :aria-label="useTrans('Next page')"
-                                class="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F]"
+                                class="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800"
                             >
                                 <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/>

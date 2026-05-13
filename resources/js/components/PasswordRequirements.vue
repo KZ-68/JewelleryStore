@@ -38,7 +38,7 @@ const rules = computed(() => [
             <svg
                 aria-hidden="true"
                 class="w-3.5 h-3.5 shrink-0"
-                :class="rule.met ? 'text-green-600' : 'text-gray-300'"
+                :class="rule.met ? 'text-green-600' : 'text-gray-300 dark:text-gray-600'"
                 viewBox="0 0 20 20"
                 fill="currentColor"
             >

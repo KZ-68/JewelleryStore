@@ -29,20 +29,20 @@ defineEmits(['selectStep']);
 
             <button
                 @click="$emit('selectStep', 0)"
-                class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors"
+                class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-200"
                 aria-label="Go back to step 1: Connecting an account"
             >
                 <h2 class="text-xl px-3 py-4">1. Connecting an account</h2>
             </button>
 
-            <div class="bg-white py-6 w-full rounded-t-md" aria-current="step">
+            <div class="bg-white py-6 w-full rounded-t-md dark:bg-gray-900 dark:text-gray-200" aria-current="step">
                 <h2 class="text-xl px-3 py-4">2. Delivery address</h2>
             </div>
 
             <div v-if="props.addresses.length === 0 || isNewAddress === true">
                 <AddressCreateForm classname="" :countries="countries" :isOrder="true" :locale="props.locale" />
             </div>
-            <div v-else class="bg-white w-full">
+            <div v-else class="bg-white w-full dark:bg-gray-900 dark:text-gray-200">
                 <h3 class="text-lg px-6 mt-8 mb-4">Select an address</h3>
                 <AddressesList
                     classname=""
@@ -60,9 +60,9 @@ defineEmits(['selectStep']);
             <button
                 @click="$emit('selectStep', 2)"
                 :disabled="!isAddressSelected"
-                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors"
+                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors dark:bg-gray-900 dark:text-gray-200"
                 :class="isAddressSelected
-                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2'
+                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 dark:hover:bg-gray-800'
                     : 'opacity-50 cursor-not-allowed'"
                 aria-label="Step 3: Select a carrier"
             >

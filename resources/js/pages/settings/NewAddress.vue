@@ -22,7 +22,7 @@ const props = defineProps<NewAddressProps>()
         <h1 id="new-carrier-page-heading" class="text-xl">Add a new address</h1>            
       </hgroup>
       <AddressCreateForm classname="" :countries="countries" :locale="props.locale" :isOrder="false"></AddressCreateForm>
-      <Link :href="showAddresses({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
+      <Link :href="showAddresses({locale: props.locale})" class="w-fit inline-block rounded-sm border border-[#19140035] px-5 py-1.5 mx-6 my-8 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-400">
         Back to addresses list
       </Link>
     </section>

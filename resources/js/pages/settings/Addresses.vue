@@ -22,7 +22,7 @@ const props = defineProps<AddressesProps>()
           <nav id="addresses-top-nav" class="flex flex-row">
             <Link
                 :href="newAddress({locale: props.locale})"
-                class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                class="inline-block rounded-md border px-5 py-3 text-sm leading-normal bg-black text-white dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600"
             >
                 Add a new address
             </Link>

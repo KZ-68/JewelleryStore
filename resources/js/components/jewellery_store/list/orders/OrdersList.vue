@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import type { Order } from '@/types/order'
 import { Link } from '@inertiajs/vue3'
 import { route } from '../../../../../../vendor/tightenco/ziggy';
@@ -23,7 +23,7 @@ const props = defineProps<OrdersListProps>()
 </script>
 
 <template>
-    <section id="orders-list-wrapper" class="bg-gray-100 rounded-lg py-4 px-2 sm:px-6 md:px-12">
+    <section id="orders-list-wrapper" class="rounded-lg py-4 px-2 sm:px-6 md:px-12">
         <div class="overflow-x-auto">
             <table class="flex flex-col gap-4 min-w-[400px] w-full">
                 <thead>
@@ -35,7 +35,7 @@ const props = defineProps<OrdersListProps>()
                     </tr>
                 </thead>
                 <tbody v-if="orders.length > 0" id="orders-list">
-                    <tr v-for="order in orders" v-bind:key="order.id" class="flex flex-row gap-[5%] items-center justify-around bg-gray-200 py-3 px-3 my-4 rounded-md min-h-[4rem] h-auto">
+                    <tr v-for="order in orders" v-bind:key="order.id" class="flex flex-row gap-[5%] items-center justify-around bg-white border border-gray-200 py-3 px-3 my-4 rounded-md min-h-[4rem] h-auto dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200">
                         <th scope="row" class="w-[15%] text-center">{{ order.id }}</th>
                         <td class="w-[15%] text-center break-words">{{ order.reference }}</td>
                         <td class="w-[15%] text-center">{{ order.created_at }}</td>
@@ -43,8 +43,8 @@ const props = defineProps<OrdersListProps>()
                     </tr>
                 </tbody>
                 <tbody v-else id="orders-list">
-                    <tr>
-                        <th scope="row">No Order registered</th>
+                    <tr class="flex flex-row items-center justify-center bg-white border border-gray-200 py-3 px-3 my-4 rounded-md min-h-[4rem] dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="text-center font-normal text-gray-500 dark:text-gray-400">No Order registered</th>
                     </tr>
                 </tbody>
             </table>

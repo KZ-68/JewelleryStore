@@ -27,7 +27,7 @@ const closingNav = () => {
 </script>
 
 <template>
-  <nav :data-active="active" class="fixed w-96 pb-10 transition-transform duration-300 ease-in-out data-[active=false]:translate-x-[-380px] data-[active=true]:translate-x-[0px] top-0 z-[2] bg-white">
+  <nav :data-active="active" class="fixed w-96 pb-10 transition-transform duration-300 ease-in-out data-[active=false]:translate-x-[-380px] data-[active=true]:translate-x-[0px] top-0 z-[2] bg-white dark:bg-gray-900">
     <div class="relative flex flex-col items-center justify-around gap-4 ">
       <div id="burger-menu-top" class="flex flex-row items-center">
         <button id="closeBtn" @click="closingNav" href="#" class="absolute top-0 right-0 p-4">
@@ -43,7 +43,7 @@ const closingNav = () => {
       <Link
           
           :href="showBO({locale: props.locale})"
-          class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+          class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-400"
           v-if="$page.props.auth.user"
       >
           Dashboard
@@ -55,13 +55,13 @@ const closingNav = () => {
           <div class="flex flex-row gap-3">
             <Link
               :href="route('login', {locale: props.locale,}, false, Ziggy)"
-              class="inline-block w-36 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm text-center leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+              class="inline-block w-36 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm text-center leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-gray-300 dark:border-gray-600 dark:hover:border-gray-400"
             >
               Log in
             </Link>
             <Link
                 :href="register({locale: props.locale})"
-                class="inline-block w-36 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm text-center leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                class="inline-block w-36 rounded-sm border border-[#19140035] px-5 py-1.5 text-sm text-center leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-gray-600 dark:text-gray-300 dark:hover:border-gray-400"
             >
               Register
             </Link>

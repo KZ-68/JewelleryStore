@@ -51,14 +51,14 @@ const onFocusOut = (e: FocusEvent) => {
             aria-haspopup="listbox"
             :aria-label="`Langue sélectionnée : ${current.label}. Changer de langue.`"
             @click="toggle"
-            class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#84070F] transition-colors select-none"
+            class="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#84070F] transition-colors select-none dark:text-gray-300 dark:hover:bg-gray-800"
             :class="{ 'bg-gray-100': isOpen }"
         >
             <span aria-hidden="true" class="text-base leading-none">{{ current.flag }}</span>
             <span class="hidden sm:inline">{{ current.shortLabel }}</span>
             <ChevronDown
                 aria-hidden="true"
-                class="w-3.5 h-3.5 text-gray-400 transition-transform duration-150"
+                class="w-3.5 h-3.5 text-gray-400 transition-transform duration-150 dark:text-gray-500"
                 :class="{ 'rotate-180': isOpen }"
             />
         </button>
@@ -77,7 +77,7 @@ const onFocusOut = (e: FocusEvent) => {
                 role="listbox"
                 :aria-label="`Langues disponibles`"
                 :aria-activedescendant="`lang-opt-${locale}`"
-                class="absolute right-0 mt-1 w-36 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50 overflow-hidden py-1"
+                class="absolute right-0 mt-1 w-36 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black/5 focus:outline-none z-50 overflow-hidden py-1 dark:bg-gray-900 dark:ring-white/10"
             >
                 <!-- Current locale (non-interactive, shown for context) -->
                 <li
@@ -85,7 +85,7 @@ const onFocusOut = (e: FocusEvent) => {
                     role="option"
                     aria-selected="true"
                     aria-disabled="true"
-                    class="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-[#84070F] bg-red-50 cursor-default select-none"
+                    class="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-[#84070F] bg-red-50 cursor-default select-none dark:bg-red-950/40"
                 >
                     <span aria-hidden="true" class="text-base leading-none">{{ current.flag }}</span>
                     {{ current.label }}
@@ -105,7 +105,7 @@ const onFocusOut = (e: FocusEvent) => {
                         :href="switchedUrl(key)"
                         :lang="key"
                         :hreflang="key"
-                        class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#84070F] transition-colors focus:outline-none focus:bg-gray-50 focus:text-[#84070F]"
+                        class="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#84070F] transition-colors focus:outline-none focus:bg-gray-50 focus:text-[#84070F] dark:text-gray-300 dark:hover:bg-gray-800"
                         @click="close"
                     >
                         <span aria-hidden="true" class="text-base leading-none">{{ config.flag }}</span>

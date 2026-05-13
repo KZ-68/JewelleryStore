@@ -35,7 +35,7 @@ const props = defineProps<ContactFormProps>();
                         :tabindex="1"
                         autocomplete="email"
                         placeholder="email@example.com"
-                        class="bg-gray-100 p-1 rounded-md h-12 text-md"
+                        class="bg-gray-100 p-1 rounded-md h-12 text-md dark:bg-gray-700 dark:text-gray-200 dark:placeholder:text-gray-500"
                     />
                     <InputError :message="errors.email" />
                 </div>
@@ -50,7 +50,7 @@ const props = defineProps<ContactFormProps>();
                         autofocus
                         :tabindex="2"
                         placeholder="Type your subject here"
-                        class="bg-gray-100 p-1 h-12 text-md"
+                        class="bg-gray-100 p-1 h-12 text-md dark:bg-gray-700 dark:text-gray-200 dark:placeholder:text-gray-500"
                     />
                     <InputError :message="errors.subject" />
                 </div>
@@ -68,7 +68,7 @@ const props = defineProps<ContactFormProps>();
                         autofocus
                         :tabindex="3"
                         placeholder="Type your message here"
-                        class="bg-gray-100 p-1 rounded-md text-md"
+                        class="bg-gray-100 p-1 rounded-md text-md dark:bg-gray-700 dark:text-gray-200 dark:placeholder:text-gray-500"
                     />
                     <InputError :message="errors.subject" />
                 </div>

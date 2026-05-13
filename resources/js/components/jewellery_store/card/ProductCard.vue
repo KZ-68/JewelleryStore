@@ -51,9 +51,9 @@ defineEmits(['addProduct', 'addProductQuantity', 'addProductPrice']);
 </script>
 
 <template>
-    <article class="w-full bg-white flex flex-col rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+    <article class="w-full bg-white flex flex-col rounded-lg overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow dark:bg-gray-900 dark:border-gray-800">
 
-        <div class="relative w-full aspect-square bg-gray-50 overflow-hidden">
+        <div class="relative w-full aspect-square bg-gray-50 overflow-hidden dark:bg-gray-800">
             <a
                 :href="route('products.showShopProduct', {locale: props.locale, slug: props.product.slug}, false, Ziggy)"
                 tabindex="-1"
@@ -72,11 +72,11 @@ defineEmits(['addProduct', 'addProductQuantity', 'addProductPrice']);
             <div class="min-w-0 flex-1">
                 <a
                     :href="route('products.showShopProduct', {locale: props.locale, slug: props.product.slug}, false, Ziggy)"
-                    class="block text-xs sm:text-sm font-semibold text-gray-800 truncate hover:text-[#84070F] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] rounded-sm"
+                    class="block text-xs sm:text-sm font-semibold text-gray-800 truncate hover:text-[#84070F] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] rounded-sm dark:text-gray-200"
                 >
                     {{ useTrans(props.product.name) }}
                 </a>
-                <span class="text-xs sm:text-sm font-bold text-amber-700">
+                <span class="text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-400">
                     {{ retailPrice }}
                 </span>
             </div>

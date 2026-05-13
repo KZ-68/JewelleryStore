@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'vue'
 import { cn } from '@/lib/utils'
 import { Primitive, type PrimitiveProps } from 'reka-ui'
 import { type ButtonVariants, buttonVariants } from '.'
-import axios from 'axios';
+import { router } from '@inertiajs/vue3';
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '@/ziggy';
 
@@ -20,15 +20,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 function submit(guard: string) {
     if (guard === 'web') {
-      axios.post(route('customer-logout', {locale: props.locale}, false, Ziggy))
-        .then(() => {
-      })
+        router.post(route('customer-logout', {locale: props.locale}, false, Ziggy))
     } else {
-      axios.post(route('admin-logout', {locale: props.locale}, false, Ziggy))
-        .then(() => {
-      })
+        router.post(route('admin-logout', {locale: props.locale}, false, Ziggy))
     }
-
 }
 </script>
 

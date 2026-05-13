@@ -35,7 +35,7 @@ const props = defineProps<AddressCreateFormProps>();
                         name="name"
                         required
                         placeholder="Add a name..."
-                        class="bg-gray-100 p-1 rounded-md"
+                        class="bg-gray-100 p-1 rounded-md dark:bg-gray-700 dark:text-gray-200"
                     />
                     <InputError :message="errors.name" />
                 </div>
@@ -52,7 +52,7 @@ const props = defineProps<AddressCreateFormProps>();
                         autofocus
                         :tabindex="2"
                         placeholder="..."
-                        class="bg-gray-100 p-1 rounded-md"
+                        class="bg-gray-100 p-1 rounded-md dark:bg-gray-700 dark:text-gray-200"
                     />
                     <InputError :message="errors.address_line_1" />
                 </div>
@@ -69,7 +69,7 @@ const props = defineProps<AddressCreateFormProps>();
                         autofocus
                         :tabindex="2"
                         placeholder="..."
-                        class="bg-gray-100 p-1 rounded-md"
+                        class="bg-gray-100 p-1 rounded-md dark:bg-gray-700 dark:text-gray-200"
                     />
                     <InputError :message="errors.address_line_2" />
                 </div>
@@ -104,7 +104,7 @@ const props = defineProps<AddressCreateFormProps>();
 
                 <div class="grid gap-2">
                     <Label for="country" class="text-md">Country</Label>
-                    <select name="countries" v-model="countrySelected" class="border-2 rounded-md">
+                    <select name="countries" v-model="countrySelected" class="border-2 rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
                         <option value="">--Please choose a country--</option>
                         <option v-for="country in countries" :value="country.local">{{ country.name }}</option>
                     </select>

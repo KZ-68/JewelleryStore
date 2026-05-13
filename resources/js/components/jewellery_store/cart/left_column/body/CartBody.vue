@@ -32,7 +32,7 @@ const props = defineProps<CartBodyProps>();
 
 <template>
     <div class="mb-8 space-y-0.5 flex gap-2">
-        <div v-for="product in props.products" :key="product.name" class="w-[100%] bg-neutral-100 flex flex-row items-center justify-between py-8 px-6 my-3 mx-4 rounded-md">
+        <div v-for="product in props.products" :key="product.name" class="w-[100%] bg-neutral-100 flex flex-row items-center justify-between py-8 px-6 my-3 mx-4 rounded-md dark:bg-neutral-700 dark:text-gray-200">
             <h2 class="text-xl font-semibold tracking-tight">{{ product.name }}</h2>
             <aside class="flex flex-row text-sm text-muted-foreground gap-20">
                 <span>

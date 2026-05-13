@@ -38,9 +38,9 @@ async function selectAddress(id:number) {
 
 <template>
     <section id="address-card-wrapper" class="m-2 text-sm">
-        <div v-if="props.isOrder === false" class="w-3xs max-w-3xs border-black border-2 focus:border-red-800 rounded-lg py-4 px-4">
+        <div v-if="props.isOrder === false" class="w-3xs max-w-3xs border-black border-2 focus:border-red-800 rounded-lg py-4 px-4 dark:border-gray-600 dark:text-gray-200">
             <Button @click="deleteAddress(props.address.name)"><TrashIcon class="text-red-500" /></Button>
-            <hgroup class="flex flex-col border-b-[2px] border-black my-2">
+            <hgroup class="flex flex-col border-b-[2px] border-black my-2 dark:border-gray-600">
                 <h2 class="my-2">{{ props.address.name }}</h2>
             </hgroup>
             <ul class="flex flex-col gap-2 py-2">
@@ -56,9 +56,9 @@ async function selectAddress(id:number) {
                 <li v-if="props.address.sub_locality !== null" class="font-semibold">{{ props.address.sub_locality }}</li>
             </ul>
         </div>
-        <div v-else class="w-3xs max-w-3xs border-black border-2 focus:border-red-800 rounded-lg py-4 px-4">
+        <div v-else class="w-3xs max-w-3xs border-black border-2 focus:border-red-800 rounded-lg py-4 px-4 dark:border-gray-600 dark:text-gray-200">
             <button @click="selectAddress(props.address.id)" class="flex flex-col items-start hover:cursor-pointer">
-                <hgroup class="flex flex-col border-b-[2px] border-black my-2">
+                <hgroup class="flex flex-col border-b-[2px] border-black my-2 dark:border-gray-600">
                     <h2 class="my-2">{{ props.address.name }}</h2>
                 </hgroup>
                 <ul class="flex flex-col items-start gap-2 py-2">

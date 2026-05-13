@@ -21,11 +21,11 @@ interface ShopHeaderProps {
 
 const props = defineProps<ShopHeaderProps>()
 
-const linkClass = 'rounded-sm border border-[#19140035] px-2.5 md:px-3 lg:px-4 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]'
+const linkClass = 'rounded-sm border border-[#19140035] px-2.5 md:px-3 lg:px-4 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:text-gray-300 dark:border-gray-700 dark:hover:border-gray-500'
 </script>
 
 <template>
-    <header class="sticky top-0 z-40 flex flex-col w-full bg-white shadow-sm text-sm">
+    <header class="sticky top-0 z-40 flex flex-col w-full bg-white shadow-sm text-sm dark:bg-gray-900 dark:shadow-gray-900/50">
         <nav aria-label="Navigation principale" class="flex items-center justify-between gap-2 lg:gap-4 px-4 md:px-6 py-4 max-w-screen-2xl mx-auto w-full">
             <div class="w-28 md:w-40 lg:flex-1 lg:max-w-xs shrink-0">
                 <SearchBar />
@@ -39,7 +39,7 @@ const linkClass = 'rounded-sm border border-[#19140035] px-2.5 md:px-3 lg:px-4 p
                 <figure aria-hidden="true" class="shrink-0">
                     <img src="/storage/img/home/logo_128x128.png" alt="" class="h-9 w-9 lg:h-10 lg:w-10 object-contain">
                 </figure>
-                <span class="hidden lg:block text-xl font-semibold text-gray-900 group-hover:text-[#84070F] transition-colors">
+                <span class="hidden lg:block text-xl font-semibold text-gray-900 group-hover:text-[#84070F] transition-colors dark:text-gray-100">
                     Joaillerie Orient
                 </span>
             </a>
@@ -66,7 +66,7 @@ const linkClass = 'rounded-sm border border-[#19140035] px-2.5 md:px-3 lg:px-4 p
                 <template v-else>
                     <Link
                         :href="route('customer-login', {locale: props.locale}, false, Ziggy)"
-                        class="rounded-sm border border-transparent px-2.5 lg:px-4 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                        class="rounded-sm border border-transparent px-2.5 lg:px-4 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] transition-colors focus:outline-none focus:ring-2 focus:ring-[#84070F] dark:text-gray-300 dark:hover:border-gray-700"
                     >
                         {{ useTrans('Log in') }}
                     </Link>
@@ -84,7 +84,7 @@ const linkClass = 'rounded-sm border border-[#19140035] px-2.5 md:px-3 lg:px-4 p
             </div>
         </nav>
 
-        <div class="border-t border-gray-100">
+        <div class="border-t border-gray-100 dark:border-gray-800">
             <CategoryMenu :locale="props.locale" :frontCategories="props.frontCategories" />
         </div>
     </header>

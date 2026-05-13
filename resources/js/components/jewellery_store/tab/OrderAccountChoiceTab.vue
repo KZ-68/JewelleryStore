@@ -28,7 +28,7 @@ const props = defineProps<OrderAccountFormProps>();
     <section class="py-8 px-4 lg:px-0">
         <div class="mx-auto w-full max-w-[60rem] lg:max-w-none flex flex-col gap-1">
 
-            <div class="bg-white flex flex-col justify-center px-3 py-6 rounded-md" aria-current="step">
+            <div class="bg-white flex flex-col justify-center px-3 py-6 rounded-md dark:bg-gray-900 dark:text-gray-200" aria-current="step">
                 <h2 class="text-xl mx-3 my-2">1. Connecting an account</h2>
                 <div v-if="!$page.props.auth.customer" class="flex flex-col sm:flex-row justify-center my-4 gap-3 px-3">
                     <button
@@ -52,9 +52,9 @@ const props = defineProps<OrderAccountFormProps>();
             <button
                 @click="$emit('selectStep', 1)"
                 :disabled="!$page.props.auth.customer"
-                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors"
+                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors dark:bg-gray-900 dark:text-gray-200"
                 :class="$page.props.auth.customer
-                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2'
+                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 dark:hover:bg-gray-800'
                     : 'opacity-50 cursor-not-allowed'"
                 aria-label="Step 2: Delivery address"
             >
@@ -64,9 +64,9 @@ const props = defineProps<OrderAccountFormProps>();
             <button
                 @click="$emit('selectStep', 2)"
                 :disabled="!isAddressSelected"
-                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors"
+                class="bg-white py-6 my-2 w-full rounded-t-md text-left transition-colors dark:bg-gray-900 dark:text-gray-200"
                 :class="isAddressSelected
-                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2'
+                    ? 'hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 dark:hover:bg-gray-800'
                     : 'opacity-50 cursor-not-allowed'"
                 aria-label="Step 3: Select a carrier"
             >

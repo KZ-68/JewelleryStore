@@ -32,7 +32,7 @@ onMounted(() => initCookieConsent())
 </script>
 
 <template>
-    <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2]">
+    <button v-if="width <= 430" id="openBtn" @click="openNav" class="absolute top-0 left-0 flex flex-col gap-1 p-4 bg-white z-[2] dark:bg-gray-900">
         <div class="w-[20px] h-0.5 bg-shop-primary"></div>
         <div class="w-[20px] h-0.5 bg-shop-primary"></div>
         <div class="w-[20px] h-0.5 bg-shop-primary"></div>

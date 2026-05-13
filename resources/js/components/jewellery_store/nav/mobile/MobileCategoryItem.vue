@@ -24,13 +24,13 @@ const hasChildren = () => !!props.category.children_recursive?.length
     <li>
         <!-- Ligne principale : toggle si sous-catégories, lien direct sinon -->
         <div
-            class="flex items-center gap-2 py-3 pr-4 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+            class="flex items-center gap-2 py-3 pr-4 border-b border-gray-100 hover:bg-gray-50 transition-colors dark:border-gray-800 dark:hover:bg-gray-800"
             :style="{ paddingLeft: `${1 + depth * 0.75}rem` }"
         >
             <button
                 v-if="hasChildren()"
                 @click="emit('toggle', category.id)"
-                class="flex-1 text-left font-medium text-gray-800 focus:outline-none"
+                class="flex-1 text-left font-medium text-gray-800 focus:outline-none dark:text-gray-200"
                 :aria-expanded="isOpen().toString()"
             >
                 {{ category.name }}
@@ -38,7 +38,7 @@ const hasChildren = () => !!props.category.children_recursive?.length
             <a
                 v-else
                 :href="route('showCategoryProducts', { locale, category_slug: category.slug }, false, Ziggy)"
-                class="flex-1 font-medium text-gray-800 hover:text-[#84070F] transition-colors"
+                class="flex-1 font-medium text-gray-800 hover:text-[#84070F] transition-colors dark:text-gray-200 dark:hover:text-red-400"
             >
                 {{ category.name }}
             </a>
@@ -51,7 +51,7 @@ const hasChildren = () => !!props.category.children_recursive?.length
             >
                 <svg
                     aria-hidden="true"
-                    class="w-4 h-4 text-gray-500 transition-transform duration-200"
+                    class="w-4 h-4 text-gray-500 transition-transform duration-200 dark:text-gray-400"
                     :class="{ 'rotate-180': isOpen() }"
                     viewBox="0 0 20 20" fill="none"
                 >
@@ -66,7 +66,7 @@ const hasChildren = () => !!props.category.children_recursive?.length
             <li>
                 <a
                     :href="route('showCategoryProducts', { locale, category_slug: category.slug }, false, Ziggy)"
-                    class="flex items-center gap-2 py-2.5 pr-4 border-b border-gray-100 text-sm font-semibold text-[#84070F] hover:bg-red-50 transition-colors"
+                    class="flex items-center gap-2 py-2.5 pr-4 border-b border-gray-100 text-sm font-semibold text-[#84070F] hover:bg-red-50 transition-colors dark:border-gray-800 dark:hover:bg-red-950/20"
                     :style="{ paddingLeft: `${1.75 + depth * 0.75}rem` }"
                 >
                     <svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

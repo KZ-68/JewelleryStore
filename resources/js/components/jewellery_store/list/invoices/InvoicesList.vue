@@ -23,7 +23,7 @@ const displayPdf = (number: string) => {
 </script>
 
 <template>
-    <section id="invoices-list-wrapper" class="rounded-lg py-4 px-2 sm:px-6 md:px-12">
+    <section id="invoices-list-wrapper" class="rounded-lg py-4">
         <div class="overflow-x-auto">
             <table class="flex flex-col gap-4 min-w-[480px] w-full">
                 <thead>

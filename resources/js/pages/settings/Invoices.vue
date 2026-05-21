@@ -14,12 +14,12 @@ const props = defineProps<InvoicesProps>()
 
 <template>
     <Head title="Your Invoices" />
-    <SettingsLayout :locale="props.locale">
-      <div id="invoices-page-wrapper"  class="items-center min-h-screen p-10 text-[#1b1b18] lg:justify-center lg:p-14 dark:bg-[#0a0a0a]">
-        <h2 class="text-3xl my-6">Your Invoices</h2>
+    <SettingsLayout :locale="props.locale" :wide="true">
+      <div class="w-full">
+        <h2 class="text-3xl mb-6">Your Invoices</h2>
         <InvoicesList
           classname=""
-          :invoices=props.invoices
+          :invoices="props.invoices"
           :locale="props.locale"
         />
       </div>

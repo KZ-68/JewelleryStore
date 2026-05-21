@@ -16,6 +16,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{
     locale: string
+    wide?: boolean
 }>();
 
 const page = usePage()
@@ -50,8 +51,31 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
         />
 
         <div class="flex flex-col lg:flex-row lg:space-x-12">
-            <aside class="w-full max-w-xl lg:w-48">
-                <nav class="flex flex-col space-y-1 space-x-0">
+
+            <!-- Mobile : barre horizontale scrollable -->
+            <aside class="lg:hidden w-full">
+                <nav class="flex flex-row overflow-x-auto gap-1 pb-1 scrollbar-none">
+                    <Link
+                        v-for="item in sidebarNavItems"
+                        :key="toUrl(item.href)"
+                        :href="item.href"
+                        :class="[
+                            'flex items-center gap-1.5 whitespace-nowrap shrink-0 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                            urlIsActive(item.href, currentPath)
+                                ? 'bg-muted text-foreground'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                        ]"
+                    >
+                        <component :is="item.icon" class="h-4 w-4 shrink-0" />
+                        {{ item.title }}
+                    </Link>
+                </nav>
+                <Separator class="mt-3" />
+            </aside>
+
+            <!-- Desktop : sidebar verticale -->
+            <aside class="hidden lg:block lg:w-48 shrink-0">
+                <nav class="flex flex-col space-y-1">
                     <Button
                         v-for="item in sidebarNavItems"
                         :key="toUrl(item.href)"
@@ -70,10 +94,8 @@ const currentPath = typeof window !== undefined ? window.location.pathname : '';
                 </nav>
             </aside>
 
-            <Separator class="my-6 lg:hidden" />
-
-            <div class="flex-1 md:max-w-2xl">
-                <section class="max-w-xl space-y-12">
+            <div :class="['flex-1 min-w-0 mt-6 lg:mt-0', !wide && 'md:max-w-2xl']">
+                <section :class="[wide ? 'w-full' : 'max-w-xl', 'space-y-12']">
                     <slot />
                 </section>
             </div>

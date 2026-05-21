@@ -12,6 +12,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Carrier;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
@@ -19,6 +20,7 @@ use App\Models\Supplier;
 use App\Models\Manufacturer;
 use App\Models\TaxRuleGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Feature;
 
@@ -35,7 +37,37 @@ class BackOfficeController extends Controller
     */
     public function showBO(Request $request): Response
     {
-        return Inertia::render('admin/BackOffice', []);
+        $totalOrders = Order::count();
+        $totalCustomers = Customer::count();
+        $totalProducts = Product::where('active', true)->count();
+
+        $totalRevenue = DB::table('order_product')
+            ->join('products', 'order_product.product_id', '=', 'products.id')
+            ->sum('products.price_ht');
+
+        $latestStatuses = DB::table('order_status as os')
+            ->select('os.order_id', DB::raw('MAX(os.created_at) as max_created'))
+            ->groupBy('os.order_id');
+
+        $ordersByStatus = DB::table('order_status as os')
+            ->joinSub($latestStatuses, 'latest', function ($join) {
+                $join->on('os.order_id', '=', 'latest.order_id')
+                     ->on('os.created_at', '=', 'latest.max_created');
+            })
+            ->join('statuses', 'os.status_id', '=', 'statuses.id')
+            ->select('statuses.name as label', DB::raw('COUNT(*) as count'))
+            ->groupBy('statuses.name')
+            ->get()
+            ->map(fn($item) => ['label' => $item->label, 'count' => (int) $item->count])
+            ->values();
+
+        return Inertia::render('admin/BackOffice', [
+            'totalOrders' => $totalOrders,
+            'totalCustomers' => $totalCustomers,
+            'totalProducts' => $totalProducts,
+            'totalRevenue' => round((float) $totalRevenue, 2),
+            'ordersByStatus' => $ordersByStatus,
+        ]);
     }
 
     /**

@@ -15,8 +15,8 @@ const props = defineProps<SellerRegistrationProps>();
     <Head title="Devenir Vendeur">
         <meta name="description" content="Rejoignez la marketplace JewelleryStore en tant que vendeur. Proposez vos créations artisanales à notre communauté de passionnés de bijoux." head-key="description" />
     </Head>
-    <main class="flex flex-row bg-gray-100 rounded-xl border-t-[1px] border-gray-100">
-        <section id="seller-registration-section" class="lg:ml-10 lg:my-10 lg:px-10 lg:py-10 rounded-l-xl lg:w-50/50 bg-white">
+    <main class="flex flex-row bg-gray-100 rounded-xl border-t-[1px] border-gray-100 dark:bg-gray-950 dark:border-gray-900">
+        <section id="seller-registration-section" class="lg:ml-10 lg:my-10 lg:px-10 lg:py-10 rounded-l-xl lg:w-50/50 bg-white dark:bg-gray-900">
             <SellerRegisterForm :locale="props.locale"></SellerRegisterForm>
         </section>
         <aside id="seller-form-background" class="lg:mr-10 lg:my-10 lg:w-50/50 lg:h-5xl">

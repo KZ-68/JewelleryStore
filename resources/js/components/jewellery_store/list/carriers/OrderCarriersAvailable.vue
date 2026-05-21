@@ -33,11 +33,11 @@ const selectCarrier = async (carrier: Carrier|null) => {
 </script>
 
 <template>
-    <section class="flex flex-col w-full max-w-[60rem] lg:max-w-none bg-gray-100 rounded-lg py-4 px-4 sm:px-8 my-2 mx-auto">
+    <section class="flex flex-col w-full max-w-[60rem] lg:max-w-none bg-gray-100 rounded-lg py-4 px-4 sm:px-8 my-2 mx-auto dark:bg-gray-800">
 
         <button
             @click="$emit('selectStep', 0)"
-            class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors"
+            class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-200"
             aria-label="Go back to step 1: Connecting an account"
         >
             <h2 class="text-xl px-3 py-4">1. Connecting an account</h2>
@@ -45,23 +45,23 @@ const selectCarrier = async (carrier: Carrier|null) => {
 
         <button
             @click="$emit('selectStep', 1)"
-            class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors"
+            class="bg-white py-6 my-2 w-full rounded-t-md text-left hover:bg-gray-50 cursor-pointer focus-visible:ring-2 focus-visible:ring-shop-primary focus-visible:ring-offset-2 transition-colors dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-gray-200"
             aria-label="Go back to step 2: Delivery address"
         >
             <h2 class="text-xl px-3 py-4">2. Delivery address</h2>
         </button>
 
-        <div class="bg-white py-6 w-full rounded-t-md" aria-current="step">
+        <div class="bg-white py-6 w-full rounded-t-md dark:bg-gray-900 dark:text-gray-200" aria-current="step">
             <h2 class="text-xl px-3 py-4">3. Select a carrier</h2>
         </div>
 
-        <fieldset v-if="props.carriers.length > 0" class="w-full bg-white px-4 sm:px-8 py-6">
+        <fieldset v-if="props.carriers.length > 0" class="w-full bg-white px-4 sm:px-8 py-6 dark:bg-gray-900">
             <legend class="sr-only">Available carriers</legend>
             <ul class="flex flex-col gap-4" role="list">
                 <li v-for="carrier in carriers" :key="carrier.id">
                     <label
                         :for="'carrier-' + carrier.id"
-                        class="flex flex-row justify-between items-center gap-4 bg-gray-100 rounded-md py-4 px-5 cursor-pointer hover:bg-gray-200 transition-colors"
+                        class="flex flex-row justify-between items-center gap-4 bg-gray-100 rounded-md py-4 px-5 cursor-pointer hover:bg-gray-200 transition-colors dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
                     >
                         <div class="flex flex-col sm:flex-row gap-3 sm:gap-8 items-start sm:items-center">
                             <figure class="shrink-0">
@@ -72,7 +72,7 @@ const selectCarrier = async (carrier: Carrier|null) => {
                                 >
                             </figure>
                             <span class="font-medium">{{ carrier.name }}</span>
-                            <p class="text-sm text-gray-600">{{ carrier.description }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ carrier.description }}</p>
                         </div>
                         <input
                             type="radio"
@@ -91,7 +91,7 @@ const selectCarrier = async (carrier: Carrier|null) => {
             >Choose this carrier</button>
         </fieldset>
 
-        <div v-else class="bg-white rounded-md py-8 px-5 my-3 text-center">
+        <div v-else class="bg-white rounded-md py-8 px-5 my-3 text-center dark:bg-gray-900 dark:text-gray-400">
             <p>No carrier available</p>
         </div>
 

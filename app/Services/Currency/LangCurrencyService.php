@@ -15,29 +15,30 @@ class LangCurrencyService
         $this->supportedLocales = config('app.available_locales');
     }
 
-    public function verify(Request $request): BelongsToMany
+    public function verify(Request $request): ?BelongsToMany
+    {
+        $locale = $this->resolveLocale($request);
+
+        $country = Country::with('currencies')->where('local', $locale)->first();
+
+        return $country?->currencies();
+    }
+
+    protected function resolveLocale(Request $request): string
     {
         if ($request->session()->has('locale')) {
             $sessionLocale = $request->session()->get('locale');
             if ($this->isValidLocale($sessionLocale)) {
-                $country = Country::with('country_currency')->where('local', $sessionLocale)->first();
-                $currencies = $country->currencies();
-                return $currencies;
+                return $sessionLocale;
             }
         }
 
         $browserLocale = $request->getPreferredLanguage($this->supportedLocales);
-
         if ($browserLocale) {
-            $country = Country::with('currencies')->where('local', $browserLocale)->first();
-            $currencies = $country->currencies();
-            return $currencies;
+            return $browserLocale;
         }
 
-        $defaultLocale = $request->getDefaultLocale();
-        $country = Country::with('country_currency')->where('local', $defaultLocale)->first();
-        $currencies = $country->currencies();
-        return $currencies;
+        return config('app.locale');
     }
 
     protected function isValidLocale(?string $locale): bool

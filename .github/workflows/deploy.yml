@@ -2,26 +2,25 @@
 name: deploy
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true
+    environment: production
     runs-on: ubuntu-latest
 
     steps:
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.PROD_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: Add known_hosts
         run: |
@@ -29,11 +28,12 @@ jobs:
 
       - name: Deploy to prod server
         run: |
-          ssh root@srv1501506.hstgr.cloud "\
+          sudo apt-get install -y sshpass
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
             cd /root/JewelleryStore && \
             git pull origin main && \
             php bin/console cache:clear --env=prod && \
             php bin/console doctrine:migrations:migrate --no-interaction --env=prod &&\
             systemctl restart messenger-worker \
           "
- 

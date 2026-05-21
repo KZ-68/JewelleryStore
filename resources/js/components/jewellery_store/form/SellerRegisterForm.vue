@@ -19,7 +19,7 @@ const passwordValue = ref('')
 
 <template>
     <Head title="Seller Account Registration" />
-    <h1 class="text-3xl">Seller Account Registration</h1>
+    <h1 class="text-3xl dark:text-gray-100">Seller Account Registration</h1>
 
     <Form
         v-bind="SellerFrontController.store.form({locale: props.locale})"
@@ -29,7 +29,7 @@ const passwordValue = ref('')
     >
         <div class="grid gap-6">
             <section id="seller-credentials-section" class="flex flex-col gap-6 my-2">
-                <h3 class="text-2xl my-4">Credentials</h3>
+                <h3 class="text-2xl my-4 dark:text-gray-200">Credentials</h3>
                 <div class="grid gap-2">
                     <Label class="text-md" for="name">Seller Name</Label>
                     <Input
@@ -91,7 +91,7 @@ const passwordValue = ref('')
             </section>
 
             <section id="seller-credentials-section" class="flex flex-col gap-6 my-2">
-                <h3 class="text-2xl my-4">Tax Informations</h3>    
+                <h3 class="text-2xl my-4 dark:text-gray-200">Tax Informations</h3>    
                 <div class="grid gap-2">
                     <Label class="text-md" for="tax_country">Country Tax</Label>
                     <Input

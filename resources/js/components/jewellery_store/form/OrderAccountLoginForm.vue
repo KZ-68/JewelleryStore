@@ -21,7 +21,7 @@ const props = defineProps<OrderAccountLoginFormProps>();
 </script>
 
 <template>
-    <section id="order-account-login-form-section" class="bg-white rounded-b-xl px-10 py-20 border-t-[1px] border-gray-100">
+    <section id="order-account-login-form-section" class="bg-white rounded-b-xl px-10 py-20 border-t-[1px] border-gray-100 dark:bg-gray-900 dark:border-gray-800">
         <div
             v-if="status"
             class="mb-4 text-center text-sm font-medium text-green-600"

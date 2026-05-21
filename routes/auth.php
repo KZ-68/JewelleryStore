@@ -131,6 +131,6 @@ Route::prefix('/admin')->middleware(['admin.session', 'role:admin', 'auth:admin'
         ->middleware('throttle:6,1')
         ->name('admin-verification.send');
 
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::post('/logout', [AuthenticatedSessionController::class, 'adminDestroy'])
         ->name('admin-logout');
 });

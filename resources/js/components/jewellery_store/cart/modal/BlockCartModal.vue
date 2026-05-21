@@ -31,7 +31,7 @@ const close = () => {
     emit('update:isOpenValue', false)
 }
 
-const baseImagePath = 'storage/img/p/';
+const baseImagePath = '/storage/img/p/';
 </script>
 
 <template>
@@ -48,18 +48,18 @@ const baseImagePath = 'storage/img/p/';
         <Transition name="slide-from-right">
             <div
                 v-if="isOpen"
-                class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-xl flex flex-col"
+                class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-white shadow-xl flex flex-col dark:bg-gray-900 dark:shadow-black/50"
                 role="dialog"
                 aria-modal="true"
                 aria-label="Cart"
             >
                 <!-- En-tête -->
-                <div class="flex items-center justify-between p-4 border-b shrink-0">
-                    <p class="text-xl font-semibold">
+                <div class="flex items-center justify-between p-4 border-b shrink-0 dark:border-gray-700">
+                    <p class="text-xl font-semibold dark:text-gray-100">
                         Product as been sucessfully added to cart
                     </p>
                     <button
-                        class="text-gray-500 hover:text-black transition-colors"
+                        class="text-gray-500 hover:text-black transition-colors dark:text-gray-400 dark:hover:text-gray-100"
                         aria-label="Closing the cart"
                         @click="close"
                     >
@@ -70,12 +70,14 @@ const baseImagePath = 'storage/img/p/';
                 <!-- Corps -->
                 <div class="flex-1 overflow-y-auto p-4">
                     <ul class="space-y-4">
-                        <li v-for="product in products" :key="product.id" class="flex gap-4">
+                        <li v-for="product in products" :key="product.id" class="flex gap-4 dark:text-gray-200">
                             <img
                                 class="w-24 h-24 object-cover rounded shrink-0"
-                                :src="baseImagePath.concat(product.id.toString(), '/product-1.jpg')"
+                                :src="baseImagePath.concat(product.id.toString(), '/product-1.webp')"
                                 :alt="product.name"
                                 width="96"
+                                height="96"
+                                @error="($event.target as HTMLImageElement).src = '/storage/img/p/not-found.jpg'"
                             />
                             <div class="flex-1 min-w-0">
                                 <p class="font-medium line-clamp-2">{{ product.name }}</p>
@@ -87,8 +89,8 @@ const baseImagePath = 'storage/img/p/';
                 </div>
 
                 <!-- Pied de page -->
-                <div class="p-4 border-t space-y-3 shrink-0">
-                    <div class="bg-gray-100 p-4 rounded space-y-2 text-sm">
+                <div class="p-4 border-t space-y-3 shrink-0 dark:border-gray-700">
+                    <div class="bg-gray-100 p-4 rounded space-y-2 text-sm dark:bg-gray-800 dark:text-gray-200">
                         <p class="font-medium">
                             There's {{ cartProductsCount }} product(s) in your cart.
                         </p>
@@ -104,7 +106,7 @@ const baseImagePath = 'storage/img/p/';
                         Checkout
                     </a>
                     <button
-                        class="w-full border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition"
+                        class="w-full border border-gray-300 py-3 rounded-lg hover:bg-gray-100 transition dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                         @click="close"
                     >
                         Continue Shopping

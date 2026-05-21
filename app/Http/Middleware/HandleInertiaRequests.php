@@ -67,6 +67,7 @@ class HandleInertiaRequests extends Middleware
             'translations' => File::exists( $langFile ) ? File::json( $langFile ) : [],
             'auth' => [
                 'user' => Auth::guard('admin')->check() ? Auth::guard('admin')->user() : null,
+                'roles' => $request->user()?->getRoleNames() ?? [],
                 'customer' => Auth::guard('web')->check() ? Auth::guard('web')->user() : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

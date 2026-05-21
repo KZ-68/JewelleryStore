@@ -33,7 +33,7 @@ onMounted(async () => {
 
 <template>
     <Link :href="showShopProduct({slug: product.slug})">
-        <div class="flex flex-row gap-3 items-center px-4 py-3 bg-white border-gray-100 border-b-2">
+        <div class="flex flex-row gap-3 items-center px-4 py-3 bg-white border-gray-100 border-b-2 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200">
             <figure class="flex justify-center py-2 items-center min-w-20 max-w-20 lg:w-full">
                 <img :src="props.image ? props.image : '/storage/img/p/not-found.jpg'" :alt="useTrans('Jewellery Product Image')" class="min-w-20 max-w-20">
             </figure>

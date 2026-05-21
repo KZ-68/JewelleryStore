@@ -17,7 +17,7 @@ const props = defineProps<PrivacyProps>();
         <meta name="description" content="Consultez la politique de confidentialité de JewelleryStore : protection des données personnelles, conformité RGPD et utilisation de vos informations." head-key="description" />
     </Head>
     <AppShopLayout :isHome="false" :frontCategories="props.frontCategories" :cartProductsCount="props.cartProductsCount" :locale="props.locale">
-        <div id="privacy-wrapper" class="py-4 px-6">
+        <div id="privacy-wrapper" class="py-4 px-6 dark:text-gray-300">
             <section class="my-4">
                 <h3 class="my-2 text-xl">Politique de confidentialité</h3>
                 <p class="text-md">JewelleryStore accorde une importance toute particulière au droit à la vie privée des internautes et s’engage à protéger leurs données personnelles selon la législation française et européenne en vigueur. Aucune donnée personnelle n’est demandée aux visiteurs pour leur permettre de consulter le site Internet www.jewellery-store.com.</p>

@@ -44,7 +44,7 @@ const imageUrl = '/storage/img/home/pendant-golden-coins-chinese-new-year_23-214
                 </figure>
             </div>
             <div id="discover-category-right" class="flex flex-col gap-8 md:gap-16 justify-center items-start px-6 py-8 md:px-12 lg:py-0">
-                <h3 id="discover-category-heading" class="text-base md:text-xl">{{ useTrans(props.description) }}</h3>
+                <h3 id="discover-category-heading" class="text-base md:text-xl dark:text-gray-200">{{ useTrans(props.description) }}</h3>
                 <Link
                     id="discover-btn"
                     :href="route('showCategoryProducts', {locale: props.locale, category_slug: 'collections'}, false, Ziggy)"

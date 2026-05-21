@@ -39,19 +39,19 @@ const formattedDate = computed(() => {
         :locale="props.locale"
     >
         <main
-            class="min-h-[60vh] bg-gray-50 px-4 py-10 sm:px-6 lg:px-12"
+            class="min-h-[60vh] bg-gray-50 px-4 py-10 sm:px-6 lg:px-12 dark:bg-gray-950"
             id="order-confirmation"
             aria-labelledby="confirmation-heading"
         >
             <div class="mx-auto max-w-2xl">
 
                 <article
-                    class="rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 overflow-hidden"
+                    class="rounded-2xl bg-white shadow-sm ring-1 ring-gray-100 overflow-hidden dark:bg-gray-900 dark:ring-gray-800"
                     aria-label="Détail de la commande confirmée"
                 >
-                    <div class="bg-green-50 border-b border-green-100 px-6 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                    <div class="bg-green-50 border-b border-green-100 px-6 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left dark:bg-green-950/30 dark:border-green-900/40">
                         <span
-                            class="flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-full bg-green-100"
+                            class="flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-full bg-green-100 dark:bg-green-900/40"
                             aria-hidden="true"
                         >
                             <svg class="w-7 h-7 text-green-600" viewBox="0 0 20 20" fill="currentColor" focusable="false">
@@ -62,11 +62,11 @@ const formattedDate = computed(() => {
                         <div>
                             <h1
                                 id="confirmation-heading"
-                                class="text-xl sm:text-2xl font-semibold text-green-800 leading-snug"
+                                class="text-xl sm:text-2xl font-semibold text-green-800 leading-snug dark:text-green-300"
                             >
                                 {{ useTrans('Your order is confirmed') }}
                             </h1>
-                            <p class="mt-1 text-sm text-green-700">
+                            <p class="mt-1 text-sm text-green-700 dark:text-green-400">
                                 {{ useTrans('An email has been sent to') }}
                                 <strong class="font-medium text-green-900">{{ $page.props.auth.customer.email }}</strong>
                             </p>
@@ -76,28 +76,28 @@ const formattedDate = computed(() => {
                     <div class="px-6 py-6 sm:px-8 sm:py-8 flex flex-col gap-5">
 
                         <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="rounded-lg bg-gray-50 px-4 py-3">
-                                <dt class="text-xs font-medium uppercase tracking-wide text-gray-500">
+                            <div class="rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800">
+                                <dt class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                     {{ useTrans('Order reference') }}
                                 </dt>
                                 <dd
-                                    class="mt-1 text-base font-semibold text-gray-900 break-all"
+                                    class="mt-1 text-base font-semibold text-gray-900 break-all dark:text-gray-100"
                                     aria-label="Référence de commande"
                                 >
                                     {{ order.reference }}
                                 </dd>
                             </div>
-                            <div class="rounded-lg bg-gray-50 px-4 py-3">
-                                <dt class="text-xs font-medium uppercase tracking-wide text-gray-500">
+                            <div class="rounded-lg bg-gray-50 px-4 py-3 dark:bg-gray-800">
+                                <dt class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                     {{ useTrans('Order date') }}
                                 </dt>
-                                <dd class="mt-1 text-base font-semibold text-gray-900">
+                                <dd class="mt-1 text-base font-semibold text-gray-900 dark:text-gray-100">
                                     <time :datetime="order.created_at">{{ formattedDate }}</time>
                                 </dd>
                             </div>
                         </dl>
 
-                        <p class="text-sm text-gray-600 leading-relaxed">
+                        <p class="text-sm text-gray-600 leading-relaxed dark:text-gray-400">
                             {{ useTrans('You can find your order resume in your account page') }}
                         </p>
 

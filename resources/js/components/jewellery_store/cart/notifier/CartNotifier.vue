@@ -21,7 +21,7 @@ const cartNumber = computed(() => page.props.cartProductsCount as number)
                 <HandbagIcon width="100px"/>
             </div>
             <div id="cart-notifier-header">
-                <span class="flex flex-row justify-center items-center w-[20px] h-[20px] py-0.5 px-2.5 z-10 left-4 rounded-full bg-gray-200">
+                <span class="flex flex-row justify-center items-center w-[20px] h-[20px] py-0.5 px-2.5 z-10 left-4 rounded-full bg-gray-200 dark:bg-gray-700 dark:text-gray-200">
                     <div>
                         {{ cartNumber }}
                     </div>

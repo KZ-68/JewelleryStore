@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<ShopContentProps>(), {
 </script>
 
 <template>
-    <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-gray-100 dark:bg-[#0a0a0a]"
+    <main class="items-center min-h-screen p-6 text-[#1b1b18] lg:justify-center lg:p-8 bg-gray-100 dark:bg-gray-950 dark:text-gray-100"
     >
         <div
             v-if="props.breadcrumbs.length > 1"

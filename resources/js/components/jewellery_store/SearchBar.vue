@@ -33,13 +33,13 @@ async function search(text: string) {
 
 <template>
     <div id="search-bar-wrapper" class="relative w-full">
-        <input @input="search(searchText)" id="shop-search-bar" type="text" name="text" v-model="searchText" class="w-full px-2 py-2 lg:py-3 rounded-md border-2 border-gray-200">
+        <input @input="search(searchText)" id="shop-search-bar" type="text" name="text" v-model="searchText" class="w-full px-2 py-2 lg:py-3 rounded-md border-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500">
         <div id="search-results-wrapper" class="absolute top-9 lg:top-0 px-3 py-4 z-[2]">
             <ul id="search-results-list" class="flex flex-col">
                 <li v-if="results !== null" v-for="product in results">
                     <SearchProductCard :locale="usePage.props.locale" :product="product" :image="product.image"></SearchProductCard>
                 </li>
-                <li v-else-if="searchBarActive === true && results === null" class="flex flex-row">
+                <li v-else-if="searchBarActive === true && results === null" class="flex flex-row bg-white dark:bg-gray-900 dark:text-gray-400 px-4 py-3">
                     <p>{{ useTrans('No products found') }}</p>
                 </li>
             </ul>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import axios from 'axios'
 import type { Product } from '@/types/product'
-import { inject, onMounted, Ref, ref } from "vue";
+import { inject, Ref } from "vue";
 import { ShoppingCart } from 'lucide-vue-next';
 import { route } from '../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../../ziggy.js';
@@ -17,7 +17,6 @@ interface ProductCardProps {
     locale: string
 }
 
-const retailPrice = ref(0);
 const openCartModalValue = inject<Ref<boolean>>('openCartModalValue');
 
 const props = defineProps<ProductCardProps>()
@@ -34,19 +33,6 @@ async function addToCart(product: Product, quantity: number, retailPrice: number
     }
     openCartModalValue.value = true;
 }
-
-onMounted(async () => {
-    try {
-        await axios.post(
-            route('products.shopRetailPrice', {locale: props.locale, slug: props.product.slug}, false, Ziggy),
-            {locale: props.locale, slug: props.product.slug}
-        ).then(response => {
-            retailPrice.value = response.data.price
-        })
-    } catch (error) {
-        console.error('Erreur:', error);
-    }
-})
 
 defineEmits(['addProduct', 'addProductQuantity', 'addProductPrice']);
 </script>
@@ -78,14 +64,14 @@ defineEmits(['addProduct', 'addProductQuantity', 'addProductPrice']);
                     {{ useTrans(props.product.name) }}
                 </a>
                 <span class="text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-400">
-                    {{ retailPrice }}
+                    {{ props.product.retail_price }}
                 </span>
             </div>
 
             <button
                 type="button"
                 :aria-label="`Ajouter ${props.product.name} au panier`"
-                @click="addToCart(props.product, 1, retailPrice); $emit('addProduct', props.product); $emit('addProductQuantity', 1); $emit('addProductPrice', props.product.retail_price);"
+                @click="addToCart(props.product, 1, props.product.retail_price); $emit('addProduct', props.product); $emit('addProductQuantity', 1); $emit('addProductPrice', props.product.retail_price);"
                 class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-shop-primary text-white hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#84070F] focus:ring-offset-1 cursor-pointer"
             >
                 <ShoppingCart class="w-3.5 h-3.5" />

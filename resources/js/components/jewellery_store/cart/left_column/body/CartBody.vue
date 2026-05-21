@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { TrashIcon } from 'lucide-vue-next';
 import axios from 'axios'
+import { router } from '@inertiajs/vue3'
 import { route } from '../../../../../../../vendor/tightenco/ziggy/src/js';
 import { Ziggy } from '../../../../../ziggy.js';
 
@@ -22,6 +23,7 @@ async function remove(product:CartProduct) {
         await axios.post(
             route('cart.removeToCart', {locale: props.locale, product : product}, false, Ziggy), {product: product}
         )
+        router.reload({ only: ['products', 'total_price', 'cartProductsCount'] })
     } catch (error) {
         console.error('Erreur:', error);
     }

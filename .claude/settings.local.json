@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"from PIL import Image; print\\('Pillow available'\\)\")",
+      "Bash(python3 -c \"import PIL; print\\('PIL available'\\)\")",
+      "Bash(python3 -m pip install Pillow --quiet)",
+      "Bash(python3 -c \"from PIL import Image; print\\('Pillow installed'\\)\")",
+      "Bash(python3 *)",
+      "Bash(xargs grep *)",
+      "Bash(php artisan *)"
+    ]
+  }
+}

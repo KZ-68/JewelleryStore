@@ -32,10 +32,10 @@ const linkClass = 'hover:opacity-80 underline-offset-4 hover:underline transitio
                     <h3 id="footer-services-heading" class="text-xl font-semibold mb-5">{{ useTrans('Customer Services') }}</h3>
                     <ul class="flex flex-col gap-3">
                         <li>
-                            <a href="#" :class="linkClass">{{ useTrans('Shipping') }}</a>
+                            <a :href="route('shipping', {locale: props.locale}, false, Ziggy)" :class="linkClass">{{ useTrans('Shipping') }}</a>
                         </li>
                         <li>
-                            <a href="#" :class="linkClass">{{ useTrans('Help') }}</a>
+                            <a :href="route('help', {locale: props.locale}, false, Ziggy)" :class="linkClass">{{ useTrans('Help') }}</a>
                         </li>
                     </ul>
                 </nav>
@@ -96,7 +96,7 @@ const linkClass = 'hover:opacity-80 underline-offset-4 hover:underline transitio
             <div class="max-w-screen-xl mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <nav aria-label="Informations légales" class="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2">
                     <a :href="route('sitemap', {locale: props.locale}, false, Ziggy)" :class="linkClass">Sitemap</a>
-                    <a href="#" :class="linkClass">{{ useTrans('Terms and conditions') }}</a>
+                    <a :href="route('terms', {locale: props.locale}, false, Ziggy)" :class="linkClass">{{ useTrans('Terms and conditions') }}</a>
                     <a :href="route('privacy', {locale: props.locale}, false, Ziggy)" :class="linkClass">{{ useTrans('Privacy Policy') }}</a>
                     <button
                         type="button"

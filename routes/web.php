@@ -70,6 +70,15 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->middleware(
     Route::get('/payment-info', function () {
         return Inertia::render('web/PaymentInfo');
     })->name('payment-info');
+    Route::get('/shipping', function () {
+        return Inertia::render('web/Shipping');
+    })->name('shipping');
+    Route::get('/help', function () {
+        return Inertia::render('web/Help');
+    })->name('help');
+    Route::get('/terms', function () {
+        return Inertia::render('web/TermsAndConditions');
+    })->name('terms');
     Route::get('/not-found', function() {
         return Inertia::render('web/NotFound');
     })->name('not-found');

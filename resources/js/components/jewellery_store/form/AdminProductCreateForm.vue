@@ -13,7 +13,7 @@ interface AdminProductCreateFormProps {
     classname:string;
     categories: Array<TreeNode[]>
     locale: string
-}   
+}
 
 const props = defineProps<AdminProductCreateFormProps>();
 const categories = Object.assign({}, ...props.categories);
@@ -65,7 +65,7 @@ function log(s: string): void {
 </script>
 
 <template>
-    <section id="new-admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
+    <section id="new-admin-product-form-wrapper" class="w-full my-2 mx-auto max-w-[900px] p-4 sm:p-6 md:p-8 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="ProductFrontController.create.form({locale: props.locale})"
             :reset-on-success="['product-details']"
@@ -84,7 +84,7 @@ function log(s: string): void {
                         autofocus
                         :tabindex="1"
                         autocomplete="name"
-                        class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
+                        class="w-full text-xl sm:text-2xl h-10"
                     />
                     <InputError :message="errors.name" />
                 </div>
@@ -94,94 +94,97 @@ function log(s: string): void {
                     <textarea
                         id="product-description"
                         name="description"
-                        rows="5" 
-                        cols="100"
+                        rows="5"
                         min="3"
                         max="500"
                         autofocus
                         :tabindex="2"
                         placeholder="Add a description..."
-                        class="bg-gray-100 p-1 rounded-md"
+                        class="w-full bg-gray-100 p-2 rounded-md resize-y dark:bg-neutral-700 dark:text-gray-100"
                     />
                     <InputError :message="errors.description" />
                 </div>
 
-                <div class="grid gap-2">
-                    <Label for="reference" class="text-lg">Product Reference</Label>
-                    <Input
-                        id="reference"
-                        type="text"
-                        name="reference"
-                        required
-                        autofocus
-                        :tabindex="3"
-                        autocomplete="reference"
-                        placeholder="Add the product reference..."
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.reference" />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid gap-2">
+                        <Label for="reference" class="text-lg">Product Reference</Label>
+                        <Input
+                            id="reference"
+                            type="text"
+                            name="reference"
+                            required
+                            autofocus
+                            :tabindex="3"
+                            autocomplete="reference"
+                            placeholder="Add the product reference..."
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.reference" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="ean13" class="text-lg">EAN13 Bar Code</Label>
+                        <Input
+                            id="ean13"
+                            type="text"
+                            name="ean13"
+                            autofocus
+                            :tabindex="4"
+                            autocomplete="ean13"
+                            placeholder="Add a bar code for your product"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.ean13" />
+                    </div>
                 </div>
 
-                <div class="grid gap-2">
-                    <Label for="ean13" class="text-lg">EAN13 Bar Code</Label>
-                    <Input
-                        id="ean13"
-                        type="text"
-                        name="ean13"
-                        autofocus
-                        :tabindex="4"
-                        autocomplete="ean13"
-                        placeholder="Add a bar code for your product"
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.ean13" />
-                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid gap-2">
+                        <Label for="quantity" class="text-lg">Quantity</Label>
+                        <Input
+                            id="quantity"
+                            type="number"
+                            name="quantity"
+                            required
+                            :tabindex="5"
+                            placeholder="How many ?"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.quantity" />
+                    </div>
 
-                <div class="grid gap-2">
-                    <Label for="quantity" class="text-lg">Quantity</Label>
-                    <Input
-                        id="quantity"
-                        type="number"
-                        name="quantity"
-                        required
-                        :tabindex="5"
-                        placeholder="How many products ?"
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.quantity" />
-                </div>
+                    <div class="grid gap-2">
+                        <Label for="price_ht" class="text-lg">Price without Tax</Label>
+                        <Input
+                            id="price_ht"
+                            type="number"
+                            name="price_ht"
+                            step=".01"
+                            required
+                            :tabindex="6"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.price_ht" />
+                    </div>
 
-                <div class="grid gap-2">
-                    <Label for="price_ht" class="text-lg">Price without Tax</Label>
-                    <Input
-                        id="price_ht"
-                        type="number" 
-                        name="price_ht"
-                        step=".01"
-                        required
-                        :tabindex="5"
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.price_ht" />
-                </div>
-
-                <div class="grid gap-2">
-                    <Label for="cost_price" class="text-lg">Cost price</Label>
-                    <Input
-                        id="retail-price"
-                        type="number" 
-                        name="cost_price"
-                        step=".01"
-                        required
-                        :tabindex="6"
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.cost_price" />
+                    <div class="grid gap-2">
+                        <Label for="cost_price" class="text-lg">Cost price</Label>
+                        <Input
+                            id="retail-price"
+                            type="number"
+                            name="cost_price"
+                            step=".01"
+                            required
+                            :tabindex="7"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.cost_price" />
+                    </div>
                 </div>
 
                 <div class="grid gap-2">
                     <Label for="active" class="text-lg">Activate Product</Label>
-                    <select id="active" name="active" required>
+                    <select id="active" name="active" required class="w-full bg-gray-100 p-2 rounded-md border border-gray-200 dark:bg-neutral-700 dark:text-gray-100">
                         <option :value=0 :selected=true>No</option>
                         <option :value=1>Yes</option>
                     </select>
@@ -195,7 +198,7 @@ function log(s: string): void {
                         name="image"
                         accept="image/jpeg,image/png,image/gif,image/webp"
                         :tabindex="8"
-                        class="bg-gray-100 p-1 rounded-md file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-black file:text-white file:cursor-pointer"
+                        class="w-full bg-gray-100 p-2 rounded-md file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-black file:text-white file:cursor-pointer"
                         @change="onImageChange"
                     />
                     <img
@@ -209,7 +212,7 @@ function log(s: string): void {
 
                 <section id="category-tree">
                     <Label for="parent_id" class="text-lg my-2">Attach one or more categories</Label>
-                    <div class="border-black border-[2px] rounded-md p-2">
+                    <div class="border-black border-[2px] rounded-md p-2 overflow-x-auto">
                         <Tree
                             :nodes=categories
                             :config="config"
@@ -234,12 +237,12 @@ function log(s: string): void {
                 <input id="category_id" name="category_id" type="hidden" :value=category.category_id>
                 <input id="categories_selected" name="categories_selected" type="hidden" :value=JSON.stringify(categoriesSelected)>
 
-                <section id="new-admin-product-details-footer" class="flex flex-row gap-4 py-8">
+                <section id="new-admin-product-details-footer" class="flex flex-row gap-4 pt-4 pb-2">
                     <Button
-                    type="submit"
-                    class="w-20 bg-black text-white"
-                    :tabindex="7"
-                    :disabled="processing"
+                        type="submit"
+                        class="w-full sm:w-auto px-8 bg-black text-white"
+                        :tabindex="9"
+                        :disabled="processing"
                     >
                         <LoaderCircle
                             v-if="processing"

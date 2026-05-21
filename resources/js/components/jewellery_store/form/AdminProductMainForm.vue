@@ -62,18 +62,20 @@ watch(selectedTaxRuleGroup, (newVal) => {
 </script>
 
 <template>
-    <section id="admin-product-form-wrapper" class="my-2 mx-4 max-w-[900px] flex-start p-8 gap-1 rounded-lg bg-white dark:bg-neutral-800">
+    <section id="admin-product-form-wrapper" class="w-full my-2 mx-auto max-w-[900px] p-4 sm:p-6 md:p-8 rounded-lg bg-white dark:bg-neutral-800">
         <Form
             v-bind="ProductFrontController.update.form({locale: props.locale, slug: props.product.slug })"
             :reset-on-success="['product-details']"
             v-slot="{ errors, processing }"
             class="flex flex-col gap-6"
         >
-            <div id="product-page-header-wrapper" class="flex flex-row gap-6 align-center items-center px-8 py-10">
-                <figure class="border h-40 w-40">
-                    <figcaption>An product image</figcaption>
+            <!-- Header : image + nom du produit -->
+            <div id="product-page-header-wrapper" class="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center py-4">
+                <figure class="shrink-0 border rounded-md h-32 w-32 sm:h-40 sm:w-40 overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-neutral-700">
+                    <figcaption class="text-sm text-gray-400 text-center p-2">Product image</figcaption>
                 </figure>
-                <h1 id="product-heading">
+                <div class="flex-1 min-w-0 w-full">
+                    <Label for="name" class="text-sm text-gray-500 mb-1 block">Product Name</Label>
                     <Input
                         id="name"
                         type="text"
@@ -82,91 +84,110 @@ watch(selectedTaxRuleGroup, (newVal) => {
                         autofocus
                         :tabindex="1"
                         autocomplete="name"
-                        :default-value=props.product.name
-                        class="p-1 file:text-2xl md:text-2xl text-2xl h-8"
+                        :default-value="props.product.name"
+                        class="w-full text-xl sm:text-2xl h-10"
                     />
-                </h1>
-                <InputError :message="errors.name" />
+                    <InputError :message="errors.name" />
+                </div>
             </div>
+
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="description" class="text-lg">Product Description</Label>
                     <textarea
                         id="product-description"
                         name="description"
-                        rows="5" 
-                        cols="100"
+                        rows="5"
                         min="3"
                         max="500"
                         autofocus
                         :tabindex="2"
                         placeholder="Add a description..."
-                        :value=props.product.description
-                        class="bg-gray-100 p-1 rounded-md"
+                        :value="props.product.description"
+                        class="w-full bg-gray-100 p-2 rounded-md resize-y dark:bg-neutral-700 dark:text-gray-100"
                     />
                     <InputError :message="errors.description" />
                 </div>
 
-                <div class="grid gap-2">
-                    <Label for="reference" class="text-lg">Product Reference</Label>
-                    <Input
-                        id="reference"
-                        type="text"
-                        name="reference"
-                        required
-                        autofocus
-                        :tabindex="3"
-                        autocomplete="reference"
-                        :default-value=props.product.reference
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.reference" />
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid gap-2">
+                        <Label for="reference" class="text-lg">Product Reference</Label>
+                        <Input
+                            id="reference"
+                            type="text"
+                            name="reference"
+                            required
+                            autofocus
+                            :tabindex="3"
+                            autocomplete="reference"
+                            :default-value="props.product.reference"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.reference" />
+                    </div>
+
+                    <div class="grid gap-2">
+                        <Label for="ean13" class="text-lg">EAN13 Bar Code</Label>
+                        <Input
+                            id="ean13"
+                            type="text"
+                            name="ean13"
+                            autofocus
+                            :tabindex="4"
+                            autocomplete="ean13"
+                            :default-value="props.product.ean13"
+                            placeholder="Add a bar code for your product"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.ean13" />
+                    </div>
                 </div>
 
-                <div class="grid gap-2">
-                    <Label for="ean13" class="text-lg">EAN13 Bar Code</Label>
-                    <Input
-                        id="ean13"
-                        type="text"
-                        name="ean13"
-                        autofocus
-                        :tabindex="4"
-                        autocomplete="ean13"
-                        :default-value=props.product.ean13
-                        placeholder="Add a bar code for your product"
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.ean13" />
-                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid gap-2">
+                        <Label for="quantity" class="text-lg">Quantity</Label>
+                        <Input
+                            id="quantity"
+                            type="number"
+                            name="quantity"
+                            required
+                            :tabindex="5"
+                            :default-value="props.product.quantity"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.quantity" />
+                    </div>
 
-                <div class="grid gap-2">
-                    <Label for="quantity" class="text-lg">Quantity</Label>
-                    <Input
-                        id="quantity"
-                        type="number"
-                        name="quantity"
-                        required
-                        :tabindex="5"
-                        :default-value=props.product.quantity
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.quantity" />
-                </div>
+                    <div class="grid gap-2">
+                        <Label for="price_ht" class="text-lg">Price without Tax</Label>
+                        <Input
+                            id="price_ht"
+                            type="number"
+                            name="price_ht"
+                            step=".01"
+                            required
+                            :tabindex="6"
+                            :default-value="priceHt"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                            @change="(e: Event) => { priceHt = parseFloat((e.target as HTMLInputElement).value); fetchPriceWithTax(selectedTaxRuleGroup); }"
+                        />
+                        <InputError :message="errors.cost_price" />
+                    </div>
 
-                <div class="grid gap-2">
-                    <Label for="price_ht" class="text-lg">Price without Tax</Label>
-                    <Input
-                        id="price_ht"
-                        type="number"
-                        name="price_ht"
-                        step=".01"
-                        required
-                        :tabindex="5"
-                        :default-value="priceHt"
-                        class="bg-gray-100 p-1 rounded-md"
-                        @change="(e: Event) => { priceHt = parseFloat((e.target as HTMLInputElement).value); fetchPriceWithTax(selectedTaxRuleGroup); }"
-                    />
-                    <InputError :message="errors.cost_price" />
+                    <div class="grid gap-2">
+                        <Label for="cost_price" class="text-lg">Cost price</Label>
+                        <Input
+                            id="cost_price"
+                            type="number"
+                            name="cost_price"
+                            step=".01"
+                            required
+                            :tabindex="7"
+                            :default-value="props.product.cost_price"
+                            class="w-full bg-gray-100 p-2 rounded-md"
+                        />
+                        <InputError :message="errors.cost_price" />
+                    </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
@@ -204,34 +225,24 @@ watch(selectedTaxRuleGroup, (newVal) => {
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="cost_price" class="text-lg">Cost price</Label>
-                    <Input
-                        id="cost_price"
-                        type="number" 
-                        name="cost_price"
-                        step=".01"
-                        required
-                        :tabindex="5"
-                        :default-value=props.product.cost_price
-                        class="bg-gray-100 p-1 rounded-md"
-                    />
-                    <InputError :message="errors.cost_price" />
-                </div>
-
-                <div>
                     <Label for="taxRuleGroups" class="text-base">Select a tax rule group :</Label>
-                    <select v-model="selectedTaxRuleGroup" id="taxRuleGroups" name="taxRuleGroups" class="border-2 rounded-md">
+                    <select
+                        v-model="selectedTaxRuleGroup"
+                        id="taxRuleGroups"
+                        name="taxRuleGroups"
+                        class="w-full bg-gray-100 p-2 rounded-md border border-gray-200 dark:bg-neutral-700 dark:text-gray-100"
+                    >
                         <option v-for="taxRuleGroup in taxRuleGroups" :value="taxRuleGroup.id" :key="taxRuleGroup.id">{{ taxRuleGroup.name }}</option>
                     </select>
-                    <input id="tax_rule_group_id" name="tax_rule_group_id" type="hidden" :value=selectedTaxRuleGroup>
+                    <input id="tax_rule_group_id" name="tax_rule_group_id" type="hidden" :value="selectedTaxRuleGroup">
                 </div>
 
-                <section id="admin-product-details-footer" class="flex flex-row gap-4 py-8">
+                <section id="admin-product-details-footer" class="flex flex-row gap-4 pt-4 pb-2">
                     <Button
-                    type="submit"
-                    class="w-20 bg-black text-white"
-                    :tabindex="5"
-                    :disabled="processing"
+                        type="submit"
+                        class="w-full sm:w-auto px-8 bg-black text-white"
+                        :tabindex="8"
+                        :disabled="processing"
                     >
                         <LoaderCircle
                             v-if="processing"

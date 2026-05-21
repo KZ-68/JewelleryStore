@@ -31,7 +31,7 @@ const close = () => {
     emit('update:isOpenValue', false)
 }
 
-const baseImagePath = 'storage/img/p/';
+const baseImagePath = '/storage/img/p/';
 </script>
 
 <template>
@@ -73,9 +73,11 @@ const baseImagePath = 'storage/img/p/';
                         <li v-for="product in products" :key="product.id" class="flex gap-4 dark:text-gray-200">
                             <img
                                 class="w-24 h-24 object-cover rounded shrink-0"
-                                :src="baseImagePath.concat(product.id.toString(), '/product-1.jpg')"
+                                :src="baseImagePath.concat(product.id.toString(), '/product-1.webp')"
                                 :alt="product.name"
                                 width="96"
+                                height="96"
+                                @error="($event.target as HTMLImageElement).src = '/storage/img/p/not-found.jpg'"
                             />
                             <div class="flex-1 min-w-0">
                                 <p class="font-medium line-clamp-2">{{ product.name }}</p>

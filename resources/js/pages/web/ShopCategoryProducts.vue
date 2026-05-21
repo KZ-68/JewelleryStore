@@ -307,7 +307,7 @@ const addProductPrice = (key: number) => { productsPrice.value += key }
                                 <ProductCard
                                     classname=""
                                     :product="product"
-                                    :image="null"
+                                    :image="product.image"
                                     :sort-by="sortBy"
                                     :orderBy="orderBy"
                                     :locale="props.locale"

@@ -11,10 +11,13 @@ use App\Models\Category;
 use App\Models\Feature;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Contracts\ProductImageServiceInterface;
 use Illuminate\Http\RedirectResponse;
 
 class ShopCategoryFrontController extends Controller
 {
+    public function __construct(private ProductImageServiceInterface $image) {}
+
     /**
     * Show shop category products list view
     * @return Response|RedirectResponse Return an Inertia Object response with the rendered view or a redirection
@@ -34,6 +37,10 @@ class ShopCategoryFrontController extends Controller
             })
             ->orderBy($filters['sortBy'], $filters['orderBy'])
             ->get();
+
+        foreach ($categoryProducts as $product) {
+            $product->image = $this->image->getFirstImage($product->id);
+        }
 
         $availableFeatures = Feature::with(['values' => function ($q) use ($category) {
                 $q->whereHas('products', function ($q) use ($category) {
